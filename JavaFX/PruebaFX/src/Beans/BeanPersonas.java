@@ -87,7 +87,7 @@ public class BeanPersonas {
     */
     
     public boolean insertarPersona() {
-        String sql = "INSERT INTO Personas(Nombre, ApellidoM, ApellidoP,Edad, Descripción)"
+        String sql = "INSERT INTO Personas(Nombre, ApellidoP, ApellidoM,Edad, Descripción)"
                 + "VALUES(?,?,?,?,?)";
         conexion = new AccessDB();
         conexion.conectar();
