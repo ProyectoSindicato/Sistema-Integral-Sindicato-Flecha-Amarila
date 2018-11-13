@@ -8,19 +8,12 @@ import com.healthmarketscience.jackcess.Table;
 import ejemplosaccess.ConexionBaseDatos;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Blob;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -121,7 +114,7 @@ public class Eliminar extends JFrame implements ActionListener{
     /* 
     Por otro lado si la tabla NO contiene datos tipos OLE no habra ningun problema 
     si utilizamos una sentencia comun.
-    Nota: es normal obtener un error si intentamos borrar un datos que esta almacenado
+    Nota: es normal obtener un error si intentamos borrar un dato que esta almacenado
     dentro de una tabla que de ella dependen otras, por ejemplo la tabla "Materia" depende
     de "Alumno" ya que esta contiene de manera foranea la clave de alumno por lo tanto
     no podremos borrar registros de "Alumno" ya que de ella depende "Materia".

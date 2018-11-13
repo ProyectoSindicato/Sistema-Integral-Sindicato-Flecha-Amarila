@@ -12,7 +12,7 @@ public class AccessDB {
 
     /* ****NO SE LES OLVIDE CAMBIAR LA LOCALIZACION DE LA BASE DE DATOS ;)  */
     
-    private final String location = "C:\\Users\\Aideé Alvarez\\Documents\\pruebafx1.accdb";
+    private final String location = "C:\\Users\\Aideé Alvarez\\Documents\\ITLEON\\7mo. Semestre\\Gestión de Proyectos de Software\\Sistema-Integral-Sindicato-Flecha-Amarila\\JavaFX\\pruebafx1.accdb";
     private Connection conn = null;
 
         /*  

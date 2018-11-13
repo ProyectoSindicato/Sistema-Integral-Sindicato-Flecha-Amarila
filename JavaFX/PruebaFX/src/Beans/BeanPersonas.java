@@ -70,11 +70,11 @@ public class BeanPersonas {
         return edad;
     }
 
-    public void setDescripcion(String descripcion) {
+    public void setDescripción(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    public String getDescripcion() {
+    public String getDescripción() {
         return descripcion;
     }
 

@@ -1,0 +1,5 @@
+
+*.accdb
+EjemplosAccess/ejemplo.accdb
+/JavaFX/PruebaFX/build/
+/JavaFX/PruebaFX/dist/

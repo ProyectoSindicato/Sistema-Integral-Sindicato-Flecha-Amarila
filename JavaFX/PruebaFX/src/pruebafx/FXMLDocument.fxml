@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="493.0" prefWidth="640.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="pruebafx.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="474.0" prefWidth="603.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="pruebafx.FXMLDocumentController">
   <children>
     <TextField fx:id="txtID" disable="true" editable="true" layoutX="131.0" layoutY="41.0" prefWidth="108.0" />
     <TextField fx:id="txtNombre" layoutX="131.0" layoutY="69.0" prefWidth="200.0" />
@@ -20,7 +20,7 @@
     <Label fx:id="lblEdad" layoutX="33.0" layoutY="149.0" text="Edad:" />
     <Label fx:id="lblDesc" layoutX="33.0" layoutY="173.0" text="Descripción:" />
     <TextField fx:id="txtDescripcion" layoutX="131.0" layoutY="173.0" prefWidth="200.0" />
-    <Button fx:id="btnAgregar" layoutX="426.0" layoutY="36.0" mnemonicParsing="false" onAction="#funcionAgregar" text="Agregar" />
+    <Button fx:id="btnAgregar" layoutX="426.0" layoutY="34.0" mnemonicParsing="false" onAction="#funcionAgregar" text="Agregar" />
     <Button fx:id="btnActualizar" layoutX="426.0" layoutY="76.0" mnemonicParsing="false" onAction="#funcionEliminar" text="Eliminar" />
     <Button fx:id="btnEliminar" layoutX="422.0" layoutY="116.0" mnemonicParsing="false" onAction="#funcionActualizar" text="Actualizar" />
     <TableView fx:id="tabla" layoutX="14.0" layoutY="214.0" onMousePressed="#tablaPersonasAction" prefHeight="237.0" prefWidth="547.0">
@@ -30,7 +30,7 @@
         <TableColumn prefWidth="75.0" text="ApellidoP" fx:id="columnaApellidoP" />
         <TableColumn prefWidth="75.0" text="ApellidoM" fx:id="columnaApellidoM" />
         <TableColumn prefWidth="75.0" text="Edad" fx:id="columnaEdad" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="163.0" text="Descripción" fx:id="columnaDescripcion" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="173.0" text="Descripción" fx:id="columnaDescripcion" />
       </columns>
     </TableView>
   </children>

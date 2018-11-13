@@ -40,6 +40,8 @@ public class FXMLDocumentController implements Initializable {
     //Conectamos a la base de datos.
     private final AccessDB conectionbd;
     
+    
+    
     public FXMLDocumentController()
     {
         conectionbd = new AccessDB(); //Este puede ir en el initialize del programa.
@@ -78,7 +80,7 @@ public class FXMLDocumentController implements Initializable {
                   per.setApellidoP(apellidoPat);
                   per.setApellidoM(apellidoMat);
                   per.setEdad(Integer.parseInt(edadPersona));
-                  per.setDescripcion(desc);
+                  per.setDescripción(desc);
                   if(per.insertarPersona() == true) //Si es un true, es porque pudimos realizar la inserción.
                   {
                       actualizarYrefrescar();
@@ -164,7 +166,7 @@ public class FXMLDocumentController implements Initializable {
                          per.setApellidoP(apellidoPat);
                          per.setApellidoM(apellidoMat);
                          per.setEdad(Integer.parseInt(edadPersona));
-                         per.setDescripcion(desc);
+                         per.setDescripción(desc);
                   
                    if(per.actualizarPersona(Integer.parseInt(IDPersona)) == true)
                   {
@@ -212,7 +214,7 @@ public class FXMLDocumentController implements Initializable {
                
               int f1 = (int) fila[0];
               int f4 = (int) fila[4];
-              String f5 = (String) fila[5];
+              String f5 = String.valueOf(fila[5]);
                /*Llamamos al constructor para poder visualizar los datos en la tabla  
                 y pasamos todos los datos al bean.*/
                BeanPersonas p = new BeanPersonas(f1,String.valueOf(fila[1]),
@@ -325,7 +327,7 @@ public class FXMLDocumentController implements Initializable {
                   String apellidoPat = p.getApellidoP();
                   String apellidoMat = p.getApellidoM();
                   String edadPersona = String.valueOf(p.getEdad());
-                  String desc = p.getDescripcion();
+                  String desc = p.getDescripción();
                   
                   txtID.setText(IDPersona);
                   txtNombre.setText(nombreP);
@@ -335,5 +337,4 @@ public class FXMLDocumentController implements Initializable {
                   txtDescripcion.setText(desc);
           }
       }
-        
 } //class
