@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane prefHeight="695.0" prefWidth="1360.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sindicato.FXMLDocumentController">
+  <content>
+    <AnchorPane id="Content" fx:id="panelPrincipal" focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="695.0" prefWidth="1360.0" styleClass="bodyPanelCentro">
+      <children>
+        <Pane fx:id="panelMenu" focusTraversable="true" layoutX="0.0" layoutY="0.0" mouseTransparent="false" opacity="0.22" prefHeight="695.0" prefWidth="171.0" style="" styleClass="bodybgLoginTest">
+          <stylesheets>
+            <URL value="@../images/style.css" />
+          </stylesheets>
+        </Pane>
+        <Pane layoutX="0.0" layoutY="4.0" prefHeight="173.0" prefWidth="171.0">
+          <children>
+            <ImageView id="UNICO_SINDICATO.png" fitHeight="113.0" fitWidth="132.84777794178615" focusTraversable="false" layoutX="22.0" layoutY="9.0" opacity="1.0" preserveRatio="true">
+              <image>
+                <Image url="@../images/UNICO_SINDICATO.png" preserveRatio="true" smooth="true" />
+              </image>
+            </ImageView>
+          </children>
+        </Pane>
+        <Pane layoutX="208.0" layoutY="152.0" opacity="0.59" prefHeight="498.0000999999975" prefWidth="1092.0" styleClass="bodyPanelBotones">
+          <stylesheets>
+            <URL value="@../images/style.css" />
+          </stylesheets>
+        </Pane>
+        <Button layoutX="437.0" layoutY="152.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="btnDecuento, iconDescuento, txt" text="" textAlignment="LEFT">
+          <stylesheets>
+            <URL value="@../images/style.css" />
+          </stylesheets>
+        </Button>
+        <Button layoutX="209.0" layoutY="152.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="btn, txt, iconButton1" text="" textFill="BLACK">
+          <stylesheets>
+            <URL value="@../images/style.css" />
+          </stylesheets>
+        </Button>
+        <Button layoutX="657.0" layoutY="152.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="txt, iconIncapacidad" text="" />
+        <Button layoutX="879.0" layoutY="152.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="txt, iconRol" text="" />
+        <Button layoutX="1098.0" layoutY="152.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="txt, iconEventos" text="" />
+        <Button layoutX="209.0" layoutY="338.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="iconAutobus, btn, txt" text="" />
+        <Button layoutX="437.0" layoutY="339.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="txt, iconReportes" text="" />
+        <Button layoutX="658.0" layoutY="339.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="txt, iconAccidentes" text="" />
+        <Button layoutX="210.0" layoutY="520.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="txt, iconDemandas" text="" />
+        <Button layoutX="438.0" layoutY="520.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="txt, iconAsesoriaLegal" text="" />
+        <Button layoutX="658.0" layoutY="520.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="txt, iconLibroActas" text="" />
+        <Button layoutX="881.0" layoutY="339.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="txt, iconPermisos" text="" />
+        <Button layoutX="881.0" layoutY="520.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="iconMantenimiento, btn, txt" text="" />
+        <Button layoutX="1098.0" layoutY="339.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="txt, iconInfracciones" text="" />
+        <Button layoutX="1098.0" layoutY="520.0" mnemonicParsing="false" prefHeight="128.9609375" prefWidth="202.0" styleClass="txt, iconKilometraje" text="" />
+        <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" disable="false" focusTraversable="true" labelFor="$panelPrincipal" layoutX="13.0" layoutY="122.0" prefHeight="113.0" prefWidth="144.0" text="Sindicato de Trabajadores de las Lineas de Transporte de la República Mexicana" textAlignment="CENTER" textFill="BLACK" underline="false" wrapText="true">
+          <font>
+            <Font name="Lucida Calligraphy Italic" size="12.0" />
+          </font>
+        </Label>
+        <Button layoutX="0.0" layoutY="233.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="171.0" styleClass="txt" text="Inicio" />
+        <Button layoutX="0.0" layoutY="274.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="171.0" styleClass="txt" text="Nuevo" />
+        <Button layoutX="0.0" layoutY="315.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="171.0" styleClass="txt" text="Usuarios" />
+        <Button layoutX="0.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="171.0" styleClass="txt" text="Telefonos" />
+        <Button layoutX="-1.0" layoutY="399.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="171.0" styleClass="txt" text="Domicilio" />
+        <Button layoutX="0.0" layoutY="441.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="171.0" styleClass="txt" text="Reuniones" />
+        <Button layoutX="0.0" layoutY="483.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="171.0" styleClass="txt" text="Contrato" />
+        <Button layoutX="-1.0" layoutY="526.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="171.0" styleClass="txt" text="Informe" />
+        <Button layoutX="0.0" layoutY="568.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="171.0" styleClass="txt" text="Departamentos" />
+        <Button layoutX="0.0" layoutY="609.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="171.0" styleClass="txt" text="Ayuda" />
+        <Button layoutX="0.0" layoutY="652.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="171.0" styleClass="txt" text="Acerca de..." />
+        <Button layoutX="1199.0" layoutY="57.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="75.0" styleClass="iconSalir" text="" />
+        <Button layoutX="1098.0" layoutY="57.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="75.0" styleClass="iconSuspender" text="" />
+      </children>
+      <stylesheets>
+        <URL value="@../images/style.css" />
+      </stylesheets>
+    </AnchorPane>
+  </content>
+</ScrollPane>
