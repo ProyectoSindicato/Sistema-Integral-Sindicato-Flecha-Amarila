@@ -63,13 +63,13 @@
 
 .iconButton1:hover {
     -fx-background-image: url("usuario2.png");
-    -fx-scale-x: 1.2;
-    -fx-scale-y: 1.2;
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
 }
 
 .iconButton1:pressed {
-    -fx-scale-x: 1.25;
-    -fx-scale-y: 1.25;
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
 }
 
 .iconDescuento {
@@ -81,14 +81,14 @@
 }
 
 .iconDescuento:hover {
-    -fx-background-image: url("descuentos2.png");
+    -fx-background-image: url("descuentos.png");
     -fx-scale-x: 1.2;
     -fx-scale-y: 1.2;
 }
 
 .iconDescuento:pressed {
-    -fx-scale-x: 1.25;
-    -fx-scale-y: 1.25;
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
 }
 
 
@@ -404,4 +404,30 @@
     -fx-background-position: center;
     -fx-background-size: 80px;
     -fx-background-repeat: no-repeat;
+}
+
+.lblIconName {
+    -fx-text-fill: snow;
+    -fx-font-family: 'Helvetica', Arial, sans-serif;
+    -fx-font-size: 16pt;
+}
+
+
+.iconGNR:hover {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+.iconGNR:pressed {
+    -fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;
+}
+
+.elements:hover {
+    -fx-translate-x: 5.5;
+}
+
+.elements:pressed {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
