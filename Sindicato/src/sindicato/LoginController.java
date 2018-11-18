@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package sindicato;
-
+/* */
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
