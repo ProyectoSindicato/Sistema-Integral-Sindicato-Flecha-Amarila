@@ -39,9 +39,9 @@
     -fx-background-color: rgba(0,0,0,0);
     -fx-border-color: rgba(0,0,0,0) rgba(0,0,0,0) rgba(255,255,255,0.35) rgba(0,0,0,0);
     -fx-border-width: 0 0 3 0;
-    -fx-text-fill: black;
+    -fx-text-fill: white;
     -fx-font-family: 'Helvetica', Arial, sans-serif;
-    -fx-font-size: 16pt;
+    -fx-font-size: 1.2em;
 }
 
 .txt:hover, 
