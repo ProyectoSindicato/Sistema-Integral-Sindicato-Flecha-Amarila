@@ -8,11 +8,12 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Sindicato.jar" size="7107009" download="eager" />
+    <jar href="Sindicato.jar" size="7118237" download="eager" />
+    <jar href="lib\javafx-datepicker-0.0.2.jar" size="47141" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Sindicato" >
     <param name="requiredFXVersion" value="8.0+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="800" height="600" main-class="sindicato.Principal"  name="Sindicato" />
+  <jfx:javafx-desc  width="800" height="600" main-class="Main.Principal"  name="Sindicato" />
   <update check="always"/>
 </jnlp>
