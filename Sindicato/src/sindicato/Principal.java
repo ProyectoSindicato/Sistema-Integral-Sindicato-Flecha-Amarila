@@ -19,7 +19,7 @@ public class Principal extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaReportes.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("VistaReporte.fxml"));
         
         Scene scene = new Scene(root);
         

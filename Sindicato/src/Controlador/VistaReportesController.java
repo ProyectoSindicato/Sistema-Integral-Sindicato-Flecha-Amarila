@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controlador;
+package controlador;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,16 +30,10 @@ import javafx.scene.layout.GridPane;
 /**
  * FXML Controller class
  *
- * @author Aideé Alvarez
- */
-/**
- * FXML Controller class
- *
- * @author Aideé Alvarez
+ * @author Personal
  */
 public class VistaReportesController implements Initializable {
-
-     ResultSetMetaData metadata = null;
+ ResultSetMetaData metadata = null;
     private final ConexionAccess conexionBD;
     
     @FXML private TextField txtReporte, txtUsuario, txtConductor, txtLugar,txtDia, txtMes, txtAño;
@@ -66,7 +60,7 @@ public class VistaReportesController implements Initializable {
         this.idUsuario = ""; //prueba.
         datePicker();
     }    
-    
+      
     /* 
             Sección 1. Funcionamiento de botones.
     */
