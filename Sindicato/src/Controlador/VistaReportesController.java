@@ -2,17 +2,16 @@ package Controlador;
 
 import ConexionAccess.ConexionAccess;
 import Modelo.Reportes;
-import eu.schudt.javafx.controls.calendar.DatePicker;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -170,15 +169,10 @@ public class VistaReportesController implements Initializable {
       }
         
         /* Sección DatePicker -- pruebas*/
-        void datePicker()
-        {
-            date  = new DatePicker();
-            date.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
-            date.getCalendarView().todayButtonTextProperty().set("Today");
-            date.getCalendarView().setShowWeeks(false);
-          //  date.getStylesheets().add("src\\images\\DatePicker.css");
-            // no sé que está pasando aquí D: 
-            DatePickerPanel.add(date, 0, 0);
-        }
+      void datePicker()
+      {
+           date = new DatePicker();
+           DatePickerPanel.add(date, 0, 0);
+      }
         
 } //class
