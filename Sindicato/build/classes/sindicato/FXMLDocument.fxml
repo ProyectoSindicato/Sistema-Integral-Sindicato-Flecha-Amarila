@@ -56,7 +56,7 @@
                 <URL value="@../images/style.css" />
               </stylesheets>
             </Button>
-            <Label alignment="CENTER" layoutX="-2.0" layoutY="119.0" prefWidth="157.0" styleClass="lblIconName" text="Label" />
+            <Label alignment="CENTER" layoutX="-2.0" layoutY="119.0" prefWidth="157.0" styleClass="lblIconName" text="Conductores" />
           </children>
         </Pane>
         <Pane layoutX="460.0" layoutY="158.0" prefHeight="144.0" prefWidth="157.0" styleClass="iconGNR">
