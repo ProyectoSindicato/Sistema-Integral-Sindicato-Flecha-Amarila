@@ -15,35 +15,61 @@
           <items>
             <ScrollPane prefHeight="200.0" prefWidth="200.0">
               <content>
-                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="336.0" prefWidth="1343.0" />
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="336.0" prefWidth="1343.0">
+                  <children>
+                    <Label layoutX="75.0" layoutY="44.0" text="Clave del conductor" textAlignment="RIGHT">
+                      <font>
+                        <Font name="Arial" size="14.0" fx:id="x1" />
+                      </font>
+                      <labelFor>
+                        <TextField fx:id="claveConductorTextField" layoutX="229.0" layoutY="39.0" prefWidth="200.0" />
+                      </labelFor>
+                    </Label>
+                    <fx:reference source="claveConductorTextField" />
+                    <Label font="$x1" layoutX="699.0" layoutY="44.0" text="Inicio" textAlignment="RIGHT" />
+                    <Label font="$x1" layoutX="690.0" layoutY="168.0" text="Termina" />
+                    <Label font="$x1" layoutX="75.0" layoutY="85.0" text="Motivo">
+                      <labelFor>
+                        <TextArea fx:id="motivoTextArea" layoutX="75.0" layoutY="110.0" prefHeight="116.0" prefWidth="535.0" wrapText="true" />
+                      </labelFor>
+                    </Label>
+                    <fx:reference source="motivoTextArea" />
+                    <Button fx:id="registrar" font="$x1" layoutX="996.0" layoutY="38.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Registrar" />
+                    <Button fx:id="actualizar" font="$x1" layoutX="991.0" layoutY="99.0" mnemonicParsing="false" text="Actualizar" />
+                    <GridPane id="DatePickerPanel" fx:id="datePickerPanel" layoutX="742.0" layoutY="39.0" prefHeight="22.0" prefWidth="200.0">
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
+                    <GridPane id="DatePickerPanel" fx:id="datePickerPanel2" layoutX="752.0" layoutY="163.0" prefHeight="22.0" prefWidth="200.0">
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
+                  </children>
+                </AnchorPane>
               </content>
             </ScrollPane>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="322.0" prefWidth="1343.0">
               <children>
-                <ScrollPane hmax="1.0" prefHeight="332.0" prefWidth="1059.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="298.0" AnchorPane.topAnchor="0.0">
-                  <content>
-                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="331.0" prefWidth="1058.0">
-                      <children>
-                        <TableView editable="true" prefHeight="331.0" prefWidth="1058.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <columns>
-                            <TableColumn editable="true" maxWidth="5000.0" minWidth="123.0" prefWidth="123.0" resizable="true" sortable="true" text="Clave del conductor" />
-                            <TableColumn editable="true" minWidth="200.0" prefWidth="250.0" text="Conductor" />
-                            <TableColumn minWidth="75.0" prefWidth="100.0" text="Inicia" />
-                            <TableColumn minWidth="75.0" prefWidth="100.0" text="Termina" />
-                            <TableColumn editable="true" minWidth="250.0" prefWidth="300.0" text="Motivo" />
-                            <TableColumn editable="true" maxWidth="5000.0" minWidth="200.0" prefWidth="218.0" text="Autorizó" />
-                            <TableColumn editable="true" prefWidth="75.0" text="Clave Director/Delegado" />
-                          </columns>
-                        </TableView>
-                      </children>
-                    </AnchorPane>
-                  </content>
-                </ScrollPane>
-                <Label text="Buscar" textAlignment="CENTER" AnchorPane.leftAnchor="1170.0" AnchorPane.rightAnchor="129.0" AnchorPane.topAnchor="5.0">
-                  <font>
-                    <Font name="Arial" size="14.0" fx:id="x1" />
-                  </font>
-                </Label>
+                <TableView editable="true" prefHeight="332.0" prefWidth="1030.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="327.0" AnchorPane.topAnchor="0.0">
+                  <columns>
+                    <TableColumn editable="true" maxWidth="5000.0" minWidth="123.0" prefWidth="123.0" resizable="true" sortable="true" text="Clave del conductor" />
+                    <TableColumn editable="true" minWidth="200.0" prefWidth="250.0" text="Conductor" />
+                    <TableColumn minWidth="75.0" prefWidth="100.0" text="Inicia" />
+                    <TableColumn minWidth="75.0" prefWidth="100.0" text="Termina" />
+                    <TableColumn editable="true" minWidth="250.0" prefWidth="300.0" text="Motivo" />
+                    <TableColumn editable="true" maxWidth="5000.0" minWidth="109.0" prefWidth="156.0" text="Autorizó" />
+                    <TableColumn editable="true" prefWidth="75.0" text="Clave Director/Delegado" />
+                  </columns>
+                </TableView>
+                <Label font="$x1" text="Buscar" textAlignment="CENTER" AnchorPane.leftAnchor="1170.0" AnchorPane.rightAnchor="129.0" AnchorPane.topAnchor="5.0" />
                 <Label font="$x1" layoutX="1129.0" layoutY="53.0" text="Por clave del conductor" textAlignment="CENTER">
                   <labelFor>
                     <Button id="search" fx:id="searchDriver" font="$x1" layoutX="1158.0" layoutY="126.0" mnemonicParsing="false" text="Buscar" />

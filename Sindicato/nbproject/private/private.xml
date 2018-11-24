@@ -3,18 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/sindicato/LoginController.java</file>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/sindicato/VistaReportes.fxml</file>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/controlador/ConductoresPruebaController.java</file>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/ConexionAccess/ConexionAccess.java</file>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/sindicato/VistaConductoresPrueba.fxml</file>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/sindicato/Principal.java</file>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/sindicato/FXMLDocument.fxml</file>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/sindicato/VistaLogin.fxml</file>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/images/style.css</file>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/sindicato/FXMLDocumentController.java</file>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/images/ConductoresStyle.css</file>
-            <file>file:/C:/Users/Personal/Documents/ITL/7to%20semestre/Gestion%20de%20proyectos%20de%20SW/Proyecto%20Final/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/controlador/VistaReportesController.java</file>
+            <file>file:/F:/Documentos/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/controladores/LoginController.java</file>
+            <file>file:/F:/Documentos/Sistema-Integral-Sindicato-Flecha-Amarila/Sindicato/src/controladores/IncapacidadesController.java</file>
         </group>
     </open-files>
 </project-private>
