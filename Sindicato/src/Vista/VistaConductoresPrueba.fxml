@@ -372,8 +372,17 @@
         </Pane>
         <TableView layoutX="13.0" layoutY="353.0" prefHeight="314.0" prefWidth="1332.0000999999975">
           <columns>
-            <TableColumn prefWidth="75.0" text="Column X" />
-            <TableColumn prefWidth="75.0" text="Column X" />
+            <TableColumn prefWidth="105.0" text="Apellido Paterno" />
+            <TableColumn prefWidth="105.0" text="Apellido Materno" />
+            <TableColumn prefWidth="130.0" text="Nombre(s)" />
+            <TableColumn prefWidth="130.0" text="No. tarjeta" />
+            <TableColumn prefWidth="130.0" text="Base" />
+            <TableColumn prefWidth="130.0" text="Servicio" />
+            <TableColumn prefWidth="130.0" text="Fecha de nacimiento" />
+            <TableColumn prefWidth="130.0" text="Lugar de nacimiento" />
+            <TableColumn prefWidth="90.0" text="Estado civil" />
+            <TableColumn prefWidth="100.0" text="Teléfono" />
+            <TableColumn prefWidth="190.0" text="Domicilio" />
           </columns>
         </TableView>
         <Pane layoutX="1226.0" layoutY="0.0" prefHeight="347.0" prefWidth="134.0" styleClass="panelButtons">
