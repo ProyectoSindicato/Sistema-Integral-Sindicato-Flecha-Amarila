@@ -15,39 +15,40 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class LoginController implements Initializable{
+public class LoginController implements Initializable {
+
     private ConexionAccess conexion;
     private Empleado employee;
-    private String user,password,idEmpleado;
+    private String user, password, idEmpleado;
     private boolean isThere = false;
     private LoginController loginController;
     private PreparedStatement sentencia;
     private ResultSet result;
-    
+
     @FXML
     private Button login;
     @FXML
-     private TextField userTextField;
+    private TextField userTextField;
     @FXML
-     private TextField passwordTextField;
+    private TextField passwordTextField;
     @FXML
     private void handleButtonAction(ActionEvent event) {
         conexion = new ConexionAccess();
         // Verificamos la conexion a la base de datos
-        if(conexion.conectar()){
+        if (conexion.conectar()) {
             // Si se preciona el boton login y todos los campos fueron llenados
-            if(event.getSource() == login 
-                    && (!userTextField.getText().equals("") && !passwordTextField.getText().equals(""))){
+            if (event.getSource() == login
+                    && (!userTextField.getText().equals("") && !passwordTextField.getText().equals(""))) {
                 // Se buscan los datos ingresados
                 try {
-                    sentencia =  conexion.getConexion().prepareStatement("select "
+                    sentencia = conexion.getConexion().prepareStatement("select "
                             + "Usuario,Contraseña,IdEmpleado "
                             + "from Login "
                             + "where Usuario=? and Contraseña=?");
                     sentencia.setString(1, userTextField.getText());
                     sentencia.setString(2, passwordTextField.getText());
                     result = sentencia.executeQuery();
-                    while(result.next()){
+                    while (result.next()) {
                         /*Access no distingue entre mayusculas y minisculas
                         por lo que la contraseña "HOLA" es gual a "hola"
                         y el usuario "ALBERTO96" es igual a "alberto96"
@@ -59,70 +60,71 @@ public class LoginController implements Initializable{
                         password = result.getString(2);
                         idEmpleado = result.getString(3);
                         // Se usuario y contraseña concuerda con uno de los resultados...
-                        if((user.equals(userTextField.getText()))&& (password.equals(passwordTextField.getText()))){
+                        if ((user.equals(userTextField.getText())) && (password.equals(passwordTextField.getText()))) {
                             isThere = true;
                             break;
                         }
                     }
-                    if(isThere){
+                    if (isThere) {
                         /* Aqui se construye la vista segun el tipo de
                         empleado logeado*/
                         switch (getKindEmployee()) {
                             // Si es delegado...
                             case 0:
-                                
+
                                 break;
                             // Si es director general
                             case 1:
-                                
+
                                 break;
                             // Si es director de finanzas
                             case 2:
-                                
+
                                 break;
                             // Si es director de organizacion
                             case 3:
-                                
+
                                 break;
                             // Si es director de seguridad y prevencion
                             case 4:
-                                
+
                                 break;
                             // Si es director de trabajo
                             case 5:
-                                
+
                                 break;
                             // Si es director de actas y acuerdos
                             case 6:
-                                
+
                                 break;
                             // Si es asistente1 (aquellas que hace descuentos
                             case 7:
-                                
+
                                 break;
                             // Si es asistente2 (aquella que da altas)
                             case 8:
-                                
+
                                 break;
                             // Lo que se hace si no se reconocio como empleado
                             default:
                                 System.out.println("Usuario no identificado");
                                 break;
                         }
-                    }else{
+                    } else {
                         System.out.println("Usuario o contraseña incorrecto");
                     }
                 } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                 }
-            }else{
+            } else {
                 System.out.println("Por favor llena todos los campos");
             }
-        }else{
+        } else {
             System.out.println("Imposible conectar a la base de datos");
         }
     }
-    public int getKindEmployee(){
+
+    public int getKindEmployee() {
         try {
             sentencia = conexion.getConexion().prepareStatement("select "
                     + "IdEmpleado "
@@ -130,20 +132,20 @@ public class LoginController implements Initializable{
                     + "where IdEmpleado=?");
             sentencia.setString(1, idEmpleado);
             result = sentencia.executeQuery();
-            if(result.next()){
-                employee = new Empleado(0,idEmpleado);
-		return 0;
-            }else{
+            if (result.next()) {
+                employee = new Empleado(0, idEmpleado);
+                return 0;
+            } else {
                 sentencia = conexion.getConexion().prepareStatement("select "
-                    + "Tipo "
-                    + "from Director "
-                    + "where IdEmpleado=?");
+                        + "Tipo "
+                        + "from Director "
+                        + "where IdEmpleado=?");
                 sentencia.setString(1, idEmpleado);
                 result = sentencia.executeQuery();
-                if(result.next()){
-                    employee = new Empleado(result.getInt(1),idEmpleado);
+                if (result.next()) {
+                    employee = new Empleado(result.getInt(1), idEmpleado);
                     return result.getInt(1);
-                }else{
+                } else {
                     System.out.println("Usuario no definido");
                 }
             }

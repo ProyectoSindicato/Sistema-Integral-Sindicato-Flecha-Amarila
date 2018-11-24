@@ -43,6 +43,7 @@ public class VistaReportesController implements Initializable {
     @FXML private TableColumn<Reportes, Integer> colConductor;
     @FXML ComboBox<String> comboBox = new ComboBox<String>();
     
+    
     //pruebas con el datepicker.
     @FXML private GridPane DatePickerPanel;
     private DatePicker date;
@@ -63,7 +64,7 @@ public class VistaReportesController implements Initializable {
     
     void cargarElementos()
     {
-     comboBox.getItems().addAll(boxOpciones);
+    comboBox.getItems().addAll(boxOpciones);
     DatePickerPanel.add(date, 0, 0);     
     date.setValue(LocalDate.now());
     }
