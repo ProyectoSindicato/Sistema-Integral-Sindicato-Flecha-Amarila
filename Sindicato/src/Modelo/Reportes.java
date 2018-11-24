@@ -52,8 +52,6 @@ public class Reportes {
         this.Descripcion = desc;
     }
     
-    
-    
     public int getId() {
         return Id;
     }

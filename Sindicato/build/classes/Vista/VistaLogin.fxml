@@ -31,7 +31,7 @@
         <URL value="@../images/style.css" />
       </stylesheets>
     </Button>
-    <Pane prefHeight="50.0" prefWidth="50.0" AnchorPane.bottomAnchor="260.0" AnchorPane.leftAnchor="135.0" AnchorPane.rightAnchor="135.0" AnchorPane.topAnchor="140.0">
+    <Pane fx:id="paneImg" prefHeight="89.0" prefWidth="106.0" styleClass="iconLogo_login" AnchorPane.bottomAnchor="282.0" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="107.0" AnchorPane.topAnchor="79.0">
       <stylesheets>
         <URL value="@../images/style.css" />
       </stylesheets>

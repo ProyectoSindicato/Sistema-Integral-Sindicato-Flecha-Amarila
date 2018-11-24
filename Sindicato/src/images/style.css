@@ -11,13 +11,19 @@
 
 .bodyPanelCentro{ 
     -fx-background-color: darkslategrey;
-    -fx-background-image: url("SindicatoBGv2.png");
+    -fx-background-image: url("bgd_login.png");
     /*-fx-background-color: snow;*/
     -fx-background-size: 100% 100%;
 }
 /*
 */.iconLogo {
     -fx-background-image: url("UNICO_SINDICATO.png");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}/*
+
+*/.iconLogo_login {
+    -fx-background-image: url("logo.png");
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
 }/*
