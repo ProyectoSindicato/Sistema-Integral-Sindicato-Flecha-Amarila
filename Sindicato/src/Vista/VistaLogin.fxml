@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="320.0" styleClass="bodyPanelCentro" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controladores.LoginController">
+  <children>
+    <TextField fx:id="userTextField" prefHeight="46.0" prefWidth="200.0" promptText="Usuario" styleClass="txt" text="" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0">
+      <stylesheets>
+        <URL value="@../images/style.css" />
+      </stylesheets>
+    </TextField>
+    <Label alignment="CENTER" contentDisplay="LEFT" prefHeight="27.0" prefWidth="200.0" text="Usuario" textFill="WHITE" AnchorPane.bottomAnchor="225.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0">
+      <font>
+        <Font size="18.0" fx:id="x1" />
+      </font>
+    </Label>
+    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="27.0" prefWidth="200.0" text="Contraseña" textFill="WHITE" AnchorPane.bottomAnchor="137.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" />
+    <PasswordField fx:id="passwordTextField" prefWidth="200.0" promptText="Contraseña" styleClass="pwd, txt" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0">
+      <stylesheets>
+        <URL value="@../images/style.css" />
+      </stylesheets>
+    </PasswordField>
+    <Button id="btnIniciar" fx:id="login" mnemonicParsing="false" onAction="#handleButtonAction" styleClass="btn" text="Iniciar sesión" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="113.0" AnchorPane.rightAnchor="113.0" AnchorPane.topAnchor="380.0">
+      <stylesheets>
+        <URL value="@../images/style.css" />
+      </stylesheets>
+    </Button>
+    <Pane prefHeight="50.0" prefWidth="50.0" AnchorPane.bottomAnchor="260.0" AnchorPane.leftAnchor="135.0" AnchorPane.rightAnchor="135.0" AnchorPane.topAnchor="140.0">
+      <stylesheets>
+        <URL value="@../images/style.css" />
+      </stylesheets>
+    </Pane>
+  </children>
+  <stylesheets>
+    <URL value="@../images/style.css" />
+  </stylesheets>
+</AnchorPane>

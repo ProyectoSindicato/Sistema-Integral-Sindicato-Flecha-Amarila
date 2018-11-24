@@ -16,7 +16,7 @@ public class ConexionAccess {
     
     /* ****NO SE LES OLVIDE CAMBIAR LA LOCALIZACION DE LA BASE DE DATOS ;)  */
     
-    private final String location = "C:\\Users\\Personal\\Documents\\ITL\\7to semestre\\Gestion de proyectos de SW\\Proyecto Final\\Sistema-Integral-Sindicato-Flecha-Amarila\\Base de datos\\Sindicato.accdb";
+    private final String location = "F:\\Documentos\\Sistema-Integral-Sindicato-Flecha-Amarila\\Base de datos\\copia-de-seguridad\\Sindicato.accdb";
     private Connection conn = null;
 
     
@@ -35,7 +35,7 @@ public class ConexionAccess {
             System.out.println(e.getMessage());
             return false;
         } catch (SQLException ex) {
-            Logger.getLogger(ConexionAccess.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
             return false;
         }
         return false;

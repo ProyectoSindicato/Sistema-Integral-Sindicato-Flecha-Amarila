@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane prefHeight="695.0" prefWidth="1360.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Controlador.VistaReportesController">
+<ScrollPane prefHeight="695.0" prefWidth="1360.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controlador.VistaReportesController">
   <content>
     <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="695.0" prefWidth="1360.0">
       <children>

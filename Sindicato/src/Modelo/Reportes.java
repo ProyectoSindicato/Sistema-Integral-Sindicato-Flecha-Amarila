@@ -43,6 +43,17 @@ public class Reportes {
         this.conexion = conexion;
     }
     
+    public Reportes(int id, int conductor, String tipo, String fecha, String desc)
+    {
+        this.Id = id;
+        this.IdConductor = conductor;
+        this.Tipo = tipo;
+        this.Fecha = fecha;
+        this.Descripcion = desc;
+    }
+    
+    
+    
     public int getId() {
         return Id;
     }
@@ -161,7 +172,7 @@ public class Reportes {
      }
     }
     
-    public boolean eliminarReporte()
+    public boolean eliminarReporte(int id)
     {
        String sql= "DELETE FROM Reportes WHERE Id=?";
        conexion = new ConexionAccess();
