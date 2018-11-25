@@ -31,7 +31,7 @@ public class Reportes {
         
     }
 
-    public Reportes(int Id, int IdConductor, int IdDirector, int IdDelegado, String Tipo, String Lugar, String Fecha, String Descripcion, ConexionAccess conexion) {
+    public Reportes(int Id, int IdConductor, int IdDirector, int IdDelegado, String Tipo, String Lugar, String Fecha, String Descripcion) {
         this.Id = Id;
         this.IdConductor = IdConductor;
         this.IdDirector = IdDirector;
@@ -40,7 +40,6 @@ public class Reportes {
         this.Lugar = Lugar;
         this.Fecha = Fecha;
         this.Descripcion = Descripcion;
-        this.conexion = conexion;
     }
     
     public Reportes(int id, int conductor, String tipo, String fecha, String desc)
@@ -116,10 +115,12 @@ public class Reportes {
         this.Descripcion = Descripcion;
     }
 
-    public boolean insertarReporte()
+    public boolean insertarReporte(int id)
     {
+        this.IdDirector = id;
         String sql = "INSERT INTO Reportes(Id,IdConductor,IdDirector,IdDelegado,Tipo,Lugar,Fecha,Descripcion)"+
                      "VALUES(?,?,?,?,?,?,?)";
+        String a = null;
         conexion = new ConexionAccess();
         conexion.conectar();
         try

@@ -5,6 +5,7 @@
  */
 package controladores;
 
+import ConexionAccess.ConexionAccess;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import Modelo.Conductor;
 import java.time.LocalDate;
+import javafx.event.ActionEvent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -21,9 +23,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 
 public class ConductoresController implements Initializable {
-
+    
+    private final ConexionAccess conexionBD;
+    TextField[] txtCAMPOS;
+    
     @FXML
-    private TextField txtApellidoPaterno, txtApellidoMaterno, txtNombres;
+    private TextField txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
+                      txtLugarNacimiento, txtTelefono, txtCalle, txtColonia,
+                      txtCP, txtEstudios, txtNoIMSS, txtAfore, txtCURP,
+                      txtRFC, txtClaveElector, txtNoTarjeta, txtBase, txtServicio;
     
     private ToggleGroup tggGrupoEstadoCivil;
     
@@ -45,20 +53,29 @@ public class ConductoresController implements Initializable {
     @FXML
     private TableColumn<Conductor, String> tbcApellidoPaterno, tbcApellidoMaterno, tbcNombres;
     
+    public ConductoresController() {
+        conexionBD = new ConexionAccess();
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tggGrupoEstadoCivil = new ToggleGroup();
         rbtSoltero.setToggleGroup(tggGrupoEstadoCivil);
         rbtCasado.setToggleGroup(tggGrupoEstadoCivil);
         
+        txtCAMPOS = new TextField[]{txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
+                                    txtLugarNacimiento, txtTelefono, txtCalle, txtColonia,
+                                    txtCP, txtEstudios, txtNoIMSS, txtAfore, txtCURP,
+                                    txtRFC, txtClaveElector, txtNoTarjeta, txtBase, txtServicio};
+        
         dpFechaNacimiento = new DatePicker();
-        dpFechaNacimiento.setValue(LocalDate.now());
+        //dpFechaNacimiento.setValue(LocalDate.now());
         gridPaneDatosGenerales.add(dpFechaNacimiento, 1, 4);     
         
         dpFechaIngreso = new DatePicker();
         dpFechaSindicato = new DatePicker();
-        dpFechaIngreso.setValue(LocalDate.now());
-        dpFechaSindicato.setValue(LocalDate.now());
+        //dpFechaIngreso.setValue(LocalDate.now());
+        //dpFechaSindicato.setValue(LocalDate.now());
         gridPaneSindicato.add(dpFechaIngreso, 1, 1);     
         gridPaneSindicato.add(dpFechaSindicato, 1, 2);
 
@@ -2583,6 +2600,10 @@ public class ConductoresController implements Initializable {
                                             "Zacatecas");
                 break;
         }
+    }
+    
+    public void agregarConductor(ActionEvent e) {
+        System.out.println("Agregar conductor");
     }
     
 }

@@ -71,7 +71,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <TextField fx:id="txtLugarNacimiento" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="5">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -100,7 +100,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                <TextField fx:id="txtTelefono" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="7">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -135,7 +135,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <TextField fx:id="txtCalle" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="1">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -145,7 +145,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <TextField fx:id="txtColonia" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="2">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -155,7 +155,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <TextField fx:id="txtCP" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="3">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -227,7 +227,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                <TextField fx:id="txtEstudios" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="4">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -237,7 +237,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <TextField fx:id="txtNoIMSS" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="5">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -247,7 +247,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                <TextField fx:id="txtAfore" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="6">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -257,7 +257,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="102.9998779296875" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                <TextField fx:id="txtCURP" prefWidth="102.9998779296875" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="7">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -267,7 +267,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="102.9998779296875" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                <TextField fx:id="txtRFC" prefWidth="102.9998779296875" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="8">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -277,7 +277,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="102.9998779296875" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                <TextField fx:id="txtClaveElector" prefWidth="102.9998779296875" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="9">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -319,7 +319,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <TextField fx:id="txtNoTarjeta" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="1">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -329,7 +329,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <TextField fx:id="txtBase" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="2">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -339,7 +339,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <TextField fx:id="txtServicio" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="3">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -381,7 +381,7 @@
         </TableView>
         <Pane layoutX="1226.0" layoutY="0.0" prefHeight="347.0" prefWidth="134.0" styleClass="panelButtons">
           <children>
-            <Button layoutX="24.0" layoutY="14.0" mnemonicParsing="false" prefHeight="67.9609375" prefWidth="86.0" styleClass="btnAdd, null" text="">
+            <Button layoutX="24.0" layoutY="14.0" mnemonicParsing="false" onAction="#agregarConductor" prefHeight="67.9609375" prefWidth="86.0" styleClass="btnAdd, null" text="">
               <stylesheets>
                 <URL value="@../images/ConductoresStyle.css" />
               </stylesheets>

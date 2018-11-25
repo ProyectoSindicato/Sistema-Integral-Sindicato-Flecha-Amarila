@@ -38,6 +38,11 @@
     -fx-scale-y: 1.05;
 }
 
+.btnAdd:pressed {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
 .btnDelete {
     -fx-background-image: url("delete.png");
     -fx-background-color: rgba(0,0,0,0);
@@ -49,6 +54,11 @@
     -fx-background-image: url("delete2.png");
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
+}
+
+.btnDelete:pressed {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
 }
 
 .btnModify {
@@ -64,6 +74,11 @@
     -fx-scale-y: 1.05;
 }
 
+.btnModify:pressed {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
 .btnSearch {
     -fx-background-image: url("search.png");
     -fx-background-color: rgba(0,0,0,0);
@@ -75,6 +90,11 @@
     -fx-background-image: url("search2.png");
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
+}
+
+.btnSearch:pressed {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
 }
 
 .panelButtons {

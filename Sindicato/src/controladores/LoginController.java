@@ -2,6 +2,7 @@ package controladores;
 
 import ConexionAccess.ConexionAccess;
 import Empleado.Empleado;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,9 +12,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class LoginController implements Initializable {
 
@@ -24,13 +30,15 @@ public class LoginController implements Initializable {
     private LoginController loginController;
     private PreparedStatement sentencia;
     private ResultSet result;
-
+    private Parent root;
     @FXML
     private Button login;
     @FXML
     private TextField userTextField;
     @FXML
     private TextField passwordTextField;
+    FXMLDocumentController controller;
+    
     @FXML
     private void handleButtonAction(ActionEvent event) {
         conexion = new ConexionAccess();
@@ -71,19 +79,27 @@ public class LoginController implements Initializable {
                         switch (getKindEmployee()) {
                             // Si es delegado...
                             case 0:
-
+                                System.out.println("Eres un delegado.");
                                 break;
                             // Si es director general
                             case 1:
-
+                                System.out.println("Eres Director General.");
                                 break;
                             // Si es director de finanzas
                             case 2:
-
+                                try {
+                                    root = FXMLLoader.load(getClass().getResource("/Vista/VistaReportes.fxml"));
+                                    Scene mainRoot = new Scene(root);
+                                    Stage window =(Stage) ((Node)event.getSource()).getScene().getWindow();
+                                    window.setScene(mainRoot);
+                                    window.show();
+                                } catch (IOException ex) {
+                                   ex.printStackTrace();
+                                }
                                 break;
                             // Si es director de organizacion
                             case 3:
-
+                                System.out.println("Eres Director de Organización.");
                                 break;
                             // Si es director de seguridad y prevencion
                             case 4:
@@ -154,8 +170,9 @@ public class LoginController implements Initializable {
         }
         return -1;
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-      
+
     }
 }
