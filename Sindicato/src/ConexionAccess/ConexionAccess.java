@@ -16,7 +16,7 @@ public class ConexionAccess {
     
     /* ****NO SE LES OLVIDE CAMBIAR LA LOCALIZACION DE LA BASE DE DATOS ;)  */
     
-    private final String location = "F:\\Documentos\\Sistema-Integral-Sindicato-Flecha-Amarila\\Base de datos\\copia-de-seguridad\\Sindicato.accdb";
+    private final String location = "C:\\Users\\Aideé Alvarez\\Documents\\Sindicato.accdb";
     private Connection conn = null;
 
     

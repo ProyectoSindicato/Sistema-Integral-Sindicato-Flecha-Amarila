@@ -117,6 +117,7 @@ public class Reportes {
 
     public boolean insertarReporte(int id)
     {
+        this.IdDirector = id;
         String sql = "INSERT INTO Reportes(Id,IdConductor,IdDirector,IdDelegado,Tipo,Lugar,Fecha,Descripcion)"+
                      "VALUES(?,?,?,?,?,?,?)";
         String a = null;
@@ -127,7 +128,7 @@ public class Reportes {
            try(PreparedStatement ps = conexion.getConexion().prepareStatement(sql))
            {
                ps.setInt(1, IdConductor);
-               ps.setInt(2, id);
+               ps.setInt(2, IdDirector);
                ps.setInt(3, IdDelegado);
                ps.setString(4, Tipo);
                ps.setString(5, Lugar);
