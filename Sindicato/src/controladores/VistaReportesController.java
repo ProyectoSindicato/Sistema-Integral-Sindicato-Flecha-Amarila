@@ -6,7 +6,9 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,7 +77,7 @@ public class VistaReportesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.idUsuario = ""; //prueba.
         cargarElementos();
-    //    LlenarTablaBD();
+        llenarTablaBD();
     }    
     
     /* 
@@ -85,7 +87,7 @@ public class VistaReportesController implements Initializable {
     public void agregarReporte(ActionEvent e)
     {
         int confirmar;
-        String idRep = txtReporte.getText();
+      //  String idRep = txtReporte.getText();
         String idUsr = txtUsuario.getText();
         String idUsr2 = "0";
         String idCond = txtConductor.getText();
@@ -106,14 +108,15 @@ public class VistaReportesController implements Initializable {
                 {
                     Reportes bean = new Reportes();
                     bean.setIdConductor(Integer.parseInt(idCond));
-                    bean.setIdDirector(Integer.parseInt(idUsr2));
-                    bean.setIdDelegado(Integer.parseInt(idUsr));
+                    bean.setIdDirector(Integer.parseInt(idUsr));
+                    bean.setIdDelegado(0);
                     bean.setTipo(combo);
                     bean.setLugar(lugar);
                     bean.setFecha(fecha);
                     bean.setDescripcion(desc);
                     
-                    if(bean.insertarReporte() == true)
+                    int i = Integer.parseInt(idUsr);
+                    if(bean.insertarReporte(i) == true)
                     {
                         ActualizaRefresca();
                         JOptionPane.showMessageDialog(null, "Se ha agregado el reporte.");
@@ -239,10 +242,10 @@ public class VistaReportesController implements Initializable {
         Sección 2. Manipulación de tableview y tablecolumn.
     */
     
-    public void LlenarTablaBD() //Llena la tabla principal.
+    public void llenarTablaBD() //Llena la tabla principal.
     {   
          ResultSet rs;
-        String sql = "SELECT Id, IdConductor,Tipo,Fecha,Descripcion FROM Reportes";
+        String sql = "SELECT * FROM Reportes";
           
         try{
             conexionBD.conectar();
@@ -264,12 +267,19 @@ public class VistaReportesController implements Initializable {
                 }
                 int id = (int) fila[0];
                 int idCond = (int) fila[1];
-                String tipo = (String) fila[2];
-                String fecha = (String) fila[3];
-                String desc = (String) fila[4];
-               Reportes r = new Reportes(id, idCond,tipo,fecha,desc);
+                int idDir = (int) fila[2];
+                int idDel = (int) fila[3];
+                System.out.println(id+" "+idCond+" "+idDir);
+                String tipo = (String) fila[4]; 
+                String lugar = (String) fila[5];
+                // fila[3] es la fecha.
+                Date fechaBD = new Date(((Timestamp)fila[6]).getTime());
+                String fecha = String.valueOf(fechaBD);
+                String desc = (String) fila[7];
+                
+               Reportes rep = new Reportes(id,idCond,idDir,idDel,tipo,lugar,fecha,desc);
                colocarDatosColumna();
-               tablaReporte.getItems().add(r);
+               tablaReporte.getItems().add(rep);
             }
         }catch(SQLException e){
             System.out.println("Error al rellenar la tabla." + e.getMessage());
@@ -288,7 +298,7 @@ public class VistaReportesController implements Initializable {
     void ActualizaRefresca()
     {
         LimpiarTabla();
-        LlenarTablaBD();
+        llenarTablaBD();
         LimpiarCampos();
     }
     
@@ -330,4 +340,4 @@ public class VistaReportesController implements Initializable {
                   txtDescripcion.setText(descripcion);
           }
       }
-}
+}}
