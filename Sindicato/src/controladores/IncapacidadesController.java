@@ -92,7 +92,12 @@ public class IncapacidadesController implements Initializable {
                 statement.setDate(3, Date.valueOf(date.getValue()));
                 statement.setDate(4,Date.valueOf(date2.getValue()));
                 statement.setString(5, motivoTextArea.getText());
-                statement.executeUpdate();
+                if(statement.executeUpdate() != 0){
+                    incapacidadesTabla.getItems().clear();
+                    fillTable();
+                }else{
+                    System.out.println("no pude :C");
+                }
             }
         } catch (SQLException ex) {
             System.out.println("Aqui trono"+ex.getMessage());
@@ -129,6 +134,7 @@ public class IncapacidadesController implements Initializable {
                     + "From Incapacidades");
             result = statement.executeQuery();
             while(result.next()){
+                incapacidades= new Incapacidades();
                 incapacidades.setClaveConductor(result.getString(1));
                 incapacidades.setNombreConductor(employeeName(result.getString(1)));
                 incapacidades.setFechaInicio(result.getDate(3).toString());
@@ -175,7 +181,6 @@ public class IncapacidadesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         datePicker();
         alert = new Alert(AlertType.ERROR);
-        incapacidades= new Incapacidades();
     }    
     
 }
