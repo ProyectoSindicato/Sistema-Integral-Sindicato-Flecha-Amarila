@@ -89,6 +89,7 @@ public class LoginController implements Initializable {
                                 s.setScene(new Scene(p));
                                 s.setMaximized(true);
                                 s.show();
+                                document.fillTable();
                                 break;
                             // Si es director general
                             case 1:

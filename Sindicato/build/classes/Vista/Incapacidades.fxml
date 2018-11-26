@@ -40,7 +40,7 @@
                       </font>
                     </Button>
                     <Button fx:id="modificar" font="$x1" layoutX="1022.0" layoutY="102.0" minWidth="100.0" mnemonicParsing="false" text="Modificar" />
-                    <GridPane fx:id="fechaInicio" layoutX="763.0" layoutY="38.0" prefHeight="22.0" prefWidth="200.0">
+                    <GridPane id="fechaInicio" fx:id="fechaInicioDate" layoutX="763.0" layoutY="38.0" prefHeight="22.0" prefWidth="200.0">
                       <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       </columnConstraints>
@@ -48,7 +48,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                     </GridPane>
-                    <GridPane fx:id="fechaFin" layoutX="763.0" layoutY="163.0" prefHeight="22.0" prefWidth="200.0">
+                    <GridPane id="fechaFin" fx:id="fechaFinDate" layoutX="763.0" layoutY="163.0" prefHeight="22.0" prefWidth="200.0">
                       <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       </columnConstraints>
@@ -63,15 +63,15 @@
             </ScrollPane>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="332.0" prefWidth="1343.0" style="-fx-background-color: gray">
               <children>
-                <TableView editable="true" prefHeight="332.0" prefWidth="1030.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="327.0" AnchorPane.topAnchor="0.0">
+                <TableView fx:id="incapacidadesTabla" editable="true" prefHeight="332.0" prefWidth="1030.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="327.0" AnchorPane.topAnchor="0.0">
                   <columns>
-                    <TableColumn editable="true" maxWidth="5000.0" minWidth="123.0" prefWidth="123.0" resizable="true" sortable="true" text="Clave del conductor" />
-                    <TableColumn editable="true" minWidth="200.0" prefWidth="250.0" text="Conductor" />
-                    <TableColumn minWidth="75.0" prefWidth="100.0" text="Inicia" />
-                    <TableColumn minWidth="75.0" prefWidth="100.0" text="Termina" />
-                    <TableColumn editable="true" minWidth="250.0" prefWidth="300.0" text="Motivo" />
-                    <TableColumn editable="true" maxWidth="5000.0" minWidth="109.0" prefWidth="156.0" text="Autorizó" />
-                    <TableColumn editable="true" prefWidth="75.0" text="Clave Director/Delegado" />
+                    <TableColumn editable="true" maxWidth="5000.0" minWidth="123.0" prefWidth="123.0" resizable="true" sortable="true" text="Clave del conductor" fx:id="claveConductor" />
+                    <TableColumn editable="true" minWidth="200.0" prefWidth="250.0" text="Conductor" fx:id="nombreConductor" />
+                    <TableColumn minWidth="75.0" prefWidth="100.0" text="Inicia" fx:id="fechaInicio" />
+                    <TableColumn minWidth="75.0" prefWidth="100.0" text="Termina" fx:id="fechaFin" />
+                    <TableColumn editable="true" minWidth="250.0" prefWidth="300.0" text="Motivo" fx:id="motivo" />
+                    <TableColumn editable="true" minWidth="75.0" prefWidth="150.0" text="Clave Director/Delegado" fx:id="idEmpleado" />
+                    <TableColumn editable="true" maxWidth="5000.0" minWidth="109.0" prefWidth="156.0" text="Autorizó" fx:id="nombreJefe" />
                   </columns>
                 </TableView>
                 <Label font="$x2" text="Buscar" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="1170.0" AnchorPane.rightAnchor="129.0" AnchorPane.topAnchor="5.0" />
