@@ -60,20 +60,15 @@ public class IncapacidadesController implements Initializable {
         try {
             // Si el que realiza la insercion es un director de finanzas
             statement = conexion.getConexion().prepareStatement("insert "
-                    + "into Incapacidad"
+                    + "into Incapacidades"
                     + "(IdConductor,IdEmpleado,FechaInicio,FechaFin,Motivo)"
                     + " values(?,?,?,?,?)");
-            statement.setInt(1,Integer.parseInt(claveConductorTextField.getText()));
-            statement.setInt(2,Integer.parseInt(employee.getIdEmpleado()));
+            statement.setString(1,claveConductorTextField.getText());
+            statement.setString(2,employee.getIdEmpleado());
             statement.setDate(3, Date.valueOf(date.getValue()));
             statement.setDate(4,Date.valueOf(date2.getValue()));
             statement.setString(5, motivoTextArea.getText());
-            //statement.executeQuery();
-            if(statement.execute()){
-                System.out.println("Done!");
-            }else {
-                System.out.println("algo salio mal :C");
-            }
+            statement.executeUpdate();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }

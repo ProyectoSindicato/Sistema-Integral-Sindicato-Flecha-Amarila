@@ -79,7 +79,16 @@ public class LoginController implements Initializable {
                         switch (getKindEmployee()) {
                             // Si es delegado...
                             case 0:
-                                System.out.println("Eres un delegado.");
+                                FXMLLoader loader = new FXMLLoader();
+                                loader.setLocation(getClass().getResource("/Vista/Incapacidades.fxml"));
+                                loader.load();
+                                IncapacidadesController document = loader.getController();
+                                document.setParameters(new Empleado(0,idEmpleado),conexion);
+                                Parent p = loader.getRoot();
+                                Stage s = new Stage();
+                                s.setScene(new Scene(p));
+                                s.setMaximized(true);
+                                s.show();
                                 break;
                             // Si es director general
                             case 1:
@@ -131,6 +140,8 @@ public class LoginController implements Initializable {
                     }
                 } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
                 }
             } else {
                 System.out.println("Por favor llena todos los campos");
@@ -143,9 +154,9 @@ public class LoginController implements Initializable {
     public int getKindEmployee() {
         try {
             sentencia = conexion.getConexion().prepareStatement("select "
-                    + "IdEmpleado "
+                    + "Id "
                     + "from Delegado "
-                    + "where IdEmpleado=?");
+                    + "where Id=?");
             sentencia.setString(1, idEmpleado);
             result = sentencia.executeQuery();
             if (result.next()) {
@@ -155,7 +166,7 @@ public class LoginController implements Initializable {
                 sentencia = conexion.getConexion().prepareStatement("select "
                         + "Tipo "
                         + "from Director "
-                        + "where IdEmpleado=?");
+                        + "where Id=?");
                 sentencia.setString(1, idEmpleado);
                 result = sentencia.executeQuery();
                 if (result.next()) {
