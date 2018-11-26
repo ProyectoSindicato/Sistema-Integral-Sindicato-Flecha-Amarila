@@ -2,13 +2,12 @@ package controladores;
 
 import ConexionAccess.ConexionAccess;
 import Modelo.Reportes;
+import java.awt.HeadlessException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,22 +21,25 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
  *
- * @author Aideé.
+ * @author Aideé Alvarez.
  */
 public class VistaReportesController implements Initializable {
 
     ResultSetMetaData metadata = null;
     private final ConexionAccess conexionBD;
-    private TextField txtReporte;
-
     @FXML
-    private TextField txtUsuario, txtConductor, txtLugar;
+    private TextField txtReporte;
+    @FXML
+    private TextField txtUsuario, txtConductor;
+    @FXML
+    private TextField txtLugar;
     @FXML
     private TextArea txtDescripcion;
     @FXML
@@ -49,6 +51,8 @@ public class VistaReportesController implements Initializable {
     @FXML
     private TableColumn<Reportes, String> colDate;
     @FXML
+    private TableColumn<Reportes, String> colLugar;
+    @FXML
     private TableColumn<Reportes, Integer> colID;
     @FXML
     private TableColumn<Reportes, Integer> colConductor;
@@ -58,7 +62,7 @@ public class VistaReportesController implements Initializable {
     //pruebas con el datepicker.
     @FXML
     private GridPane DatePickerPanel;
-    private DatePicker date;
+    private final DatePicker date;
 
     private String idUsuario; // Usuario que insertará o modificará.
 
@@ -71,12 +75,13 @@ public class VistaReportesController implements Initializable {
     public VistaReportesController() {
         conexionBD = new ConexionAccess();
         date = new DatePicker();
+        
     }
 
     void cargarElementos() {
         comboBox.getItems().addAll(boxOpciones);
         DatePickerPanel.add(date, 0, 0);
-        date.setValue(LocalDate.now());
+      
     }
 
     /* SECCION FXMLLoader */
@@ -84,8 +89,7 @@ public class VistaReportesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.idUsuario = ""; //prueba.
         cargarElementos();
-       // llenarTablaBD();
-
+        llenarTablaBD();
     }
 
     /* 
@@ -96,15 +100,15 @@ public class VistaReportesController implements Initializable {
         int confirmar;
         //  String idRep = txtReporte.getText();
         String idUsr = txtUsuario.getText();
-        String idUsr2 = "0";
+        String idUsr2 = "";
         String idCond = txtConductor.getText();
         String lugar = txtLugar.getText();
-        String fecha = String.valueOf(date.getValue());
+        LocalDate value = date.getValue();
         String combo = comboBox.getSelectionModel().getSelectedItem();
         String desc = txtDescripcion.getText();
-
-        if (!(idCond.equals("")) && !(lugar.equals("")) && !(fecha.equals(""))
-                && !(combo.equals("")) && !(desc.equals(""))) {
+        
+        if ((!(desc.equals(""))) && (combo != null)
+                && (!(idCond.equals(""))) && (!(lugar.equals(""))) && (value != null)) {
             confirmar = JOptionPane.showConfirmDialog(null, "¿Desea ingresar un reporte?", "Confirmar agregar reporte.",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
@@ -113,13 +117,12 @@ public class VistaReportesController implements Initializable {
                     Reportes bean = new Reportes();
                     bean.setIdConductor(Integer.parseInt(idCond));
                     bean.setIdDirector(Integer.parseInt(idUsr));
-                    bean.setIdDelegado(0);
+                  //  bean.setIdDelegado(Integer.parseInt(idUsr2));
                     bean.setTipo(combo);
                     bean.setLugar(lugar);
-                    bean.setFecha(fecha);
-                    bean.setDescripcion(desc);
-
-                    int i = Integer.parseInt(idUsr);
+                    bean.setFecha(String.valueOf(value));
+                   bean.setDescripcion(desc);
+                    int i = Integer.parseInt( txtUsuario.getText());
                     if (bean.insertarReporte(i) == true) {
                         ActualizaRefresca();
                         JOptionPane.showMessageDialog(null, "Se ha agregado el reporte.");
@@ -127,8 +130,9 @@ public class VistaReportesController implements Initializable {
                         JOptionPane.showMessageDialog(null, "Error al agregar un reporte.");
                     }
 
-                } catch (Exception ex) {
+                } catch (HeadlessException | NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Error al ingresar. Checar datos.");
+                    System.out.println("Aquí está el error: " +ex.getLocalizedMessage());
                 }
             }
         } else {
@@ -146,12 +150,13 @@ public class VistaReportesController implements Initializable {
         String idConductor = txtConductor.getText();
         String tipo = comboBox.getValue();
         String lugar = txtLugar.getText();
-        String fecha = String.valueOf(date.getValue());
+        LocalDate value = date.getValue();
         String desc = txtDescripcion.getText();
+        String combo = comboBox.getSelectionModel().getSelectedItem();
 
         if (modificar != null) {
             if (!(idConductor.equals("")) && !(tipo.equals("")) && !(lugar.equals(""))
-                    && !(fecha.equals("")) && !(desc.equals(""))) {
+                    && (value != null) && !(desc.equals("")) && (combo != null)) {
                 confirmar = JOptionPane.showConfirmDialog(null, "¿Realmente quiere modificar el reporte?",
                         "Confirmar modificación",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -163,7 +168,7 @@ public class VistaReportesController implements Initializable {
                         m.setIdConductor(Integer.parseInt(idConductor));
                         m.setTipo(tipo);
                         m.setLugar(lugar);
-                        m.setFecha(fecha);
+                        m.setFecha(String.valueOf(value));
                         m.setDescripcion(desc);
                         if (m.modificarReporte() == true) {
                             JOptionPane.showMessageDialog(null, "Modificación exitosa.");
@@ -224,11 +229,16 @@ public class VistaReportesController implements Initializable {
     /* 
         Sección 2. Manipulación de tableview y tablecolumn.
      */
-
+    @FXML
+    private void tablaReportesAction (MouseEvent e)
+    {
+        mostrarFilaEnCampos();
+    }
+    
     public void llenarTablaBD() //Llena la tabla principal.
     {
         ResultSet rs;
-        String sql = "SELECT Id, IdConductor, Tipo, Fecha, Descripcion FROM Reportes";
+        String sql = "SELECT Id, IdConductor, Tipo, Fecha, Descripcion, Lugar FROM Reportes";
 
         try {
             conexionBD.conectar();
@@ -243,23 +253,21 @@ public class VistaReportesController implements Initializable {
 
                     } else {
                         fila[i] = rs.getObject(i + 1);
-                        System.out.println("filas:" + i);
                     }
                 }
                 String id = String.valueOf(fila[0]);
                 String idCond = String.valueOf(fila[1]);
                 String tipo = (String) fila[2];
-                // fila[3] es la fecha.
-                Date fechaBD = new Date(((Timestamp) fila[3]).getTime());
-                fechaBD.getDate();
-                String fecha = String.valueOf(fechaBD);
-                String desc = (String) fila[4];
-                Reportes rep = new Reportes(Integer.parseInt(id), Integer.parseInt(idCond), tipo, fecha, desc);
-                colocarDatosColumna();
-                tablaReporte.getItems().add(rep);
+                String fecha = String.valueOf(rs.getDate(4));
+                String desc = String.valueOf(fila[4]);
+                String lugar = String.valueOf(fila[5]);
+                Reportes rep = new Reportes(Integer.parseInt(id), Integer.parseInt(idCond), 
+                                            tipo, fecha, desc,lugar);
+                 colocarDatosColumna();
+                 tablaReporte.getItems().add(rep);    
             }
         } catch (SQLException e) {
-            System.out.println("Error al rellenar la tabla." + e.getSQLState());
+            System.out.println("Error al rellenar la tabla." + e.getMessage());
         }
     }
 
@@ -269,6 +277,7 @@ public class VistaReportesController implements Initializable {
         colTipo.setCellValueFactory(new PropertyValueFactory<>("Tipo"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("Fecha"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("Descripcion"));
+        colLugar.setCellValueFactory(new PropertyValueFactory<>("Lugar"));
     }
 
     void ActualizaRefresca() {
@@ -284,7 +293,7 @@ public class VistaReportesController implements Initializable {
         txtLugar.clear();
         txtDescripcion.clear();
         comboBox.setValue(" ");
-        date.setValue(LocalDate.now());
+      
     }
 
     void LimpiarTabla() {
@@ -299,18 +308,19 @@ public class VistaReportesController implements Initializable {
         {
             LimpiarCampos();
         } else {
-            String IdReporte = String.valueOf(reportes.getId());
-            String IdConductor = String.valueOf(reportes.getIdConductor());
-            String lugar = String.valueOf(reportes.getLugar());
-            String fecha = String.valueOf(reportes.getFecha());
-            String descripcion = String.valueOf(reportes.getDescripcion());
-            String valorComboBox = String.valueOf(reportes.getTipo());
-            txtReporte.setText(IdReporte);
-            txtConductor.setText(IdConductor);
+            int IdReporte = reportes.getId();
+            int IdConductor = reportes.getIdConductor(); //Este será idEmpleado.
+            String lugar = reportes.getLugar();
+            String fecha = reportes.getFecha();
+            String descripcion = reportes.getDescripcion();
+            String valorComboBox = reportes.getTipo();
+            txtReporte.setText(String.valueOf(IdReporte));
+            txtConductor.setText(String.valueOf(IdConductor));
             comboBox.setValue(valorComboBox);
             date.setValue(LocalDate.parse(fecha));
             txtLugar.setText(lugar);
             txtDescripcion.setText(descripcion);
         }
     }
+    
 }
