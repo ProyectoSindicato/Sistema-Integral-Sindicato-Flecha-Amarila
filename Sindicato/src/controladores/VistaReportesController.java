@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +27,10 @@ import javafx.scene.layout.GridPane;
 import javax.swing.JOptionPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 
 /**
  * FXML Controller class
@@ -105,8 +109,7 @@ public class VistaReportesController implements Initializable {
     // Función de agregar.
     @FXML
     public void agregarReporte(ActionEvent e) {
-        int confirmar;
-        //  String idRep = txtReporte.getText();
+
         String idUsr = txtUsuario.getText();
         String idCond = txtConductor.getText();
         String lugar = txtLugar.getText();
@@ -116,10 +119,12 @@ public class VistaReportesController implements Initializable {
 
         if ((!(desc.equals(""))) && (combo != null)
                 && (!(idCond.equals(""))) && (!(lugar.equals(""))) && (value != null)) {
-            confirmar = JOptionPane.showConfirmDialog(null, "¿Desea ingresar un reporte?", "Confirmar agregar reporte.",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setContentText("¿Desea ingresar un reporte?");
 
-            if (confirmar == 0) {
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
                 try {
                     Reportes bean = new Reportes();
                     bean.setIdConductor(idCond);
@@ -130,19 +135,31 @@ public class VistaReportesController implements Initializable {
                     bean.setDescripcion(desc);
                     if (bean.insertarReporte(idUsr) == true) {
                         insertarYRefrescar(); //Aquí se cambia por el insertar(que contiene el rs).
-                        JOptionPane.showMessageDialog(null, "Se ha agregado el reporte.");
+                        Alert alertconf = new Alert(AlertType.INFORMATION);
+                        alertconf.setTitle("Confirmación");
+                        alertconf.setContentText("El reporte se ha añadido satisfactoriamente.");
+                        alertconf.showAndWait();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Error al agregar un reporte.");
+                        Alert alerterr = new Alert(AlertType.ERROR);
+                        alerterr.setTitle("Error message");
+                        alerterr.setContentText("Error al añadir el reporte en la base de datos.");
+                        alerterr.showAndWait();
                     }
 
                 } catch (HeadlessException | NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Error al ingresar. Checar datos.");
+                    Alert alerterr2 = new Alert(AlertType.ERROR);
+                    alerterr2.setTitle("Error message - catch.");
+                    alerterr2.setContentText("Error al añadir el reporte.");
                     System.out.println("Aquí está el error: " + ex.getLocalizedMessage());
+                    alerterr2.showAndWait();
                 }
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Favor de ingresar todos los datos requeridos.",
-                    "Error al agregar datos.", JOptionPane.PLAIN_MESSAGE);
+
+        } else { //Else de validación de campos vacíos.
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning message");
+            alert.setContentText("Los campos están incompletos. Checar datos.");
+            alert.showAndWait();
         }
 
     } //botón.
@@ -150,9 +167,8 @@ public class VistaReportesController implements Initializable {
     // Función de modificar.
     @FXML
     public void modificarReporte(ActionEvent e) {
-        int confirmar;
         Reportes modificar = tablaReporte.getSelectionModel().getSelectedItem();
-        int id = Integer.parseInt(txtReporte.getText());
+        String id = txtReporte.getText();
         String idUsr = txtUsuario.getText();
         String idConductor = txtConductor.getText();
         String tipo = comboBox.getValue();
@@ -162,16 +178,18 @@ public class VistaReportesController implements Initializable {
         String combo = comboBox.getSelectionModel().getSelectedItem();
 
         if (modificar != null) {
-            if (!(idConductor.equals("")) && !(tipo.equals("")) && !(lugar.equals(""))
-                    && (value != null) && !(desc.equals("")) && (combo != null)) {
-                confirmar = JOptionPane.showConfirmDialog(null, "¿Realmente quiere modificar el reporte?",
-                        "Confirmar modificación",
-                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if ((!(idConductor.equals(""))) && (!(tipo.equals(""))) && (!(lugar.equals("")))
+                    && (value != null) && (!(desc.equals(""))) && (combo != null) && (!(id.equals(""))) && (!(idUsr.equals("")))) {
 
-                if (confirmar == 0) {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setContentText("¿Desea modificar un reporte?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.get() == ButtonType.OK) {
                     try {
                         Reportes m = new Reportes();
-                        m.setId(id);
+                        m.setId(Integer.parseInt(id));
                         m.setIdConductor(idConductor);
                         m.setTipo(tipo);
                         m.setLugar(lugar);
@@ -179,36 +197,47 @@ public class VistaReportesController implements Initializable {
                         m.setDescripcion(desc);
                         if (m.modificarReporte(idUsr) == true) {
                             insertarYRefrescar();
-                            JOptionPane.showMessageDialog(null, "Modificación exitosa.");
-
+                            Alert alertconf = new Alert(AlertType.INFORMATION);
+                            alertconf.setTitle("Confirmación");
+                            alertconf.setContentText("El reporte se ha modificado satisfactoriamente.");
+                            alertconf.showAndWait();
                         } else {
-                            JOptionPane.showMessageDialog(null, "Error al modificar reporte.");
+                            Alert alerterr = new Alert(AlertType.ERROR);
+                            alerterr.setTitle("Error message");
+                            alerterr.setContentText("Error al modificar el reporte en la base de datos.");
+                            alerterr.showAndWait();
                         }
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Error al modificar el reporte. Checar datos.");
+                        Alert alerterr2 = new Alert(AlertType.ERROR);
+                        alerterr2.setTitle("Error message");
+                        alerterr2.setContentText("Error al modificar el reporte.");
+                        alerterr2.showAndWait();
                     }
                 }
 
             }
         } else {
-            JOptionPane.showMessageDialog(null, "No se a seleccionado nada", "Error al modificar.",
-                    JOptionPane.PLAIN_MESSAGE);
-        }
+            Alert alerterr = new Alert(AlertType.ERROR);
+            alerterr.setTitle("Warning message");
+            alerterr.setContentText("Favor de seleccionar un dato. Checar datos.");
+            alerterr.showAndWait();
 
+        }
     }
 
     // Funcion de eliminar.
     @FXML
     public void eliminarReporte(ActionEvent e) {
-        int confirmar;
         Reportes borrar = tablaReporte.getSelectionModel().getSelectedItem();
 
         if (borrar != null) {
             if (!(txtReporte.getText().equals(""))) {
-                confirmar = JOptionPane.showConfirmDialog(null, "¿Realmente desea eliminar el reporte?",
-                        "Confirmar eliminación.", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setContentText("¿Desea eliminar un reporte?");
 
-                if (confirmar == 0) {
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.get() == ButtonType.OK) {
                     int idReporte = Integer.parseInt(txtReporte.getText());
 
                     Reportes eliminar = new Reportes();
@@ -216,16 +245,28 @@ public class VistaReportesController implements Initializable {
 
                     if (eliminar.eliminarReporte(idReporte)) {
                         insertarYRefrescar();
-                        JOptionPane.showMessageDialog(null, "Reporte eliminado exitosamente.");
+                        Alert alertconf = new Alert(AlertType.INFORMATION);
+                        alertconf.setTitle("Confirmación");
+                        alertconf.setContentText("El reporte se ha eliminado satisfactoriamente.");
+                        alertconf.showAndWait();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Error al eliminar reporte. ");
+                        Alert alerterr = new Alert(AlertType.ERROR);
+                        alerterr.setTitle("Error message");
+                        alerterr.setContentText("Error al eliminar el reporte en la base de datos.");
+                        alerterr.showAndWait();
                     }
                 }
             } else if (txtReporte.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "No se a seleccionado nada.", "Eliminar.", JOptionPane.PLAIN_MESSAGE);
+                Alert alerterr = new Alert(AlertType.ERROR);
+                alerterr.setTitle("Warning message");
+                alerterr.setContentText("Favor de seleccionar un dato. Checar datos.");
+                alerterr.showAndWait();
             }
         } else if (borrar == null) {
-            JOptionPane.showMessageDialog(null, "No se a seleccionado nada.", "Eliminar.", JOptionPane.PLAIN_MESSAGE);
+            Alert alerterr = new Alert(AlertType.ERROR);
+            alerterr.setTitle("Warning message");
+            alerterr.setContentText("Favor de seleccionar un dato. Checar datos.");
+            alerterr.showAndWait();
         }
 
     }
@@ -234,7 +275,8 @@ public class VistaReportesController implements Initializable {
         Sección 2. Manipulación de tableview y tablecolumn.
      */
     @FXML
-    private void tablaReportesAction(MouseEvent e) {
+    private void tablaReportesAction(MouseEvent e
+    ) {
         mostrarFilaEnCampos();
     }
 
@@ -343,6 +385,7 @@ public class VistaReportesController implements Initializable {
         ResultSet r = null; //Se regresa un nulo porque no lo estamos usando al momento de insertar o modificar.
         actualizarTablaBD(r);
         LimpiarCampos();
+
     }
 
     public void eliminarYActualizar() { //Intenta eliminarlo. Es por precaución por el resultset.
@@ -364,7 +407,7 @@ public class VistaReportesController implements Initializable {
         txtLugar.clear();
         txtDescripcion.clear();
         comboBox.setValue(" ");
-
+        date.setValue(LocalDate.now());
     }
 
     void LimpiarTabla() {
@@ -413,8 +456,8 @@ public class VistaReportesController implements Initializable {
 
             txtConductor.textProperty().addListener(eventoFiltro);
             txtDescripcion.setDisable(true);
+            txtReporte.setDisable(true);
             txtLugar.setDisable(true);
-            txtDescripcion.setDisable(true);
             comboBox.setDisable(true);
             date.setDisable(true);
 
@@ -436,7 +479,7 @@ public class VistaReportesController implements Initializable {
         Reportes filtro = new Reportes();
         LimpiarTabla();
         actualizarTablaBD(filtro.filtrarReporte(idConductor)); //Checa en Modelo -> Reportes.
-        System.out.println("Entré al filtro de controller.");
+
     }
 
     class ManejadorEventos implements ChangeListener { //Manejador de eventos para el changelistener.
