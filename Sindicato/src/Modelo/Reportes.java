@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Modelo;
 
 import ConexionAccess.ConexionAccess;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -14,7 +11,7 @@ import java.sql.SQLException;
  * @author Aideé Alvarez
  */
 public class Reportes {
-    
+
     private int Id;
     private int IdConductor;
     private int IdDirector;
@@ -25,32 +22,20 @@ public class Reportes {
     private String Descripcion;
 
     ConexionAccess conexion;
-    
-    public Reportes()
-    {
-        
-    }
 
-    public Reportes(int Id, int IdConductor, int IdDirector, int IdDelegado, String Tipo, String Lugar, String Fecha, String Descripcion) {
-        this.Id = Id;
-        this.IdConductor = IdConductor;
-        this.IdDirector = IdDirector;
-        this.IdDelegado = IdDelegado;
-        this.Tipo = Tipo;
-        this.Lugar = Lugar;
-        this.Fecha = Fecha;
-        this.Descripcion = Descripcion;
+    public Reportes() {
+
     }
     
-    public Reportes(int id, int conductor, String tipo, String fecha, String desc)
-    {
+    public Reportes(int id, int conductor, String tipo, String fecha, String desc, String lugar) {
         this.Id = id;
         this.IdConductor = conductor;
         this.Tipo = tipo;
         this.Fecha = fecha;
         this.Descripcion = desc;
+        this.Lugar = lugar;
     }
-    
+
     public int getId() {
         return Id;
     }
@@ -115,81 +100,69 @@ public class Reportes {
         this.Descripcion = Descripcion;
     }
 
-    public boolean insertarReporte(int id)
-    {
+    public boolean insertarReporte(int id) {
         this.IdDirector = id;
-        String sql = "INSERT INTO Reportes(Id,IdConductor,IdDirector,IdDelegado,Tipo,Lugar,Fecha,Descripcion)"+
-                     "VALUES(?,?,?,?,?,?,?)";
-        String a = null;
+        String sql = "INSERT INTO Reportes(IdConductor,IdDirector,IdDelegado,Tipo,Lugar,Fecha,Descripcion)"
+                + "VALUES(?,?,?,?,?,?,?)";
+
         conexion = new ConexionAccess();
         conexion.conectar();
-        try
-        {
-           try(PreparedStatement ps = conexion.getConexion().prepareStatement(sql))
-           {
-               ps.setInt(1, IdConductor);
-               ps.setInt(2, IdDirector);
-               ps.setInt(3, IdDelegado);
-               ps.setString(4, Tipo);
-               ps.setString(5, Lugar);
-               ps.setString(6, Fecha);
-               ps.setString(7, Descripcion);
-               ps.execute();
-               ps.close();
-           }
-           return true; 
-        }catch(SQLException e)
-        {
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.setInt(1, IdConductor);
+                ps.setInt(2, IdDirector);
+                ps.setInt(3, IdDelegado);
+                ps.setString(4, Tipo);
+                ps.setString(5, Lugar);
+                ps.setDate(6, Date.valueOf(Fecha)); //error aquí.
+                ps.setString(7, Descripcion);
+                ps.execute();
+                ps.close();
+            }
+            return true;
+        } catch (SQLException e) {
             System.out.println("Error al insertar en la base de datos." + e.getMessage());
             return false;
         }
     }
-    
-    public boolean modificarReporte()
-    {
-      String sql = "UPDATE Reportes SET Tipo= ?, Lugar=?, Fecha=?, Descripcion=?"+
-                   "WHERE Id=?";  
-      conexion = new ConexionAccess();
-      conexion.conectar();
-      
-      try{
-          try(PreparedStatement ps = conexion.getConexion().prepareStatement(sql))
-          {
-              ps.setString(1, Tipo);
-              ps.setString(2, Lugar);
-              ps.setString(3, Fecha);
-              ps.setString(4, Descripcion);
-              ps.setInt(5, Id);
-              ps.execute();
-              ps.close();
-          }
-         return true;
-      }catch(SQLException e)
-      {
-          System.out.println("Error al modificar reporte en la base de datos." + e.getMessage()); 
-           return false;
-     }
+
+    public boolean modificarReporte() {
+        String sql = "UPDATE Reportes SET Tipo= ?, Lugar=?, Fecha=?, Descripcion=?"
+                + "WHERE Id=?";
+        conexion = new ConexionAccess();
+        conexion.conectar();
+
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.setString(1, Tipo);
+                ps.setString(2, Lugar);
+                ps.setString(3, Fecha);
+                ps.setString(4, Descripcion);
+                ps.setInt(5, Id);
+                ps.execute();
+                ps.close();
+            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al modificar reporte en la base de datos." + e.getMessage());
+            return false;
+        }
     }
-    
-    public boolean eliminarReporte(int id)
-    {
-       String sql= "DELETE FROM Reportes WHERE Id=?";
-       conexion = new ConexionAccess();
-       conexion.conectar();
-       try
-       {
-           try(PreparedStatement ps = conexion.getConexion().prepareStatement(sql))
-               
-           {
-               ps.setInt(1, Id);
-               ps.executeUpdate();
-               ps.close();
-             return true;
-           }
-       }catch(SQLException e)
-       {
-           System.out.println("Error al eliminar de la base de datos. " + e.getMessage());
-           return false;
-       }
-    } 
+
+    public boolean eliminarReporte(int id) {
+        String sql = "DELETE FROM Reportes WHERE Id=?";
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.setInt(1, Id);
+                ps.executeUpdate();
+                ps.close();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar de la base de datos. " + e.getMessage());
+            return false;
+        }
+    }
 }
