@@ -1,6 +1,7 @@
 package Modelo;
     
 public class Conductor {
+    private String id;
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String nombres;
@@ -24,7 +25,22 @@ public class Conductor {
     private String base;
     private String servicio;
 
-    public Conductor(String apellidoPaterno, String apellidoMaterno, String nombres, String fechaNacimiento, String lugarNacimiento, String telefono, String calle, String colonia, String cp, String ciudad, String estado, String fechaIngreso, String fechaSindicato, String estudios, String noIMSS, String afore, String curp, String rfc, String claveElector, String noTarjeta, String base, String servicio) {
+    public Conductor(String id, String apellidoPaterno, String apellidoMaterno, String nombres, String noTarjeta) {
+        this.id = id;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.nombres = nombres;
+        this.noTarjeta = noTarjeta;
+    }
+
+    public Conductor(String id, String apellidoPaterno, String apellidoMaterno, 
+            String nombres, String noTarjeta, String base, String servicio, 
+            String fechaNacimiento, String lugarNacimiento, 
+            String telefono, String calle, String colonia, String cp, 
+            String ciudad, String estado, String fechaIngreso, 
+            String fechaSindicato, String estudios, String noIMSS, String afore, 
+            String curp, String rfc, String claveElector) {
+        this.id = id;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.nombres = nombres;
@@ -49,6 +65,14 @@ public class Conductor {
         this.servicio = servicio;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
     public String getApellidoPaterno() {
         return apellidoPaterno;
     }

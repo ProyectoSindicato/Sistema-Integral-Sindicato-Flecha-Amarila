@@ -7,6 +7,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -14,7 +15,7 @@
   <content>
     <AnchorPane id="Content" fx:id="panelPrincipal" focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="695.0" prefWidth="1360.0" styleClass="bodyPanelCentro">
       <children>
-        <Pane layoutX="-1.0" layoutY="0.0" prefHeight="348.0" prefWidth="1227.0" style="-fx-background-color: gray">
+        <Pane layoutX="-1.0" layoutY="-1.0" prefHeight="348.0" prefWidth="1227.0" style="-fx-background-color: gray">
           <children>
             <Button layoutX="0.0" layoutY="0.0" mnemonicParsing="false" prefHeight="67.9609375" prefWidth="86.0" styleClass="btn, back, imageButon" text="">
               <stylesheets>
@@ -71,7 +72,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField fx:id="txtLugarNacimiento" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <TextField fx:id="txtLugarNacimiento" prefWidth="200.0" promptText="León, Gto" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="5">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -100,7 +101,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField fx:id="txtTelefono" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                <TextField fx:id="txtTelefono" prefWidth="200.0" promptText="XXX XXXX XXX" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="7">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -135,7 +136,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField fx:id="txtCalle" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <TextField fx:id="txtCalle" prefWidth="200.0" promptText="Calle #100" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="1">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -155,7 +156,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField fx:id="txtCP" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <TextField fx:id="txtCP" prefWidth="200.0" promptText="XXXXX" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="3">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -257,7 +258,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField fx:id="txtCURP" prefWidth="102.9998779296875" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                <TextField fx:id="txtCURP" prefWidth="102.9998779296875" promptText="XXXXXXXXXXXXXXXXXX" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="7">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
@@ -306,12 +307,15 @@
                 <URL value="@../images/ConductoresStyle.css" />
               </stylesheets>
             </GridPane>
-            <Pane layoutX="1014.0" layoutY="14.0" prefHeight="150.0" prefWidth="150.0" styleClass="gridSection">
+            <Pane layoutX="1020.0" layoutY="14.0" prefHeight="143.9998779296875" prefWidth="134.0" styleClass="gridSection">
+              <children>
+                <ImageView fx:id="foto" fitHeight="130.9609375" fitWidth="121.99996948242188" layoutX="6.0" layoutY="7.0" pickOnBounds="true" preserveRatio="false" />
+              </children>
               <stylesheets>
                 <URL value="@../images/ConductoresStyle.css" />
               </stylesheets>
             </Pane>
-            <GridPane gridLinesVisible="false" layoutX="966.0" layoutY="172.0" prefHeight="159.99990000000253" prefWidth="246.0" style="" styleClass="gridSection">
+            <GridPane gridLinesVisible="false" layoutX="966.0" layoutY="188.0" prefHeight="143.99990000000253" prefWidth="246.0" style="" styleClass="gridSection">
               <children>
                 <Label alignment="CENTER" font="$x2" prefWidth="258.0" text="Informacion de conductor" textFill="WHITE" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
                 <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Número tarjeta" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1">
@@ -362,14 +366,16 @@
                 <URL value="@../images/ConductoresStyle.css" />
               </stylesheets>
             </GridPane>
+            <Button layoutX="1035.0" layoutY="158.0" mnemonicParsing="false" prefWidth="103.0" text="Añadir imagen" />
           </children>
         </Pane>
-        <TableView fx:id="tblDatosMateria" layoutX="13.0" layoutY="353.0" prefHeight="314.0" prefWidth="1332.0000999999975">
+        <TableView id="tblDatosMateria" fx:id="tblDatosConductor" layoutX="13.0" layoutY="353.0" onMouseClicked="#userClickedOnTable" prefHeight="314.0" prefWidth="1332.0000999999975">
           <columns>
+            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="47.0" text="ID" fx:id="tbcID" />
             <TableColumn prefWidth="105.0" text="Apellido Paterno" fx:id="tbcApellidoPaterno" />
             <TableColumn prefWidth="105.0" text="Apellido Materno" fx:id="tbcApellidoMaterno" />
             <TableColumn prefWidth="130.0" text="Nombre(s)" fx:id="tbcNombres" />
-            <TableColumn prefWidth="130.0" text="No. tarjeta" />
+            <TableColumn prefWidth="130.0" text="No. tarjeta" fx:id="tbcNoTajeta" />
             <TableColumn prefWidth="130.0" text="Base" />
             <TableColumn prefWidth="130.0" text="Servicio" />
             <TableColumn prefWidth="130.0" text="Fecha de nacimiento" />
@@ -381,22 +387,27 @@
         </TableView>
         <Pane layoutX="1226.0" layoutY="0.0" prefHeight="347.0" prefWidth="134.0" styleClass="panelButtons">
           <children>
-            <Button layoutX="24.0" layoutY="14.0" mnemonicParsing="false" onAction="#agregarConductor" prefHeight="67.9609375" prefWidth="86.0" styleClass="btnAdd, null" text="">
+            <Button fx:id="btnAgregar" layoutX="24.0" layoutY="14.0" mnemonicParsing="false" onAction="#agregarConductor" prefHeight="67.9609375" prefWidth="86.0" styleClass="btnAdd, null" text="">
               <stylesheets>
                 <URL value="@../images/ConductoresStyle.css" />
               </stylesheets>
             </Button>
-            <Button layoutX="24.0" layoutY="99.0" mnemonicParsing="false" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnModify" text="">
+            <Button id="btnAgregar" fx:id="btnLimpiar" layoutX="24.0" layoutY="14.0" mnemonicParsing="false" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, btnClear" text="" visible="false">
               <stylesheets>
                 <URL value="@../images/ConductoresStyle.css" />
               </stylesheets>
             </Button>
-            <Button layoutX="24.0" layoutY="181.0" mnemonicParsing="false" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnDelete" text="">
+            <Button fx:id="btnEditar" layoutX="24.0" layoutY="99.0" mnemonicParsing="false" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnModify" text="">
               <stylesheets>
                 <URL value="@../images/ConductoresStyle.css" />
               </stylesheets>
             </Button>
-            <Button layoutX="24.0" layoutY="263.0" mnemonicParsing="false" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnSearch" text="">
+            <Button fx:id="btnEliminar" layoutX="24.0" layoutY="181.0" mnemonicParsing="false" onAction="#eliminarConductor" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnDelete" text="">
+              <stylesheets>
+                <URL value="@../images/ConductoresStyle.css" />
+              </stylesheets>
+            </Button>
+            <Button fx:id="btnBuscar" layoutX="24.0" layoutY="263.0" mnemonicParsing="false" onAction="#filtrarMateria" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnSearch" text="">
               <stylesheets>
                 <URL value="@../images/ConductoresStyle.css" />
               </stylesheets>

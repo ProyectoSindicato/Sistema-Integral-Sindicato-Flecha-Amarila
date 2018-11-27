@@ -97,6 +97,24 @@
     -fx-scale-y: 1.1;
 }
 
+.btnClear {
+    -fx-background-image: url("clear.png");
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.btnClear:hover {
+    -fx-background-image: url("clear2.png");
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnClear:pressed {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
 .panelButtons {
     -fx-background-color: #aaaaaa;
     -fx-border-color: rgba(255,255,255,0.5);

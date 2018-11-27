@@ -15,17 +15,33 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import Modelo.Conductor;
 import java.time.LocalDate;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 public class ConductoresController implements Initializable {
     
     private final ConexionAccess conexionBD;
     TextField[] txtCAMPOS;
+    private boolean filtrarActivado;
+    ManejadorFiltroKey manejador;
+    
+    @FXML
+    private Button btnAgregar, btnEditar, btnEliminar, btnBuscar, btnLimpiar;
     
     @FXML
     private TextField txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
@@ -48,10 +64,13 @@ public class ConductoresController implements Initializable {
     private DatePicker dpFechaNacimiento, dpFechaIngreso, dpFechaSindicato;
     
     @FXML
-    private TableView<Conductor> tblDatosMateria;
+    private ImageView foto; 
     
     @FXML
-    private TableColumn<Conductor, String> tbcApellidoPaterno, tbcApellidoMaterno, tbcNombres;
+    private TableView<Conductor> tblDatosConductor;
+    
+    @FXML
+    private TableColumn<Conductor, String> tbcID, tbcApellidoPaterno, tbcApellidoMaterno, tbcNombres, tbcNoTajeta;
     
     public ConductoresController() {
         conexionBD = new ConexionAccess();
@@ -59,6 +78,8 @@ public class ConductoresController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        filtrarActivado = false;
+        
         tggGrupoEstadoCivil = new ToggleGroup();
         rbtSoltero.setToggleGroup(tggGrupoEstadoCivil);
         rbtCasado.setToggleGroup(tggGrupoEstadoCivil);
@@ -93,6 +114,22 @@ public class ConductoresController implements Initializable {
                                     "Yucatán", "Zacatecas"
                                     );
         cbxCiudad.setDisable(true);
+        btnEditar.setDisable(true);
+        btnEliminar.setDisable(true);
+        btnLimpiar.setVisible(false);
+        
+        tbcID.setCellValueFactory(new PropertyValueFactory<Conductor, String>("id"));
+        tbcApellidoPaterno.setCellValueFactory(new PropertyValueFactory<Conductor, String>("apellidoPaterno"));
+        tbcApellidoMaterno.setCellValueFactory(new PropertyValueFactory<Conductor, String>("apellidoMaterno"));
+        tbcNombres.setCellValueFactory(new PropertyValueFactory<Conductor, String>("nombres"));
+        tbcNoTajeta.setCellValueFactory(new PropertyValueFactory<Conductor, String>("noTarjeta"));
+        
+        tblDatosConductor.setItems(getPeople());
+        //tblDatosConductor.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        
+        manejador = new ManejadorFiltroKey();
+        foto.setImage(new Image("FotosConductor/default-photo.png"));
+        foto.setOpacity(0.65);
     }
 
     public void cbxEstadoUpdated() {
@@ -2602,8 +2639,127 @@ public class ConductoresController implements Initializable {
         }
     }
     
-    public void agregarConductor(ActionEvent e) {
-        System.out.println("Agregar conductor");
+    public void userClickedOnTable() {
+        this.btnEliminar.setDisable(false);
+        this.btnEditar.setDisable(false);
+        //this.btnAgregar.setVisible(false);
+        //this.btnLimpiar.setVisible(true);
     }
+    
+    public void agregarConductor(ActionEvent e) {
+        /* Prueba de agregado sin conexión a BD */
+        System.out.println("Agregar conductor");
+        int numeroConductores = tblDatosConductor.getItems().size() + 1;
+        Conductor nuevoConductor = new Conductor(numeroConductores+"",
+                                 txtApellidoPaterno.getText(),
+                                 txtApellidoMaterno.getText(),
+                                 txtNombres.getText(),
+                                 txtNoTarjeta.getText());
+       
+        tblDatosConductor.getItems().add(nuevoConductor);
+    }
+    
+    public void eliminarConductor(ActionEvent e) {
+        /* Prueba de eliminación sin conexión a BD */
+        System.out.println("Eliminar conductor");
+        if(tblDatosConductor.getSelectionModel().getSelectedItems().isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText(null);
+                alert.setContentText("Por favor elige un registro");
+                alert.show();
+                return;
+        }
+        
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmación");
+        alert.setHeaderText(null);
+        alert.setContentText("¿Realmente deseas eliminar el conductor seleccionado?");
+        
+        if(alert.showAndWait().get() == ButtonType.OK) {
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Información");
+            alert.setHeaderText(null);
+            alert.setContentText("La operación se ha realizado con éxito");
+            alert.show();
+                
+            ObservableList<Conductor> selectedRows, allPeople;
+            allPeople = tblDatosConductor.getItems();
+
+            // Esto nos devuelve los conductores (filas) a ser eliminados
+            selectedRows = tblDatosConductor.getSelectionModel().getSelectedItems();
+
+            // Elimina los conductores (filas) seleccionados
+            for (Conductor conductor : selectedRows) {
+                allPeople.remove(conductor);
+            }
+        } else {
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Información");
+            alert.setHeaderText(null);
+            alert.setContentText("Se ha cancelado la operación");
+            alert.show();
+        }
+            
+    }
+
+    /* Prueba de obtención de datos sin conexión a BD */
+    private ObservableList<Conductor> getPeople() {
+        ObservableList<Conductor> people  = FXCollections.observableArrayList();
+        people.add(new Conductor("1","Fernández", "Martínez", "Javier", "1526"));
+        people.add(new Conductor("2","Guzmán", "Soto", "Gabriela Estefanía", "1527"));
+        people.add(new Conductor("3","Hernández", "Aguilar", "Ernesto", "1528"));
+        return people;
+    }
+    
+    @FXML
+    private void filtrarMateria(){
+        filtrarActivado=!filtrarActivado;
+        if(filtrarActivado){
+            
+            btnAgregar.setDisable(true);
+            //btnEditar.setDisable(true);
+            btnEliminar.setDisable(true);
+            for (int i = 0; i < txtCAMPOS.length; i++) {
+                txtCAMPOS[i].textProperty().addListener(manejador);                
+                txtCAMPOS[i].clear();
+            }            
+        }else{
+            btnAgregar.setDisable(false);
+            //btnEditar.setDisable(false);
+            btnEliminar.setDisable(false);
+            for (int i = 0; i < txtCAMPOS.length; i++){ 
+                txtCAMPOS[i].textProperty().removeListener(manejador);
+            }
+            tblDatosConductor.setItems(getPeople());
+            //llenarTabla(materiaBD.getMaterias());
+        }
+    }
+    
+    void ManejadorFiltro(){
+        if(filtrarActivado){
+            String apellidoPaterno, apellidoMaterno, nombres, noTarjeta;
+            apellidoPaterno = txtApellidoPaterno.getText();
+            apellidoMaterno = txtApellidoMaterno.getText();
+            nombres = txtNombres.getText();
+            noTarjeta = txtNoTarjeta.getText();
+            /*String claveMateria, nombre, tipo, SATCA, semestre, planEstudios, descripcion;
+            claveMateria = txtClaveMateria.getText();
+            nombre = txtNombre.getText();
+            tipo = tggGrupoTipo.getSelectedToggle().getUserData().toString();
+            SATCA = txtSATCA.getText();
+            semestre = txtIdSemestre.getText();
+            planEstudios = txtPlanEstudios.getText();
+            descripcion = txaDescripcion.getText();
+            leerFiltrarTabla(claveMateria, nombre, tipo, SATCA, semestre, planEstudios, descripcion);*/
+        }
+    }
+    
+    class ManejadorFiltroKey implements ChangeListener{
+        @Override
+        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+            ManejadorFiltro();
+        }        
+    }    
     
 }
