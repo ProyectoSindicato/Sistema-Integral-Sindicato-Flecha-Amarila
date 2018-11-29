@@ -82,6 +82,11 @@ public class IncapacidadesController implements Initializable {
     public void setParameters(Empleado employee,ConexionAccess conexion){
         this.employee = employee;
         this.conexion = conexion;
+        if(this.employee.getType() != 0 && this.employee.getType() != 4){
+            agregar.setDisable(true);
+            eliminar.setDisable(true);
+            modificar.setDisable(true);
+        }
     }
     void datePicker()
       {
