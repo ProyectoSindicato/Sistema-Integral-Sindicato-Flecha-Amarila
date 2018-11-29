@@ -8,7 +8,8 @@ public class Incapacidades {
     private String motivo;
     private String nombreJefe;
     private String idEmpleado;
-
+    private String claveIncapacidad;
+    
     public String getClaveConductor() {
         return claveConductor;
     }
@@ -65,5 +66,13 @@ public class Incapacidades {
         this.idEmpleado = idEmpleado;
     }
 
+    public String getClaveIncapacidad() {
+        return claveIncapacidad;
+    }
 
+    public void setClaveIncapacidad(String claveIncapacidad) {
+        this.claveIncapacidad = claveIncapacidad;
+    }
+
+    
 }
