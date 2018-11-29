@@ -13,6 +13,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,13 +38,15 @@ public class IncapacidadesController implements Initializable {
     private ConexionAccess conexion;
     private Alert alert;
     private Incapacidades incapacidades;
+    private boolean search = false;
+    private int idIncapacidades = 1;
     @FXML
     private GridPane fechaInicioDate,fechaFinDate;
     // Para obtener fechas se recure el DatePicker
     @FXML 
     private DatePicker date,date2;
     @FXML
-    private Button agregar,modificar;
+    private Button agregar,modificar,eliminar,buscar;
     @FXML
     private TextField claveConductorTextField;
     @FXML
@@ -66,6 +70,15 @@ public class IncapacidadesController implements Initializable {
     @FXML
     private TableColumn <Incapacidades, String> idEmpleado;;
     
+    @FXML
+    private ChangeListener<String> searchListener = new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+               incapacidadesTabla.getItems().clear();
+               fillTable(claveConductorTextField.getText());
+            }
+        };
+    
     public void setParameters(Empleado employee,ConexionAccess conexion){
         this.employee = employee;
         this.conexion = conexion;
@@ -83,6 +96,8 @@ public class IncapacidadesController implements Initializable {
             registrar();
         }else if(e.getSource() == modificar){
             actualizar();
+        }else if(e.getSource() == eliminar){
+            eliminar();
         }
     }
     @FXML
@@ -113,7 +128,7 @@ public class IncapacidadesController implements Initializable {
                             statement.setString(5, motivoTextArea.getText());
                             if(statement.executeUpdate() != 0){
                                 incapacidadesTabla.getItems().clear();
-                                fillTable();
+                                fillTable("");
                             }else{
                                 showAlert(AlertType.WARNING,"¡Ups!","Parece que algo salio mal, vuelve a intentarlo.");
                             }
@@ -165,7 +180,7 @@ public class IncapacidadesController implements Initializable {
                                     if(statement.executeUpdate() != 0){
                                         showAlert(AlertType.INFORMATION,"","Registro actualizado.");
                                         incapacidadesTabla.getItems().clear();
-                                        fillTable();
+                                        fillTable("");
                                     }else{
                                         showAlert(AlertType.WARNING,"¡Ups!","Parece que algo salio mal, vuelve a intentarlo.");
                                     }
@@ -184,6 +199,55 @@ public class IncapacidadesController implements Initializable {
                 }
         }else{
             showAlert(AlertType.WARNING,"¡Ups!","Por favor selecciona algun registro que desees modificar");
+        }
+    }
+    public void eliminar(){
+        if(incapacidades != null){
+            LocalDate dateValue = date.getValue();
+            LocalDate dateValue2 = date2.getValue();
+            try {
+                if(showAlertConfirmation("¿Esta seguro que desea eliminar el registro"
+                + "\ncon numero de clave \""+incapacidades.getClaveIncapacidad()
+                +"\"?"
+                ).get()
+                == ButtonType.OK){
+                    statement = conexion.getConexion().prepareStatement("Delete "
+                    + "From Incapacidades where Id=?");
+                    statement.setInt(1, Integer.parseInt(incapacidades.getClaveIncapacidad()));
+                    if(statement.executeUpdate() != 0){
+                        showAlert(AlertType.INFORMATION,"","Registro eliminado.");
+                        incapacidadesTabla.getItems().clear();
+                        if(!search){
+                            fillTable("");
+                        }else{
+                            fillTable(claveConductorTextField.getText());
+                        }
+                    }else{
+                        showAlert(AlertType.WARNING,"¡Ups!","Parece que algo salio mal, vuelve a intentarlo.");
+                    }
+
+                }
+
+            } catch (SQLException ex) {
+                System.out.println("Aqui trono"+ex);
+            }
+        }else{
+            showAlert(AlertType.WARNING,"¡Ups!","Por favor selecciona algun registro que desees modificar");
+        }
+    }
+    public void buscar(){
+        if(!search){
+            search = true;
+            clearFields();
+            disableFields();
+            claveConductorTextField.textProperty().addListener(searchListener);
+        }else{
+            search = false;
+            clearFields();
+            enableFields();
+            incapacidadesTabla.getItems().clear();
+            fillTable("");
+            claveConductorTextField.textProperty().removeListener(searchListener);
         }
     }
     public boolean isIdConductorCorrect(){
@@ -229,11 +293,18 @@ public class IncapacidadesController implements Initializable {
         }
         return maxDate;
     }
-    public void fillTable(){
+    public void fillTable(String idConductor){
         try {
-            statement = conexion.getConexion().prepareStatement("Select "
+            if(!search){
+                statement = conexion.getConexion().prepareStatement("Select "
                     + "Id,IdConductor,IdEmpleado,FechaInicio,FechaFin,Motivo "
                     + "From Incapacidades");
+            }else{
+               statement = conexion.getConexion().prepareStatement("Select "
+                    + "Id,IdConductor,IdEmpleado,FechaInicio,FechaFin,Motivo "
+                    + "From Incapacidades where IdConductor=?");
+               statement.setString(1, idConductor);
+            }
             result = statement.executeQuery();
             while(result.next()){
                 incapacidades= new Incapacidades();
@@ -281,6 +352,26 @@ public class IncapacidadesController implements Initializable {
         nombreJefe.setCellValueFactory(new PropertyValueFactory<>("NombreJefe"));
         idEmpleado.setCellValueFactory(new PropertyValueFactory<>("IdEmpleado"));
     }
+    public void clearFields(){
+        claveConductorTextField.clear();
+        date.setValue(null);
+        date2.setValue(null);
+        motivoTextArea.clear();
+    }
+    public void disableFields(){
+        date.setDisable(true);
+        date2.setDisable(true);
+        motivoTextArea.setDisable(true);
+        agregar.setDisable(true);
+        modificar.setDisable(true);
+    }
+    public void enableFields(){
+        date.setDisable(false);
+        date2.setDisable(false);
+        motivoTextArea.setDisable(false);
+        agregar.setDisable(false);
+        modificar.setDisable(false);
+    }
     public void setDataOnFields(){
         incapacidades = incapacidadesTabla.getSelectionModel().getSelectedItem();
         if(incapacidades != null){
@@ -289,10 +380,7 @@ public class IncapacidadesController implements Initializable {
             date2.setValue(LocalDate.parse(incapacidades.getFechaFin()));
             motivoTextArea.setText(incapacidades.getMotivo());
         }else{
-            claveConductorTextField.clear();
-            date.setValue(null);
-            date2.setValue(null);
-            motivoTextArea.clear();
+            clearFields();
         }
     }
     public void showAlert(AlertType error,String header, String body){
