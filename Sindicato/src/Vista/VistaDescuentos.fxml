@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<ScrollPane prefHeight="695.0" prefWidth="1360.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sindicato.DescuentosController">
+<ScrollPane prefHeight="695.0" prefWidth="1360.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controladores.DescuentosController">
   <content>
     <TabPane prefHeight="680.0" prefWidth="1359.0" tabClosingPolicy="UNAVAILABLE">
       <tabs>
@@ -112,22 +112,22 @@
                     </GridPane>
                     <Pane layoutX="1213.0" layoutY="0.0" prefHeight="335.0" prefWidth="146.0" style="" styleClass="panelButtons">
                       <children>
-                        <Button layoutX="43.0" layoutY="12.0" mnemonicParsing="false" prefHeight="59.850006103515625" prefWidth="64.00004414063005" styleClass="btnAdd" text="">
+                        <Button fx:id="btnagregar" cancelButton="false" defaultButton="false" layoutX="42.0" layoutY="12.0" mnemonicParsing="false" onAction="#agregar" prefHeight="68.0000084472631" prefWidth="64.99994414063258" styleClass="btnAdd" text="" underline="false">
                           <stylesheets>
                             <URL value="@../images/ConductoresStyle.css" />
                           </stylesheets>
                         </Button>
-                        <Button layoutX="44.0" layoutY="89.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="65.0" styleClass="btnModify" text="">
+                        <Button fx:id="btnmodificar" layoutX="44.0" layoutY="89.0" mnemonicParsing="false" onAction="#modificar" prefHeight="68.0" prefWidth="65.0" styleClass="btnModify" text="">
                           <stylesheets>
                             <URL value="@../images/ConductoresStyle.css" />
                           </stylesheets>
                         </Button>
-                        <Button layoutX="40.0" layoutY="175.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="72.0" styleClass="btnDelete" text="">
+                        <Button fx:id="btneliminar" layoutX="40.0" layoutY="175.0" mnemonicParsing="false" onAction="#eliminar" prefHeight="68.0" prefWidth="72.0" styleClass="btnDelete" text="">
                           <stylesheets>
                             <URL value="@../images/ConductoresStyle.css" />
                           </stylesheets>
                         </Button>
-                        <Button layoutX="49.0" layoutY="266.0" mnemonicParsing="false" prefHeight="59.850006103515625" prefWidth="57.0" styleClass="btnSearch" text="">
+                        <Button fx:id="btnbuscar" layoutX="49.0" layoutY="266.0" mnemonicParsing="false" onAction="#buscar" prefHeight="59.850006103515625" prefWidth="57.0" styleClass="btnSearch" text="">
                           <stylesheets>
                             <URL value="@../images/ConductoresStyle.css" />
                           </stylesheets>
@@ -147,9 +147,8 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Pane layoutX="-3.0" layoutY="0.0" prefHeight="649.0" prefWidth="1359.0" style="-fx-background-color: gray;&#10;">
+                <Pane layoutX="-1.0" layoutY="0.0" prefHeight="649.0" prefWidth="1359.0" style="-fx-background-color: gray;&#10;">
                   <children>
-                    <ProgressBar layoutX="0.0" layoutY="0.0" prefWidth="1359.0" progress="0.0" />
                     <ImageView id="citibanamex-logo.png" fitHeight="81.22499792916435" fitWidth="342.0" layoutX="501.0" layoutY="57.0" preserveRatio="true">
                       <image>
                         <Image url="@../images/citibanamex-logo.png" preserveRatio="true" smooth="true" />
@@ -157,18 +156,31 @@
                     </ImageView>
                     <GridPane layoutX="520.0" layoutY="158.0" prefHeight="436.0" prefWidth="307.0" styleClass="gridSection">
                       <children>
-                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="277.0" text="Elegir el archivo en mi Ordenador" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <Label prefHeight="32.0" prefWidth="275.0" text="Selecciona el Archivo en formato .xls para actualizar los datos de los últimos descuentos." textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Button fx:id="btnimportar" mnemonicParsing="false" onAction="#importar" prefHeight="75.0" prefWidth="275.0" styleClass="iconCargar" text="" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                          <stylesheets>
+                            <URL value="@../images/style.css" />
+                          </stylesheets>
+                        </Button>
+                        <Label prefHeight="68.0" prefWidth="267.0" text="Selecciona el Archivo en formato .xls para actualizar los datos de los últimos descuentos." textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                          <font>
+                            <Font size="16.0" />
+                          </font>
+                        </Label>
+                        <Label fx:id="estado" prefWidth="275.0" text="        " textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                          <font>
+                            <Font name="Bell MT" size="28.0" />
+                          </font>
+                        </Label>
                       </children>
                       <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       </columnConstraints>
                       <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="81.0" minHeight="10.0" prefHeight="81.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="81.0" minHeight="10.0" prefHeight="81.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="81.0" minHeight="10.0" prefHeight="81.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="109.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                       <stylesheets>
                         <URL value="@../images/ConductoresStyle.css" />
@@ -212,6 +224,11 @@
                         <URL value="@../images/ConductoresStyle.css" />
                       </stylesheets>
                     </GridPane>
+                    <ProgressBar fx:id="barraProgreso2" layoutX="2.0" layoutY="1.0" prefWidth="1359.0" progress="0.0" style="" styleClass="bar">
+                      <stylesheets>
+                        <URL value="@../images/StyleBar.css" />
+                      </stylesheets>
+                    </ProgressBar>
                   </children>
                 </Pane>
               </children>
