@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import Modelo.Conductor;
 import java.time.LocalDate;
+import java.util.Arrays;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -26,6 +27,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -36,6 +38,7 @@ import javafx.scene.layout.GridPane;
 public class ConductoresController implements Initializable {
     
     private final ConexionAccess conexionBD;
+    double[] dimension;
     TextField[] txtCAMPOS;
     private boolean filtrarActivado;
     ManejadorFiltroKey manejador;
@@ -60,6 +63,9 @@ public class ConductoresController implements Initializable {
     @FXML 
     private GridPane gridPaneSindicato, gridPaneDatosGenerales;
     
+    @FXML 
+    private SplitPane spConductores;
+    
     @FXML
     private DatePicker dpFechaNacimiento, dpFechaIngreso, dpFechaSindicato;
     
@@ -78,6 +84,10 @@ public class ConductoresController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        dimension = new double[2];
+        dimension = spConductores.getDividerPositions();
+        spConductores.widthProperty().addListener(changeListener);
+        spConductores.heightProperty().addListener(changeListener);
         filtrarActivado = false;
         
         tggGrupoEstadoCivil = new ToggleGroup();
@@ -2711,6 +2721,17 @@ public class ConductoresController implements Initializable {
         people.add(new Conductor("3","Hernández", "Aguilar", "Ernesto", "1528"));
         return people;
     }
+    
+    ChangeListener<Number> changeListener = new ChangeListener<Number>() {
+        @Override
+        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            //spConductores.setDividerPositions(0.8);            
+            //dimension = spConductores.getDividerPositions();
+            System.out.println("oldValue = " + oldValue);
+            System.out.println("newValue = " + newValue);
+        }
+    };
+    
     
     @FXML
     private void filtrarMateria(){
