@@ -70,72 +70,23 @@ public class LoginController implements Initializable {
                         // Se usuario y contraseña concuerda con uno de los resultados...
                         if ((user.equals(userTextField.getText())) && (password.equals(passwordTextField.getText()))) {
                             isThere = true;
+                            getKindEmployee();
                             break;
                         }
                     }
                     if (isThere) {
-                        /* Aqui se construye la vista segun el tipo de
-                        empleado logeado*/
-                        switch (getKindEmployee()) {
-                            // Si es delegado...
-                            case 0:
-                                FXMLLoader loader = new FXMLLoader();
-                                loader.setLocation(getClass().getResource("/Vista/Incapacidades.fxml"));
-                                loader.load();
-                                IncapacidadesController document = loader.getController();
-                                document.setParameters(new Empleado(0,idEmpleado),conexion);
-                                Parent p = loader.getRoot();
-                                Stage s = new Stage();
-                                s.setScene(new Scene(p));
-                                s.setMaximized(true);
-                                s.show();
-                                document.fillTable();
-                                break;
-                            // Si es director general
-                            case 1:
-                                System.out.println("Eres Director General.");
-                                break;
-                            // Si es director de finanzas
-                            case 2:
-                                try {
-                                    root = FXMLLoader.load(getClass().getResource("/Vista/VistaReportes.fxml"));
-                                    Scene mainRoot = new Scene(root);
-                                    Stage window =(Stage) ((Node)event.getSource()).getScene().getWindow();
-                                    window.setScene(mainRoot);
-                                    window.show();
-                                } catch (IOException ex) {
-                                   ex.printStackTrace();
-                                }
-                                break;
-                            // Si es director de organizacion
-                            case 3:
-                                System.out.println("Eres Director de Organización.");
-                                break;
-                            // Si es director de seguridad y prevencion
-                            case 4:
-
-                                break;
-                            // Si es director de trabajo
-                            case 5:
-
-                                break;
-                            // Si es director de actas y acuerdos
-                            case 6:
-
-                                break;
-                            // Si es asistente1 (aquellas que hace descuentos
-                            case 7:
-
-                                break;
-                            // Si es asistente2 (aquella que da altas)
-                            case 8:
-
-                                break;
-                            // Lo que se hace si no se reconocio como empleado
-                            default:
-                                System.out.println("Usuario no identificado");
-                                break;
-                        }
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/Vista/FXMLDocument.fxml"));
+                        loader.load();
+                        FXMLDocumentController document = loader.getController();
+                        document.setParameters(employee,conexion);
+                        Parent p = loader.getRoot();
+                        Scene scene = new Scene(p);
+                        Stage s = (Stage)((Node)event.getSource()).getScene().getWindow();
+                        s.setScene(scene);
+                        s.setMaximized(true);
+                        s.setResizable(true);
+                        s.show();
                     } else {
                         System.out.println("Usuario o contraseña incorrecto");
                     }
@@ -151,7 +102,18 @@ public class LoginController implements Initializable {
             System.out.println("Imposible conectar a la base de datos");
         }
     }
-
+    /*
+    Delegado = 0
+    Directores:
+        - General = 1
+        - Finanzas = 2
+        - Organizacion = 3
+        - Seguridad y prevencion = 4
+        - Trabajo = 5
+        - Actas y acuerdos = 6
+        - Asistente1 (aquellas que hacen descuentos) = 7
+        - Asistente2 (Aquellas que hacen altas) = 8
+    */
     public int getKindEmployee() {
         try {
             sentencia = conexion.getConexion().prepareStatement("select "
