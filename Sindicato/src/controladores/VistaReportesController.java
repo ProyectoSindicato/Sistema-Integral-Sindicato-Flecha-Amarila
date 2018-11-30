@@ -486,6 +486,5 @@ public class VistaReportesController implements Initializable {
             return false;
         }
     }
-    
-    
+//    
 }
