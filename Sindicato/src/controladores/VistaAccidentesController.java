@@ -78,6 +78,12 @@ public class VistaAccidentesController implements Initializable {
     public void setParameters(Empleado employee, ConexionAccess conexion) {
         this.employee = employee;
         this.conexionBD = conexion;
+        /* Dir. Seguridad y Prevención social - 4.*/
+        if(this.employee.getType() != 4){
+         btnAdd.setDisable(true);
+         btnModify.setDisable(true);
+         btnErase.setDisable(true);
+    }
     }
 
     public void assignID() {
@@ -412,7 +418,6 @@ public class VistaAccidentesController implements Initializable {
     }
     
     void readFilter(String id){
-        System.out.println("Enté al readFilter.");
         Accidentes filter = new Accidentes();
         clearTable();
         updateFillTable(filter.filterAccident(id));
@@ -444,6 +449,8 @@ public class VistaAccidentesController implements Initializable {
             txtReason.setDisable(false);
             txtPlace.setDisable(false);
             date.setDisable(false);
+            ResultSet r = null;
+            updateFillTable(r);
         }
     }
     

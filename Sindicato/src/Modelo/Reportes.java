@@ -151,6 +151,7 @@ public class Reportes {
     }
 
     public boolean eliminarReporte(int id) {
+        this.Id = id;
         String sql = "DELETE FROM Reportes WHERE Id=?";
         conexion = new ConexionAccess();
         conexion.conectar();
@@ -174,7 +175,6 @@ public class Reportes {
 
     public ResultSet filtrarReporte(String id) {
         ResultSet resultado = null;
-        System.out.println("Entró al filtro de reportes.");
         conexion = new ConexionAccess();
         conexion.conectar();
         try { //Este SQL contiene todo lo que necesito para traerme la lista de lo que quiero (Checar en el controller, parte: actualizarBD).
@@ -183,7 +183,6 @@ public class Reportes {
             ps.setString(1, id);
             resultado = ps.executeQuery();
         } catch (SQLException ex) {
-            System.out.println("No entró. Revísalo.");
             ex.printStackTrace();
         }
         return resultado;

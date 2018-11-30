@@ -73,7 +73,7 @@ public class VistaReportesController implements Initializable {
     private GridPane DatePickerPanel;
     private final DatePicker date;
     ManejadorEventos eventoFiltro;
-    private boolean filtroActivo; //Filtro del changeListener.
+    private boolean filtroActivo;
     private Alert alert;
     ObservableList<String> boxOpciones
             = FXCollections.observableArrayList("General", "Inspección", "Tacografía",
@@ -87,6 +87,12 @@ public class VistaReportesController implements Initializable {
     public void setParameters(Empleado employee, ConexionAccess conexion) {
         this.employee = employee;
         this.conexionBD = conexion;
+        /*Actas y acuerdos 6, Trabajo 5 */
+        if(this.employee.getType() != 6 && this.employee.getType() != 5){
+            btnAgregar.setDisable(true);
+            btnEliminar.setDisable(true);
+            btnModificar.setDisable(true);
+        }
     }
 
     void asignarID() {
@@ -182,7 +188,6 @@ public class VistaReportesController implements Initializable {
 
                 Optional<ButtonType> result = confirm.showAndWait();
 
-                System.out.println(idConductor);
                 if (result.get() == ButtonType.OK) {
                     if(isIdConductorCorrect()){
                         try {
@@ -418,6 +423,7 @@ public class VistaReportesController implements Initializable {
             btnModificar.setDisable(true);
 
             txtConductor.textProperty().addListener(eventoFiltro);
+            txtConductor.setPromptText("Buscar conductor...");
             txtDescripcion.setDisable(true);
             txtReporte.setDisable(true);
             txtLugar.setDisable(true);
@@ -429,11 +435,14 @@ public class VistaReportesController implements Initializable {
             btnEliminar.setDisable(false);
             btnModificar.setDisable(false);
             txtConductor.textProperty().removeListener(eventoFiltro);
+            txtConductor.setPromptText("XXXXXXX");
             txtDescripcion.setDisable(false);
             txtLugar.setDisable(false);
             txtDescripcion.setDisable(false);
             comboBox.setDisable(false);
             date.setDisable(false);
+            ResultSet r = null;
+            actualizarTablaBD(r);
         }
     }
 
@@ -441,8 +450,7 @@ public class VistaReportesController implements Initializable {
     private void leerFiltro(String idConductor) {
         Reportes filtro = new Reportes();
         LimpiarTabla();
-        actualizarTablaBD(filtro.filtrarReporte(idConductor)); //Checa en Modelo -> Reportes.
-
+            actualizarTablaBD(filtro.filtrarReporte(idConductor));
     }
 
     class ManejadorEventos implements ChangeListener { //Manejador de eventos para el changelistener.

@@ -102,6 +102,7 @@ public class Accidentes {
     }
 
     public boolean insertAccident(String id) {
+        this.IdEmpleado= id;
         String sql = "INSERT INTO Accidentes(IdConductor,IdEmpleado,Fecha,Lugar,Motivo, "
                 + "Detalles, Observaciones) VALUES(?,?,?,?,?,?,?)";
         conexion = new ConexionAccess();
@@ -171,7 +172,6 @@ public class Accidentes {
 
     public ResultSet filterAccident(String id)
     {
-        System.out.println("Entré al resultset.");
         ResultSet rs = null;
         conexion = new ConexionAccess();
         conexion.conectar();
