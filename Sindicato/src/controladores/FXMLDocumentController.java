@@ -73,6 +73,7 @@ public class FXMLDocumentController implements Initializable {
         loader.load();
         VistaAccidentesController document = loader.getController();
         document.setParameters(employee, conexion);
+        
         Parent p = loader.getRoot();
         Scene scene = new Scene(p);
         Stage s = (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -14,7 +14,7 @@
       <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #030014">
           <children>
-            <Button layoutX="7.0" layoutY="16.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="64.0" styleClass="back" text="" />
+            <Button fx:id="btnBack" layoutX="7.0" layoutY="16.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="62.0" prefWidth="64.0" styleClass="back" text="" />
             <AnchorPane layoutX="1125.0" layoutY="0.0" prefHeight="342.0" prefWidth="219.0" style="-fx-background-color: #cacab8" styleClass="panelButtons">
               <children>
                 <Button fx:id="btnAgregar" layoutX="71.0" layoutY="14.0" mnemonicParsing="false" onAction="#agregarReporte" prefHeight="77.00009999999747" prefWidth="82.0" styleClass="btnAdd" text="" />

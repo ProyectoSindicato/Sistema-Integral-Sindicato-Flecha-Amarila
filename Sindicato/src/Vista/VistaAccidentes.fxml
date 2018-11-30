@@ -60,7 +60,7 @@
                 <Button fx:id="btnSearch" layoutX="68.0" layoutY="263.0" mnemonicParsing="false" onAction="#handlerFilter" prefHeight="60.0" prefWidth="63.0" styleClass="btnSearch" text="" />
               </children>
             </AnchorPane>
-            <Button layoutX="24.0" layoutY="41.0" mnemonicParsing="false" prefHeight="61.000099999997474" prefWidth="65.0" styleClass="back" text="" />
+            <Button fx:id="btnBack" layoutX="24.0" layoutY="41.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="61.000099999997474" prefWidth="65.0" styleClass="back" text="" />
           </children>
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">

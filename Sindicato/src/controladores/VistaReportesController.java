@@ -4,6 +4,7 @@ import ConexionAccess.ConexionAccess;
 import Empleado.Empleado;
 import Modelo.Reportes;
 import java.awt.HeadlessException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,10 +29,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -67,7 +73,7 @@ public class VistaReportesController implements Initializable {
     @FXML
     ComboBox<String> comboBox = new ComboBox<String>();
     @FXML
-    private Button btnAgregar, btnModificar, btnEliminar;
+    private Button btnAgregar, btnModificar, btnEliminar, btnBack;
 
     @FXML
     private GridPane DatePickerPanel;
@@ -93,11 +99,9 @@ public class VistaReportesController implements Initializable {
             btnEliminar.setDisable(true);
             btnModificar.setDisable(true);
         }
-    }
-
-    void asignarID() {
         txtUsuario.setText(employee.getIdEmpleado());
     }
+
 
     public VistaReportesController() {
         conexionBD = new ConexionAccess();
@@ -107,7 +111,8 @@ public class VistaReportesController implements Initializable {
     void cargarElementos() {
         comboBox.getItems().addAll(boxOpciones);
         DatePickerPanel.add(date, 0, 0);
-        //  txtUsuario.setDisable(true);
+        txtUsuario.setDisable(true);
+        txtReporte.setDisable(true);
     }
 
     /* SECCION FXMLLoader */
@@ -247,6 +252,22 @@ public class VistaReportesController implements Initializable {
         }
     }
 
+    @FXML
+    public void backDesk(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/Vista/FXMLDocument.fxml"));
+                        loader.load();
+                        FXMLDocumentController document = loader.getController();
+                        document.setParameters(employee,conexionBD);
+                        Parent p = loader.getRoot();
+                        Scene scene = new Scene(p);
+                        Stage s = (Stage)((Node)event.getSource()).getScene().getWindow();
+                        s.setScene(scene);
+                        s.setMaximized(true);
+                        s.setResizable(true);
+                        s.show();
+    }
+    
     /* 
         Sección 2. Manipulación de tableview y tablecolumn.
      */
@@ -371,7 +392,6 @@ public class VistaReportesController implements Initializable {
     void LimpiarCampos() {
         txtReporte.clear();
         txtConductor.clear();
-        txtUsuario.clear();
         txtLugar.clear();
         txtDescripcion.clear();
         comboBox.setValue("");
