@@ -24,11 +24,11 @@ public class Principal extends Application {
         stage.setResizable(false);*/
         ConexionAccess conexion = new ConexionAccess();
         conexion.conectar();
-        Empleado employee = new Empleado(4,"1234567");
+        Empleado employee = new Empleado(2,"12345");
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/Vista/VistaAsesoriaLegal.fxml"));
+        loader.setLocation(getClass().getResource("/Vista/Incapacidades.fxml"));
         loader.load();
-        VistaAsesoriaLegalController document = loader.getController();
+        IncapacidadesController document = loader.getController();
         document.setParameters(employee,conexion);
         document.fillTable("");
         Parent p = loader.getRoot();

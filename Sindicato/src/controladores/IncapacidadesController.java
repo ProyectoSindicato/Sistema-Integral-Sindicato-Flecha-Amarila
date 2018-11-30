@@ -246,12 +246,16 @@ public class IncapacidadesController implements Initializable {
         if(!search){
             search = true;
             clearFields();
-            agregar.setDisable(true);
+            if(this.employee.getType() == 0 && this.employee.getType() == 4){
+                agregar.setDisable(true);
+            }
             claveConductorTextField.textProperty().addListener(searchListener);
         }else{
             search = false;
             clearFields();
-            agregar.setDisable(false);
+            if(this.employee.getType() == 0 && this.employee.getType() == 4){
+                agregar.setDisable(false);
+            }
             incapacidadesTabla.getItems().clear();
             fillTable("");
             claveConductorTextField.textProperty().removeListener(searchListener);
