@@ -9,25 +9,26 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import Empleado.Empleado;
 import controladores.IncapacidadesController;
+import controladores.VistaAsesoriaLegalController;
 
 public class Principal extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/Vista/Incapacidades.fxml"));
+        /*Parent root = FXMLLoader.load(getClass().getResource("/Vista/Incapacidades.fxml"));
         
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
         stage.show();
-        stage.setResizable(false);
-        /*ConexionAccess conexion = new ConexionAccess();
+        stage.setResizable(false);*/
+        ConexionAccess conexion = new ConexionAccess();
         conexion.conectar();
-        Empleado employee = new Empleado(0,"12345");
+        Empleado employee = new Empleado(4,"1234567");
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/Vista/Incapacidades.fxml"));
+        loader.setLocation(getClass().getResource("/Vista/VistaAsesoriaLegal.fxml"));
         loader.load();
-        IncapacidadesController document = loader.getController();
+        VistaAsesoriaLegalController document = loader.getController();
         document.setParameters(employee,conexion);
         document.fillTable("");
         Parent p = loader.getRoot();
@@ -35,7 +36,7 @@ public class Principal extends Application {
         stage.setScene(s);
         stage.setMaximized(true);
         stage.setResizable(true);
-        stage.show();*/
+        stage.show();
     }
 
     /**

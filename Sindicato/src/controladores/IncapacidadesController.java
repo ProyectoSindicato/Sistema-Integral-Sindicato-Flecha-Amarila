@@ -39,7 +39,7 @@ public class IncapacidadesController implements Initializable {
     private Alert alert;
     private Incapacidades incapacidades;
     private boolean search = false;
-    private int idIncapacidades = 1;
+    
     @FXML
     private GridPane fechaInicioDate,fechaFinDate;
     // Para obtener fechas se recure el DatePicker
@@ -185,7 +185,11 @@ public class IncapacidadesController implements Initializable {
                                     if(statement.executeUpdate() != 0){
                                         showAlert(AlertType.INFORMATION,"","Registro actualizado.");
                                         incapacidadesTabla.getItems().clear();
-                                        fillTable("");
+                                        if(!search){
+                                            fillTable("");
+                                        }else{
+                                            fillTable(claveConductorTextField.getText());
+                                        }
                                     }else{
                                         showAlert(AlertType.WARNING,"¡Ups!","Parece que algo salio mal, vuelve a intentarlo.");
                                     }
@@ -208,8 +212,6 @@ public class IncapacidadesController implements Initializable {
     }
     public void eliminar(){
         if(incapacidades != null){
-            LocalDate dateValue = date.getValue();
-            LocalDate dateValue2 = date2.getValue();
             try {
                 if(showAlertConfirmation("¿Esta seguro que desea eliminar el registro"
                 + "\ncon numero de clave \""+incapacidades.getClaveIncapacidad()
@@ -244,12 +246,12 @@ public class IncapacidadesController implements Initializable {
         if(!search){
             search = true;
             clearFields();
-            disableFields();
+            agregar.setDisable(true);
             claveConductorTextField.textProperty().addListener(searchListener);
         }else{
             search = false;
             clearFields();
-            enableFields();
+            agregar.setDisable(false);
             incapacidadesTabla.getItems().clear();
             fillTable("");
             claveConductorTextField.textProperty().removeListener(searchListener);
@@ -359,6 +361,7 @@ public class IncapacidadesController implements Initializable {
     }
     public void clearFields(){
         claveConductorTextField.clear();
+        claveConductorTextField.setPromptText("Ingresa clave");
         date.setValue(null);
         date2.setValue(null);
         motivoTextArea.clear();
@@ -368,7 +371,6 @@ public class IncapacidadesController implements Initializable {
         date2.setDisable(true);
         motivoTextArea.setDisable(true);
         agregar.setDisable(true);
-        modificar.setDisable(true);
     }
     public void enableFields(){
         date.setDisable(false);
