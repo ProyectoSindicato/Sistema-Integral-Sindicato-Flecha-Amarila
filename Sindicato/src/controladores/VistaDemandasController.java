@@ -52,7 +52,7 @@ public class VistaDemandasController implements Initializable{
     @FXML
     private TableView <Demandas> demandaTabla;
     @FXML
-    private TableColumn <Demandas, String> claveAsesoria;
+    private TableColumn <Demandas, String> claveDemanda;
     @FXML
     private TableColumn <Demandas, String> claveConductor;
     @FXML
@@ -120,7 +120,7 @@ public class VistaDemandasController implements Initializable{
         }
     }
     public void putData(){
-        claveAsesoria.setCellValueFactory(new PropertyValueFactory<>("ClaveDemanda"));
+        claveDemanda.setCellValueFactory(new PropertyValueFactory<>("ClaveDemanda"));
         claveConductor.setCellValueFactory(new PropertyValueFactory<>("ClaveConductor"));
         nombreConductor.setCellValueFactory(new PropertyValueFactory<>("NombreConductor"));
         fecha.setCellValueFactory(new PropertyValueFactory<>("Fecha"));

@@ -11,8 +11,16 @@ import Empleado.Empleado;
 import controladores.IncapacidadesController;
 import controladores.VistaAsesoriaLegalController;
 import controladores.VistaDemandasController;
+import controladores.VistaMantenimientoController;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
 
 public class Principal extends Application {
+    private PreparedStatement statement;
+    private ResultSet result;
+    private ConexionAccess conexion;
+    
     @Override
     public void start(Stage stage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
@@ -22,13 +30,13 @@ public class Principal extends Application {
         
         stage.setScene(scene);
         stage.show();*/
-       ConexionAccess conexion = new ConexionAccess();
+        ConexionAccess conexion = new ConexionAccess();
         conexion.conectar();
-        Empleado employee = new Empleado(4,"1234567");
+        Empleado employee = new Empleado(5,"123456789");
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/Vista/VistaDemandas.fxml"));
+        loader.setLocation(getClass().getResource("/Vista/VistaMantenimiento.fxml"));
         loader.load();
-        VistaDemandasController document = loader.getController();
+        VistaMantenimientoController document = loader.getController();
         document.setParameters(employee,conexion);
         document.fillTable("");
         Parent p = loader.getRoot();
