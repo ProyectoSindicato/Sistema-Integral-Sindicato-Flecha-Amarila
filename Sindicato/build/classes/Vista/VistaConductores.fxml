@@ -31,17 +31,17 @@
                         <URL value="@../images/ConductoresStyle.css" />
                       </stylesheets>
                     </Button>
-                    <Button fx:id="btnEditar" layoutX="24.0" layoutY="99.0" mnemonicParsing="false" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnModify" text="">
+                    <Button fx:id="btnEditar" layoutX="24.0" layoutY="99.0" mnemonicParsing="false" onAction="#modificarReporte" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnModify" text="">
                       <stylesheets>
                         <URL value="@../images/ConductoresStyle.css" />
                       </stylesheets>
                     </Button>
-                    <Button fx:id="btnEliminar" layoutX="24.0" layoutY="181.0" mnemonicParsing="false" onAction="#eliminarConductor" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnDelete" text="">
+                    <Button fx:id="btnEliminar" layoutX="24.0" layoutY="181.0" mnemonicParsing="false" onAction="#eliminarReporte" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnDelete" text="">
                       <stylesheets>
                         <URL value="@../images/ConductoresStyle.css" />
                       </stylesheets>
                     </Button>
-                    <Button fx:id="btnBuscar" layoutX="24.0" layoutY="263.0" mnemonicParsing="false" onAction="#filtrarMateria" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnSearch" text="">
+                    <Button fx:id="btnBuscar" layoutX="24.0" layoutY="263.0" mnemonicParsing="false" prefHeight="67.9609375" prefWidth="86.0" styleClass="null, null, btnSearch" text="">
                       <stylesheets>
                         <URL value="@../images/ConductoresStyle.css" />
                       </stylesheets>
@@ -57,7 +57,7 @@
                       <content>
                         <Pane prefHeight="348.0" prefWidth="1227.0" style="-fx-background-color: gray">
                           <children>
-                            <GridPane fx:id="gridPaneDatosGenerales" gridLinesVisible="false" layoutX="128.0" layoutY="25.0" prefHeight="265.0390625" prefWidth="396.0" style="" styleClass="gridSection">
+                            <GridPane fx:id="gridPaneDatosGenerales" gridLinesVisible="false" layoutX="196.0" layoutY="25.0" prefHeight="265.0390625" prefWidth="396.0" style="" styleClass="gridSection">
                               <children>
                                 <Label alignment="CENTER" prefWidth="366.0" text="Datos Generales" textFill="WHITE" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0">
                                   <font>
@@ -164,7 +164,7 @@
                                 <URL value="@../images/ConductoresStyle.css" />
                               </stylesheets>
                             </GridPane>
-                            <GridPane id="DatePickerPanel" fx:id="gridPaneSindicato" gridLinesVisible="false" layoutX="558.0" layoutY="12.0" prefHeight="290.0" prefWidth="435.0" style="" styleClass="gridSection">
+                            <GridPane id="DatePickerPanel" fx:id="gridPaneSindicato" gridLinesVisible="false" layoutX="626.0" layoutY="12.0" prefHeight="290.0" prefWidth="435.0" style="" styleClass="gridSection">
                               <children>
                                 <Label alignment="CENTER" font="$x2" prefWidth="396.0" text="Sindicato" textFill="WHITE" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0" />
                                 <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Fecha de ingreso" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1">
@@ -263,6 +263,36 @@
                                 <URL value="@../images/ConductoresStyle.css" />
                               </stylesheets>
                             </GridPane>
+                            <GridPane id="gridPaneDatosGenerales" gridLinesVisible="false" layoutX="14.0" layoutY="25.0" prefHeight="121.9609375" prefWidth="160.0" style="" styleClass="gridSection">
+                              <children>
+                                <Label alignment="CENTER" font="$x2" prefWidth="366.0" text="ID Conductor" textFill="WHITE" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0" />
+                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="ID" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                  <stylesheets>
+                                    <URL value="@../images/ConductoresStyle.css" />
+                                  </stylesheets>
+                                </Label>
+                                <TextField id="txtApellidoPaterno" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                  <stylesheets>
+                                    <URL value="@../images/ConductoresStyle.css" />
+                                  </stylesheets>
+                                </TextField>
+                              </children>
+                              <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="25.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="311.0" minWidth="10.0" prefWidth="97.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="149.0" minWidth="0.0" prefWidth="6.0" />
+                              </columnConstraints>
+                              <padding>
+                                <Insets />
+                              </padding>
+                              <rowConstraints>
+                                <RowConstraints maxHeight="42.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="42.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                              </rowConstraints>
+                              <stylesheets>
+                                <URL value="@../images/ConductoresStyle.css" />
+                              </stylesheets>
+                            </GridPane>
                           </children>
                         </Pane>
                       </content>
@@ -271,50 +301,20 @@
                       <content>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: gray">
                           <children>
-                            <GridPane gridLinesVisible="false" layoutX="257.0" layoutY="11.0" prefHeight="290.9999915527369" prefWidth="378.0" style="" styleClass="gridSection">
+                            <GridPane gridLinesVisible="false" layoutX="257.0" layoutY="13.0" prefHeight="290.9999915527369" prefWidth="382.0" style="" styleClass="gridSection">
                               <children>
-                                <Label alignment="CENTER" font="$x2" prefWidth="258.0" text="Domicilio" textFill="WHITE" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Calle" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <Label alignment="CENTER" font="$x2" prefWidth="352.0" text="Domicilio" textFill="WHITE" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0" />
+                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Estado" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1">
                                   <stylesheets>
                                     <URL value="@../images/ConductoresStyle.css" />
                                   </stylesheets>
                                 </Label>
-                                <TextField fx:id="txtCalle" prefWidth="200.0" promptText="Calle #100" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                  <stylesheets>
-                                    <URL value="@../images/ConductoresStyle.css" />
-                                  </stylesheets>
-                                </TextField>
-                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Colonia" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Calle" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="4">
                                   <stylesheets>
                                     <URL value="@../images/ConductoresStyle.css" />
                                   </stylesheets>
                                 </Label>
-                                <TextField fx:id="txtColonia" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                  <stylesheets>
-                                    <URL value="@../images/ConductoresStyle.css" />
-                                  </stylesheets>
-                                </TextField>
-                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Código postal" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                                  <stylesheets>
-                                    <URL value="@../images/ConductoresStyle.css" />
-                                  </stylesheets>
-                                </Label>
-                                <TextField fx:id="txtCP" prefWidth="200.0" promptText="XXXXX" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                  <stylesheets>
-                                    <URL value="@../images/ConductoresStyle.css" />
-                                  </stylesheets>
-                                </TextField>
-                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Estado" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="4">
-                                  <stylesheets>
-                                    <URL value="@../images/ConductoresStyle.css" />
-                                  </stylesheets>
-                                </Label>
-                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Ciudad" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="5">
-                                  <stylesheets>
-                                    <URL value="@../images/ConductoresStyle.css" />
-                                  </stylesheets>
-                                </Label>
-                                <ComboBox fx:id="cbxEstado" onAction="#cbxEstadoUpdated" prefHeight="21.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                <ComboBox fx:id="cbxEstado" onAction="#cbxEstadoUpdated" prefHeight="21.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Item 1" />
@@ -323,7 +323,17 @@
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
-                                <ComboBox fx:id="cbxCiudad" disable="false" prefHeight="21.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                <TextField fx:id="txtCalle" prefWidth="200.0" promptText="" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                  <stylesheets>
+                                    <URL value="@../images/ConductoresStyle.css" />
+                                  </stylesheets>
+                                </TextField>
+                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Ciudad" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                  <stylesheets>
+                                    <URL value="@../images/ConductoresStyle.css" />
+                                  </stylesheets>
+                                </Label>
+                                <ComboBox fx:id="cbxCiudad" disable="false" prefHeight="21.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Item 1" />
@@ -332,16 +342,47 @@
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
+                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Colonia" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                                  <stylesheets>
+                                    <URL value="@../images/ConductoresStyle.css" />
+                                  </stylesheets>
+                                </Label>
+                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Código postal" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="6">
+                                  <stylesheets>
+                                    <URL value="@../images/ConductoresStyle.css" />
+                                  </stylesheets>
+                                </Label>
+                                <TextField fx:id="txtColonia" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                  <stylesheets>
+                                    <URL value="@../images/ConductoresStyle.css" />
+                                  </stylesheets>
+                                </TextField>
+                                <TextField fx:id="txtCP" maxWidth="-Infinity" prefWidth="52.0" promptText="XXXXX" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                  <stylesheets>
+                                    <URL value="@../images/ConductoresStyle.css" />
+                                  </stylesheets>
+                                </TextField>
+                                <Label font="$x1" prefHeight="28.0" prefWidth="125.0" text="Número exterior" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="5">
+                                  <stylesheets>
+                                    <URL value="@../images/ConductoresStyle.css" />
+                                  </stylesheets>
+                                </Label>
+                                <TextField id="txtCalle" fx:id="txtNumExt" maxWidth="-Infinity" prefWidth="42.0" promptText="" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                  <stylesheets>
+                                    <URL value="@../images/ConductoresStyle.css" />
+                                  </stylesheets>
+                                </TextField>
                               </children>
                               <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="93.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="238.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="177.0" minWidth="10.0" prefWidth="15.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="113.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="273.0" minWidth="10.0" prefWidth="227.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="177.0" minWidth="6.0" prefWidth="10.0" />
                               </columnConstraints>
                               <padding>
                                 <Insets />
                               </padding>
                               <rowConstraints>
+                                <RowConstraints maxHeight="42.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
                                 <RowConstraints maxHeight="42.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
                                 <RowConstraints maxHeight="42.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
                                 <RowConstraints maxHeight="42.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
@@ -450,20 +491,37 @@
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
           <children>
-            <TableView id="tblDatosMateria" fx:id="tblDatosConductor" layoutX="14.0" layoutY="2.0" onMouseClicked="#userClickedOnTable" prefHeight="341.0" prefWidth="1333.0">
+            <TableView id="tblDatosMateria" fx:id="tblDatosConductor" layoutX="14.0" layoutY="2.0" onMouseClicked="#tablaDomicilioAction" prefHeight="341.0" prefWidth="1333.0">
               <columns>
                 <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="47.0" text="ID" fx:id="tbcID" />
+                <TableColumn prefWidth="130.0" text="Nombre(s)" fx:id="tbcNombres" />
                 <TableColumn prefWidth="105.0" text="Apellido Paterno" fx:id="tbcApellidoPaterno" />
                 <TableColumn prefWidth="105.0" text="Apellido Materno" fx:id="tbcApellidoMaterno" />
-                <TableColumn prefWidth="130.0" text="Nombre(s)" fx:id="tbcNombres" />
-                <TableColumn prefWidth="130.0" text="No. tarjeta" fx:id="tbcNoTajeta" />
-                <TableColumn prefWidth="130.0" text="Base" />
-                <TableColumn prefWidth="130.0" text="Servicio" />
-                <TableColumn prefWidth="130.0" text="Fecha de nacimiento" />
-                <TableColumn prefWidth="130.0" text="Lugar de nacimiento" />
-                <TableColumn prefWidth="90.0" text="Estado civil" />
-                <TableColumn prefWidth="100.0" text="Teléfono" />
-                <TableColumn prefWidth="190.0" text="Domicilio" />
+                <TableColumn prefWidth="70.0" text="ID Licencia" fx:id="tbcIdLicencia" />
+                <TableColumn prefWidth="100.0" text="Fecha expiración" fx:id="tbcFechaExpiracion" />
+                <TableColumn prefWidth="110.0" text="Fecha expedición" fx:id="tbcFechaExpedicion" />
+                <TableColumn prefWidth="130.0" text="Base" fx:id="tbcBase" />
+                <TableColumn prefWidth="130.0" text="Servicio" fx:id="tbcServicio" />
+                <TableColumn prefWidth="130.0" text="No. Cuenta" fx:id="tbcNoCuenta" />
+                <TableColumn prefWidth="75.0" text="ID Domicilio" fx:id="tbcIdDomicilio" />
+                <TableColumn prefWidth="130.0" text="Estado" fx:id="tbcEstado" />
+                <TableColumn prefWidth="130.0" text="Ciudad" fx:id="tbcCiudad" />
+                <TableColumn prefWidth="130.0" text="Colonia" fx:id="tbcColonia" />
+                <TableColumn prefWidth="130.0" text="Calle" fx:id="tbcCalle" />
+                <TableColumn prefWidth="90.0" text="Número ext" fx:id="tbcNumExt" />
+                <TableColumn prefWidth="90.0" text="Código postal" fx:id="tbcCp" />
+                <TableColumn prefWidth="130.0" text="Fecha de nacimiento" fx:id="tbcFechaNacimiento" />
+                <TableColumn prefWidth="130.0" text="Lugar de nacimiento" fx:id="tbcLugarNacimiento" />
+                <TableColumn prefWidth="90.0" text="Estado civil" fx:id="tbcEstadoCivil" />
+                <TableColumn prefWidth="100.0" text="Teléfono" fx:id="tbcTelefono" />
+                <TableColumn prefWidth="100.0" text="FechaIngreso" fx:id="tbcFechaIngreso" />
+                <TableColumn prefWidth="100.0" text="FechaSindicato" fx:id="tbcFechaSidicato" />
+                <TableColumn prefWidth="100.0" text="Estudios" fx:id="tbcEstudios" />
+                <TableColumn prefWidth="100.0" text="Numero IMSS" fx:id="tbcNoIMSS" />
+                <TableColumn prefWidth="100.0" text="Afore" fx:id="tbcAfore" />
+                <TableColumn prefWidth="100.0" text="CURP" fx:id="tbcCURP" />
+                <TableColumn prefWidth="100.0" text="RFC" fx:id="tbcRFC" />
+                <TableColumn prefWidth="100.0" text="Clave de Elector" fx:id="tbcClaveElector" />
               </columns>
             </TableView>
           </children>
