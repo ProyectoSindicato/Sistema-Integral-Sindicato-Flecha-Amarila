@@ -215,9 +215,11 @@ public class VistaReportesController implements Initializable {
                     }
                     }
                 }
+            } else{
+                showAlert(AlertType.WARNING, "Warning Message", " Favor de llenar todos los campos.");
             }
         } else {
-            showAlert(AlertType.WARNING, "Warning Message", " El reporte se ha ingresado correctamente.");
+            showAlert(AlertType.WARNING, "Warning Message", " Favor de seleccionar un reporte.");
         }
     }
 
@@ -361,13 +363,6 @@ public class VistaReportesController implements Initializable {
         colDate.setCellValueFactory(new PropertyValueFactory<>("Fecha"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("Descripcion"));
         colLugar.setCellValueFactory(new PropertyValueFactory<>("Lugar"));
-    }
-
-    void ActualizaRefresca() {
-        ResultSet r = null;
-        LimpiarTabla();
-        actualizarTablaBD(r);
-        LimpiarCampos();
     }
 
     public void insertarYRefrescar() {

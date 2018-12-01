@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane prefHeight="695.0" prefWidth="1360.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controladores.VistaInfraccionesController">
+  <content>
+    <SplitPane dividerPositions="0.5" focusTraversable="true" orientation="VERTICAL" prefHeight="694.0" prefWidth="1359.0">
+      <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: GRAY">
+          <children>
+            <AnchorPane layoutX="1145.0" layoutY="1.0" prefHeight="343.0" prefWidth="200.0" style="" styleClass="panelButtons">
+              <children>
+                <Button fx:id="btnAgregar" layoutX="63.0" layoutY="14.0" mnemonicParsing="false" onAction="#agregarInfraccion" prefHeight="70.0" prefWidth="74.0" styleClass="btnAdd" text="" />
+                <Button fx:id="btnModificar" layoutX="67.0" layoutY="93.0" mnemonicParsing="false" onAction="#modificarInfraccion" prefHeight="70.0" prefWidth="70.0" styleClass="btnModify" text="" />
+                <Button fx:id="btnEliminar" layoutX="71.0" layoutY="172.0" mnemonicParsing="false" onAction="#eliminarInfraccion" prefHeight="69.99990844726562" prefWidth="70.0" styleClass="btnDelete" text="" />
+                <Button fx:id="btnBuscar" layoutX="67.0" layoutY="258.0" mnemonicParsing="false" onAction="#handleFiltro" prefHeight="70.00009999999747" prefWidth="73.9998779296875" styleClass="btnSearch" text="" />
+              </children>
+            </AnchorPane>
+            <AnchorPane layoutX="123.0" layoutY="35.0" prefHeight="274.0" prefWidth="310.0" styleClass="gridSection">
+              <children>
+                <GridPane fx:id="datePickerPanel" layoutX="14.0" layoutY="19.0" prefHeight="236.0" prefWidth="282.0">
+                  <children>
+                    <Label text="ID Infracción:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label text="ID Conductor:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label text="Fecha:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <TextField fx:id="txtInfraccion" prefWidth="200.0" promptText="XXX-XXX-XXX" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <TextField fx:id="txtConductor" prefWidth="200.0" promptText="XXX-XXX-XXX" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label text="ID Empleado:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="txtAutobus" prefWidth="200.0" promptText="XXX-XXX-XXX" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <TextField fx:id="txtDirector" prefWidth="200.0" promptText="" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="ID Autobús:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                  </children>
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                </GridPane>
+              </children>
+            </AnchorPane>
+            <AnchorPane layoutX="517.0" layoutY="35.0" prefHeight="280.0" prefWidth="479.0">
+              <children>
+                <Label layoutX="34.0" layoutY="14.0" text="Motivo:" />
+                <TextArea fx:id="txtMotivo" layoutX="14.0" layoutY="38.0" prefHeight="236.0" prefWidth="437.0" wrapText="true" />
+              </children>
+            </AnchorPane>
+            <Button fx:id="btnBack" layoutX="29.0" layoutY="41.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="63.0" styleClass="back" text="" />
+          </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <children>
+            <TableView fx:id="tablaInfraccion" onMousePressed="#tablaInfraccionAction" prefHeight="343.0" prefWidth="1357.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="116.0" text="ID Infracción" fx:id="colID" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="113.0" text="ID Autobús" fx:id="colBus" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="113.0" text="ID Conductor" fx:id="colConductor" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="181.0" text="Fecha" fx:id="colFecha" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="821.0" text="Motivo" fx:id="colMotivo" />
+              </columns>
+            </TableView>
+          </children>
+        </AnchorPane>
+      </items>
+    </SplitPane>
+  </content>
+  <stylesheets>
+    <URL value="@../images/ConductoresStyle.css" />
+  </stylesheets>
+</ScrollPane>
