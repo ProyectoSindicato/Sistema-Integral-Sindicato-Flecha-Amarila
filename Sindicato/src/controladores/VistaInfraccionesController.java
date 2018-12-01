@@ -3,6 +3,7 @@ package controladores;
 import ConexionAccess.ConexionAccess;
 import Empleado.Empleado;
 import Modelo.Infracciones;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -28,6 +33,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -56,7 +62,7 @@ public class VistaInfraccionesController implements Initializable {
         this.employee = employee;
         this.conexionBD = conexion;
         /*Modificar esto. */
-        if(this.employee.getType() != 6){
+        if(this.employee.getType() != 0 && this.employee.getType() != 4 && this.employee.getType() != 1 ){
             btnAgregar.setDisable(true);
             btnEliminar.setDisable(true);
             btnModificar.setDisable(true);
@@ -73,6 +79,8 @@ public class VistaInfraccionesController implements Initializable {
        datePickerPanel.add(date, 1, 4);
        txtInfraccion.setDisable(true);
        date.setValue(LocalDate.now());
+       txtInfraccion.setDisable(true);
+       txtDirector.setDisable(true);
    }
     
     @Override
@@ -204,6 +212,21 @@ public class VistaInfraccionesController implements Initializable {
         }
     }
     
+    @FXML
+    public void backDesk(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/Vista/FXMLDocument.fxml"));
+                        loader.load();
+                        FXMLDocumentController document = loader.getController();
+                        document.setParameters(employee,conexionBD);
+                        Parent p = loader.getRoot();
+                        Scene scene = new Scene(p);
+                        Stage s = (Stage)((Node)event.getSource()).getScene().getWindow();
+                        s.setScene(scene);
+                        s.setMaximized(true);
+                        s.setResizable(true);
+                        s.show();
+    }
     /* Sección 3. Manipulación de tableview y tablecolumn.*/
     
      @FXML
@@ -318,7 +341,7 @@ public class VistaInfraccionesController implements Initializable {
             ResultSet r = null;
             actualizarTablaBD(r);
         } catch (Exception error) {
-            showAlert(AlertType.ERROR, "Error Message", " No se ha seleccionado ningún reporte. Favor de seleccionar.");
+            showAlert(AlertType.ERROR, "Error Message", " No se ha seleccionado ninguna Infracción. Favor de seleccionar.");
         }
     }
     

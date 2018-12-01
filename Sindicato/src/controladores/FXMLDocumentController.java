@@ -34,7 +34,7 @@ public class FXMLDocumentController implements Initializable {
     private Label label;
 
     @FXML
-    private Button btnButton1, btnReporte, btnAccidentes;
+    private Button btnButton1, btnReporte, btnAccidentes, btnInfracciones;
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -83,6 +83,23 @@ public class FXMLDocumentController implements Initializable {
         s.show();
     }
     
+    @FXML 
+    void handleInfracciones(ActionEvent event) throws IOException{
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/Vista/VistaInfracciones.fxml"));
+        loader.load();
+        VistaInfraccionesController document = loader.getController();
+        document.setParameters(employee, conexion);
+        Parent p = loader.getRoot();
+        Scene scene = new Scene(p);
+        Stage s = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        s.setScene(scene);
+        s.setMaximized(true);
+        s.setResizable(true);
+        s.show();
+    }
     
     
     

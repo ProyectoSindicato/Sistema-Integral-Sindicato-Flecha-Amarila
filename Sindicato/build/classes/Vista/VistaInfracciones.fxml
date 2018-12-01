@@ -55,7 +55,7 @@
                 <TextArea fx:id="txtMotivo" layoutX="14.0" layoutY="38.0" prefHeight="236.0" prefWidth="437.0" wrapText="true" />
               </children>
             </AnchorPane>
-            <Button fx:id="btnBack" layoutX="29.0" layoutY="41.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="63.0" styleClass="back" text="" />
+            <Button fx:id="btnBack" layoutX="29.0" layoutY="41.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="65.0" prefWidth="63.0" styleClass="back" text="" />
           </children>
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">

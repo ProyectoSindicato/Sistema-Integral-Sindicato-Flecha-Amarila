@@ -94,7 +94,7 @@ public class VistaReportesController implements Initializable {
         this.employee = employee;
         this.conexionBD = conexion;
         /*Actas y acuerdos 6, Trabajo 5 */
-        if(this.employee.getType() != 6 && this.employee.getType() != 5){
+        if(this.employee.getType() != 6 && this.employee.getType() != 5 && this.employee.getType() != 1){
             btnAgregar.setDisable(true);
             btnEliminar.setDisable(true);
             btnModificar.setDisable(true);
@@ -243,7 +243,7 @@ public class VistaReportesController implements Initializable {
                         eliminarYActualizar();
                         showAlert(AlertType.INFORMATION, "Information Message", " El reporte ha sido eliminado correctamente.");
                     } else {
-                        showAlert(AlertType.ERROR, "Error Message", " Error al modificar reporte.");
+                        showAlert(AlertType.ERROR, "Error Message", " Error al eliminar reporte.");
                     }
                 }
             } else if (txtReporte.getText().equals("")) {

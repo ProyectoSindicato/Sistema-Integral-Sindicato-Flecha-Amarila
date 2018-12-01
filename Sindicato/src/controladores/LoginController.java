@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -31,6 +32,7 @@ public class LoginController implements Initializable {
     private PreparedStatement sentencia;
     private ResultSet result;
     private Parent root;
+    private Alert alert;
     @FXML
     private Button login;
     @FXML
@@ -88,7 +90,7 @@ public class LoginController implements Initializable {
                         s.setResizable(true);
                         s.show();
                     } else {
-                        System.out.println("Usuario o contraseña incorrecto");
+                          showAlert(Alert.AlertType.WARNING, "Warning Message", " Usuario o contraseña incorrecto.");
                     }
                 } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
@@ -96,10 +98,10 @@ public class LoginController implements Initializable {
                     System.out.println(ex.getMessage());
                 }
             } else {
-                System.out.println("Por favor llena todos los campos");
+                showAlert(Alert.AlertType.WARNING, "Warning Message", " Favor de completar todos los campos.");
             }
         } else {
-            System.out.println("Imposible conectar a la base de datos");
+              showAlert(Alert.AlertType.ERROR, "Error Message", "Imposible conectarse a la base de datos. Error en sistema.");
         }
     }
     /*
@@ -136,7 +138,7 @@ public class LoginController implements Initializable {
                     employee = new Empleado(result.getInt(1), idEmpleado);
                     return result.getInt(1);
                 } else {
-                    System.out.println("Usuario no definido");
+                      showAlert(Alert.AlertType.NONE, "None Message", "Usuario no definido. Contactar al administrador.");
                 }
             }
         } catch (SQLException ex) {
@@ -149,4 +151,12 @@ public class LoginController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
     }
+    
+    public void showAlert(Alert.AlertType error, String header, String body) {
+        alert = new Alert(error);
+        alert.setTitle(header);
+        alert.setHeaderText(body);
+        alert.showAndWait();
+    }
+    
 }
