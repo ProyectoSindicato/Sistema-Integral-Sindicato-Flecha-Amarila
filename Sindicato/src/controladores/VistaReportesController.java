@@ -4,6 +4,7 @@ import ConexionAccess.ConexionAccess;
 import Empleado.Empleado;
 import Modelo.Reportes;
 import java.awt.HeadlessException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,10 +29,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -67,13 +73,13 @@ public class VistaReportesController implements Initializable {
     @FXML
     ComboBox<String> comboBox = new ComboBox<String>();
     @FXML
-    private Button btnAgregar, btnModificar, btnEliminar;
+    private Button btnAgregar, btnModificar, btnEliminar, btnBack;
 
     @FXML
     private GridPane DatePickerPanel;
     private final DatePicker date;
     ManejadorEventos eventoFiltro;
-    private boolean filtroActivo; //Filtro del changeListener.
+    private boolean filtroActivo;
     private Alert alert;
     ObservableList<String> boxOpciones
             = FXCollections.observableArrayList("General", "Inspección", "Tacografía",
@@ -87,11 +93,15 @@ public class VistaReportesController implements Initializable {
     public void setParameters(Empleado employee, ConexionAccess conexion) {
         this.employee = employee;
         this.conexionBD = conexion;
-    }
-
-    void asignarID() {
+        /*Actas y acuerdos 6, Trabajo 5 */
+        if(this.employee.getType() != 6 && this.employee.getType() != 5 && this.employee.getType() != 1){
+            btnAgregar.setDisable(true);
+            btnEliminar.setDisable(true);
+            btnModificar.setDisable(true);
+        }
         txtUsuario.setText(employee.getIdEmpleado());
     }
+
 
     public VistaReportesController() {
         conexionBD = new ConexionAccess();
@@ -101,7 +111,8 @@ public class VistaReportesController implements Initializable {
     void cargarElementos() {
         comboBox.getItems().addAll(boxOpciones);
         DatePickerPanel.add(date, 0, 0);
-        //  txtUsuario.setDisable(true);
+        txtUsuario.setDisable(true);
+        txtReporte.setDisable(true);
     }
 
     /* SECCION FXMLLoader */
@@ -182,7 +193,6 @@ public class VistaReportesController implements Initializable {
 
                 Optional<ButtonType> result = confirm.showAndWait();
 
-                System.out.println(idConductor);
                 if (result.get() == ButtonType.OK) {
                     if(isIdConductorCorrect()){
                         try {
@@ -205,9 +215,11 @@ public class VistaReportesController implements Initializable {
                     }
                     }
                 }
+            } else{
+                showAlert(AlertType.WARNING, "Warning Message", " Favor de llenar todos los campos.");
             }
         } else {
-            showAlert(AlertType.WARNING, "Warning Message", " El reporte se ha ingresado correctamente.");
+            showAlert(AlertType.WARNING, "Warning Message", " Favor de seleccionar un reporte.");
         }
     }
 
@@ -231,7 +243,7 @@ public class VistaReportesController implements Initializable {
                         eliminarYActualizar();
                         showAlert(AlertType.INFORMATION, "Information Message", " El reporte ha sido eliminado correctamente.");
                     } else {
-                        showAlert(AlertType.ERROR, "Error Message", " Error al modificar reporte.");
+                        showAlert(AlertType.ERROR, "Error Message", " Error al eliminar reporte.");
                     }
                 }
             } else if (txtReporte.getText().equals("")) {
@@ -242,6 +254,22 @@ public class VistaReportesController implements Initializable {
         }
     }
 
+    @FXML
+    public void backDesk(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/Vista/FXMLDocument.fxml"));
+                        loader.load();
+                        FXMLDocumentController document = loader.getController();
+                        document.setParameters(employee,conexionBD);
+                        Parent p = loader.getRoot();
+                        Scene scene = new Scene(p);
+                        Stage s = (Stage)((Node)event.getSource()).getScene().getWindow();
+                        s.setScene(scene);
+                        s.setMaximized(true);
+                        s.setResizable(true);
+                        s.show();
+    }
+    
     /* 
         Sección 2. Manipulación de tableview y tablecolumn.
      */
@@ -337,13 +365,6 @@ public class VistaReportesController implements Initializable {
         colLugar.setCellValueFactory(new PropertyValueFactory<>("Lugar"));
     }
 
-    void ActualizaRefresca() {
-        ResultSet r = null;
-        LimpiarTabla();
-        actualizarTablaBD(r);
-        LimpiarCampos();
-    }
-
     public void insertarYRefrescar() {
         LimpiarTabla();
         ResultSet r = null; //Se regresa un nulo porque no lo estamos usando al momento de insertar o modificar.
@@ -366,7 +387,6 @@ public class VistaReportesController implements Initializable {
     void LimpiarCampos() {
         txtReporte.clear();
         txtConductor.clear();
-        txtUsuario.clear();
         txtLugar.clear();
         txtDescripcion.clear();
         comboBox.setValue("");
@@ -418,6 +438,7 @@ public class VistaReportesController implements Initializable {
             btnModificar.setDisable(true);
 
             txtConductor.textProperty().addListener(eventoFiltro);
+            txtConductor.setPromptText("Buscar conductor...");
             txtDescripcion.setDisable(true);
             txtReporte.setDisable(true);
             txtLugar.setDisable(true);
@@ -429,11 +450,14 @@ public class VistaReportesController implements Initializable {
             btnEliminar.setDisable(false);
             btnModificar.setDisable(false);
             txtConductor.textProperty().removeListener(eventoFiltro);
+            txtConductor.setPromptText("XXXXXXX");
             txtDescripcion.setDisable(false);
             txtLugar.setDisable(false);
             txtDescripcion.setDisable(false);
             comboBox.setDisable(false);
             date.setDisable(false);
+            ResultSet r = null;
+            actualizarTablaBD(r);
         }
     }
 
@@ -441,8 +465,7 @@ public class VistaReportesController implements Initializable {
     private void leerFiltro(String idConductor) {
         Reportes filtro = new Reportes();
         LimpiarTabla();
-        actualizarTablaBD(filtro.filtrarReporte(idConductor)); //Checa en Modelo -> Reportes.
-
+            actualizarTablaBD(filtro.filtrarReporte(idConductor));
     }
 
     class ManejadorEventos implements ChangeListener { //Manejador de eventos para el changelistener.
@@ -478,6 +501,5 @@ public class VistaReportesController implements Initializable {
             return false;
         }
     }
-    
-    
+//    
 }

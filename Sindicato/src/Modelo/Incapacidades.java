@@ -6,9 +6,9 @@ public class Incapacidades {
     private String fechaInicio;
     private String fechaFin;
     private String motivo;
-    private String nombreJefe;
     private String idEmpleado;
     private String claveIncapacidad;
+    private String nombreJefe;
     
     public String getClaveConductor() {
         return claveConductor;
@@ -50,14 +50,6 @@ public class Incapacidades {
         this.motivo = motivo;
     }
 
-    public String getNombreJefe() {
-        return nombreJefe;
-    }
-
-    public void setNombreJefe(String nombreJefe) {
-        this.nombreJefe = nombreJefe;
-    }
-
     public String getIdEmpleado() {
         return idEmpleado;
     }
@@ -72,6 +64,14 @@ public class Incapacidades {
 
     public void setClaveIncapacidad(String claveIncapacidad) {
         this.claveIncapacidad = claveIncapacidad;
+    }
+
+    public String getNombreJefe() {
+        return nombreJefe;
+    }
+
+    public void setNombreJefe(String nombreJefe) {
+        this.nombreJefe = nombreJefe;
     }
 
     

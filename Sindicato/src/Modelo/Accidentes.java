@@ -102,7 +102,8 @@ public class Accidentes {
     }
 
     public boolean insertAccident(String id) {
-        String sql = "INSERT INTO Accidentes(IdConductor,IdEmpleado,Fecha,Lugar,Motivo, "
+        this.IdEmpleado= id;
+        String sql = "INSERT INTO Accidentes(IdConductor,IdDirector,Fecha,Lugar,Motivo, "
                 + "Detalles, Observaciones) VALUES(?,?,?,?,?,?,?)";
         conexion = new ConexionAccess();
         conexion.conectar();
@@ -127,7 +128,7 @@ public class Accidentes {
 
     public boolean modifyAccident(String id) {
         this.IdEmpleado = id;
-        String sql = "UPDATE Accidentes SET IdConductor = ?, IdEmpleado =?, Fecha=?, Lugar=?, Motivo=?, Detalles=?, Observaciones=?"
+        String sql = "UPDATE Accidentes SET IdConductor = ?, IdDirector =?, Fecha=?, Lugar=?, Motivo=?, Detalles=?, Observaciones=?"
                 + "WHERE Id=?";
         conexion = new ConexionAccess();
         conexion.conectar();
@@ -171,12 +172,11 @@ public class Accidentes {
 
     public ResultSet filterAccident(String id)
     {
-        System.out.println("Entré al resultset.");
         ResultSet rs = null;
         conexion = new ConexionAccess();
         conexion.conectar();
         try{
-            String sql = "SELECT Id, IdConductor, IdEmpleado, Fecha, Lugar, Motivo, Detalles, Observaciones FROM Accidentes" +
+            String sql = "SELECT Id, IdConductor, IdDirector, Fecha, Lugar, Motivo, Detalles, Observaciones FROM Accidentes" +
                     " WHERE IdConductor =?";
             PreparedStatement ps = conexion.getConexion().prepareStatement(sql);
             ps.setString(1, id);
