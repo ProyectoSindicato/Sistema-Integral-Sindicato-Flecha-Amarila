@@ -14,27 +14,20 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import Modelo.Conductor;
-import Modelo.Domicilio;
-import Modelo.Reportes;
 import java.awt.HeadlessException;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -47,22 +40,28 @@ import javafx.scene.layout.GridPane;
 public class ConductoresController implements Initializable {
     
     ResultSetMetaData metadata = null;
+    ResultSetMetaData metadataId = null;
+    ResultSetMetaData metadataIdTel = null;
+    ManejadorEventos eventoFiltro;
     private final ConexionAccess conexionBD;
     double[] dimension;
     TextField[] txtCAMPOS;
     private boolean filtroActivo;
     //ManejadorFiltroKey manejador;
     private Alert alert;
+    int IDDomicilio, IDTelefono;
+    int idDom, idTel;
     
     @FXML
     private Button btnAgregar, btnEditar, btnEliminar, btnBuscar, btnLimpiar;
     
     @FXML
-    private TextField txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
-                      txtLugarNacimiento, txtTelefono, 
+    private TextField txtId, txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
+                      txtLugarNacimiento, txtTelefono, txtIdDomicilio,
                       txtColonia, txtCalle, txtNumExt, txtCP, 
                       txtEstudios, txtNoIMSS, txtAfore, txtCURP,
-                      txtRFC, txtClaveElector, txtNoTarjeta, txtBase, txtServicio;
+                      txtRFC, txtClaveElector, txtNoCuenta, txtBase, txtServicio, 
+                      txtIdLicencia, txtIdTelefono;
     
     private ToggleGroup tggGrupoEstadoCivil;
     
@@ -73,27 +72,28 @@ public class ConductoresController implements Initializable {
     private ComboBox cbxEstado, cbxCiudad;
     
     @FXML 
-    private GridPane gridPaneSindicato, gridPaneDatosGenerales;
+    private GridPane gridPaneSindicato, gridPaneDatosGenerales, gridPaneLicencia;
     
     @FXML 
     private SplitPane spConductores;
     
     @FXML
-    private DatePicker dpFechaNacimiento, dpFechaIngreso, dpFechaSindicato;
+    private DatePicker dpFechaNacimiento, dpFechaIngreso, dpFechaSindicato,
+                       dpFechaExpiracion, dpFechaExpedicion;
     
     @FXML
     private ImageView foto; 
     
     @FXML
-    private TableView<Domicilio> tblDatosConductor;
+    private TableView<Conductor> tblDatosConductor, tblIdDomicilio, tblIdTelefono;
     
     @FXML
-    private TableColumn<Domicilio, String> tbcID, tbcNombres, tbcApellidoPaterno, 
+    private TableColumn<Conductor, String> tbcID, tbcNombres, tbcApellidoPaterno, 
             tbcApellidoMaterno, tbcIdLicencia, tbcFechaExpiracion, tbcFechaExpedicion, 
             tbcBase, tbcServicio, tbcNoCuenta, tbcIdDomicilio, tbcEstado, tbcCiudad, 
             tbcColonia, tbcCalle, tbcNumExt, tbcCp, tbcFechaNacimiento, tbcLugarNacimiento,
             tbcEstadoCivil, tbcTelefono, tbcFechaIngreso, tbcFechaSidicato, tbcEstudios,
-            tbcNoIMSS, tbcAfore, tbcCURP, tbcRFC, tbcClaveElector;
+            tbcNoIMSS, tbcAfore, tbcCURP, tbcRFC, tbcClaveElector, tbcIdDomicilio2, tbcIdTelefono2;
     
     public ConductoresController() {
         conexionBD = new ConexionAccess();
@@ -103,18 +103,17 @@ public class ConductoresController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         dimension = new double[2];
         dimension = spConductores.getDividerPositions();
-        //spConductores.widthProperty().addListener(changeListener);
-        //spConductores.heightProperty().addListener(changeListener);
+ 
         filtroActivo = false;
         
         tggGrupoEstadoCivil = new ToggleGroup();
         rbtSoltero.setToggleGroup(tggGrupoEstadoCivil);
         rbtCasado.setToggleGroup(tggGrupoEstadoCivil);
         
-        txtCAMPOS = new TextField[]{txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
+        txtCAMPOS = new TextField[]{txtId, txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
                                     txtLugarNacimiento, txtTelefono, txtCalle, txtNumExt, txtColonia,
                                     txtCP, txtEstudios, txtNoIMSS, txtAfore, txtCURP,
-                                    txtRFC, txtClaveElector, txtNoTarjeta, txtBase, txtServicio};
+                                    txtRFC, txtClaveElector, txtIdLicencia,txtNoCuenta, txtBase, txtServicio};
         
         dpFechaNacimiento = new DatePicker();
         //dpFechaNacimiento.setValue(LocalDate.now());
@@ -122,10 +121,16 @@ public class ConductoresController implements Initializable {
         
         dpFechaIngreso = new DatePicker();
         dpFechaSindicato = new DatePicker();
+        
+        dpFechaExpiracion = new DatePicker();
+        dpFechaExpedicion = new DatePicker();
         //dpFechaIngreso.setValue(LocalDate.now());
         //dpFechaSindicato.setValue(LocalDate.now());
         gridPaneSindicato.add(dpFechaIngreso, 1, 1);     
         gridPaneSindicato.add(dpFechaSindicato, 1, 2);
+        
+        gridPaneLicencia.add(dpFechaExpiracion, 1, 2);
+        gridPaneLicencia.add(dpFechaExpedicion, 1, 3);
 
         cbxEstado.getItems().clear();
         cbxEstado.getItems().addAll("Aguascalientes","Baja California", "Baja California Sur",
@@ -155,8 +160,50 @@ public class ConductoresController implements Initializable {
         
         //manejador = new ManejadorFiltroKey();
         foto.setImage(new Image("FotosConductor/default-photo.png"));
-        foto.setOpacity(0.65);
+        foto.setOpacity(0.65);        
         llenarTablaBD();
+        eventoFiltro = new ManejadorEventos(); //Activamos el evento.   
+        tblIdDomicilio.setVisible(false);
+        tblIdTelefono.setVisible(false);
+        txtIdTelefono.setVisible(false);
+                
+        if(tblDatosConductor.getItems().size() > 0) obtenerSizeTabla();
+        else {
+            txtIdDomicilio.setText("1");        
+            IDDomicilio = 1;
+            txtIdDomicilio.setDisable(true);
+        }
+        
+        if(tblIdTelefono.getItems().size() > 0) obtenerSizeTablaTel();
+        else {
+            txtIdTelefono.setText("1");        
+            IDTelefono = 1;
+            txtIdTelefono.setDisable(true);
+        }
+    }
+    
+    public void obtenerSizeTabla() {
+        // obtener el ultimo id de la columna idDomicilio
+        int size = tblIdDomicilio.getItems().size() - 1;
+        //int idDom  = tblIdDomicilio.getItems().get(size).getIdDomicilio() + 1;
+        Object value = tblIdDomicilio.getColumns().get(0).getCellObservableValue(size).getValue();
+        idDom = (int)value + 1;
+        System.out.println("Valor ultimo IDDomicilio (siguiente valor): "+idDom);
+        txtIdDomicilio.setText(String.valueOf(idDom));        
+        IDDomicilio = idDom;
+        txtIdDomicilio.setDisable(true);
+        
+    }
+    
+    public void obtenerSizeTablaTel() {
+        // obtener el ultimo id de la columna idTelefono
+        int sizePhones = tblIdTelefono.getItems().size() - 1;
+        Object value2 = tblIdTelefono.getColumns().get(0).getCellObservableValue(sizePhones).getValue();
+        idTel = (int)value2 + 1;
+        System.out.println("Valor último IdTelefono (siguiente valor): "+idTel);
+        IDTelefono = idTel;
+        txtIdTelefono.setText(String.valueOf(idTel));
+        txtIdTelefono.setDisable(true);
     }
 
     public void cbxEstadoUpdated() {
@@ -2671,26 +2718,34 @@ public class ConductoresController implements Initializable {
         this.btnEditar.setDisable(false);
         //this.btnAgregar.setVisible(false);
         //this.btnLimpiar.setVisible(true);
-    }
-    
-    /*public void agregarConductor(ActionEvent e) {
-        //Prueba de agregado sin conexión a BD 
-        System.out.println("Agregar conductor");
-        int numeroConductores = tblDatosConductor.getItems().size() + 1;
-        Conductor nuevoConductor = new Conductor(numeroConductores+"",
-                                 txtApellidoPaterno.getText(),
-                                 txtApellidoMaterno.getText(),
-                                 txtNombres.getText(),
-                                 txtNoTarjeta.getText());
-       
-        tblDatosConductor.getItems().add(nuevoConductor);
-    }*/
+    }    
     
      @FXML
     public void agregarConductor(ActionEvent e) {
-        //Primero se agrega su domicilio
+        String idConductor = txtId.getText();
+        String nombres = txtNombres.getText();
+        String apellidoPaterno = txtApellidoPaterno.getText();
+        String apellidoMaterno = txtApellidoMaterno.getText();
+        LocalDate fechaNacimiento = dpFechaNacimiento.getValue();
+        String lugarNacimiento = txtLugarNacimiento.getText();
+        String estadoCivil = null;
+        if(tggGrupoEstadoCivil.getSelectedToggle() != null) {
+            RadioButton seleccion = (RadioButton) tggGrupoEstadoCivil.getSelectedToggle();
+            estadoCivil = seleccion.getText();
+        }
+       
+        LocalDate fechaIngreso = dpFechaIngreso.getValue();
+        LocalDate fechaSindicato = dpFechaSindicato.getValue();
+        String estudios = txtEstudios.getText();
+        String noIMSS = txtNoIMSS.getText();
+        String afore = txtAfore.getText();
+        String curp = txtCURP.getText();
+        String rfc = txtRFC.getText();
+        String claveElector = txtClaveElector.getText();
+        int idDomicilio = idDom;
         String estado = null;
         String ciudad = null;
+        
         if(cbxEstado.getValue() != null) {
             estado = cbxEstado.getSelectionModel().getSelectedItem().toString();
         }
@@ -2702,41 +2757,89 @@ public class ConductoresController implements Initializable {
         String calle = txtCalle.getText();
         String numeroExt = txtNumExt.getText();
         String cp = txtCP.getText();
-        System.out.println("Estado: "+estado);
-        System.out.println("Ciudad: "+ciudad);
-        System.out.println("Colonia: "+colonia);
-        System.out.println("Calle: "+calle);
-        System.out.println("Num: "+numeroExt);
-        System.out.println("CP: "+cp);
-        if ((estado != null) && (ciudad != null) && !colonia.equals("")
-                && !calle.equals("") && !numeroExt.equals("") && !cp.equals("")) {
+        
+        String idLicencia = txtIdLicencia.getText();
+        LocalDate fechaExpiracion = dpFechaExpiracion.getValue(); 
+        LocalDate fechaExpedicion = dpFechaExpedicion.getValue();
+        
+        String noCuenta = txtNoCuenta.getText();
+        String base = txtBase.getText();
+        String servicio = txtServicio.getText();
+        
+        int idTelefono = idTel;
+        String telefono = txtTelefono.getText();
+
+        if (estadoCivil != null && estado != null && ciudad != null && 
+            !idConductor.equals("") && !nombres.equals("") && !apellidoPaterno.equals("") &&
+            !apellidoMaterno.equals("") && fechaNacimiento != null && !lugarNacimiento.equals("") &&
+            fechaIngreso != null && fechaSindicato != null && !estudios.equals("") &&
+            !noIMSS.equals("") && !afore.equals("") && !curp.equals("") && !rfc.equals("") &&
+            !claveElector.equals("") &&
+            !colonia.equals("") && !telefono.equals("")
+            && !calle.equals("") && !numeroExt.equals("") && !cp.equals("")
+            && !idLicencia.equals("") && fechaExpiracion != null && fechaExpedicion != null
+            && !noCuenta.equals("") && !base.equals("") && !servicio.equals("")) {
 
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-            confirm.setContentText("¿Desea ingresar un domicilio?");
+            confirm.setContentText("¿Desea ingresar un conductor?");
             Optional<ButtonType> result = confirm.showAndWait();
 
             if (result.get() == ButtonType.OK) {
                 try {
-                    Domicilio bean = new Domicilio();
+                    Conductor bean = new Conductor();
+                    bean.setIdConductor(idConductor);
+                    bean.setNombres(nombres);
+                    bean.setApellidoPaterno(apellidoPaterno);
+                    bean.setApellidoMaterno(apellidoMaterno);
+                    bean.setFechaNacimiento(String.valueOf(fechaNacimiento));
+                    bean.setLugarNacimiento(lugarNacimiento);
+                    bean.setEstadoCivil(estadoCivil);
+                    
+                    bean.setFechaIngreso(String.valueOf(fechaIngreso));
+                    bean.setFechaSindicato(String.valueOf(fechaSindicato));
+                    bean.setEstudios(estudios);
+                    bean.setNoIMSS(noIMSS);
+                    bean.setAfore(afore);
+                    bean.setCurp(curp);
+                    bean.setRfc(rfc);
+                    bean.setClaveElector(claveElector);
+                    
+                    bean.setIdDomicilio(idDomicilio);
                     bean.setEstado(estado);
                     bean.setCiudad(ciudad);
                     bean.setColonia(colonia);
                     bean.setCalle(calle);
-                    bean.setNumero(Integer.parseInt(numeroExt));
-                    bean.setCp(Integer.parseInt(cp));
-                    if (bean.insertarDomicilio() == true) {
+                    //bean.setNumExt(Integer.parseInt(numeroExt));
+                    bean.setNumExt(numeroExt);
+                    //bean.setCp(Integer.parseInt(cp));
+                    bean.setCp(cp);
+                    
+                    bean.setIdLicencia(idLicencia);
+                    bean.setFechaExpiracion(String.valueOf(fechaExpiracion));
+                    bean.setFechaExpedicion(String.valueOf(fechaExpedicion));
+                    
+                    bean.setNoCuenta(noCuenta);
+                    bean.setBase(base);
+                    bean.setServicio(servicio);
+                                        
+                    bean.setIdTelefono(idTelefono);
+                    bean.setTelefono(telefono);
+                    
+                    if (bean.insertarDomicilio() && bean.insertarEmpleado() && bean.insertarTelefono()
+                            && bean.insertarLicencia() && bean.insertarConductor(idConductor, idLicencia)) {
+                        obtenerSizeTabla();
+                        obtenerSizeTablaTel();
                         insertarYRefrescar(); //Aquí se cambia por el insertar(que contiene el rs).
-                        showAlert(Alert.AlertType.INFORMATION, "Information Message", " El reporte se ha ingresado correctamente.");
+                        showAlert(Alert.AlertType.INFORMATION, "Information Message", " El conductor se ha ingresado correctamente.");
                     } else {
-                        showAlert(Alert.AlertType.ERROR, "Error Message", " Error al añadir el reporte.");
+                        showAlert(Alert.AlertType.ERROR, "Error Message", " Error al añadir el conductor.");
                     }
 
                 } catch (HeadlessException | NumberFormatException ex) {
-                    showAlert(Alert.AlertType.ERROR, "Error Message", " Error al añadir reporte.");
+                    showAlert(Alert.AlertType.ERROR, "Error Message", " Error al añadir conductor.");
                 }
             }
         } else { //Else de validación de campos vacíos.
-            System.out.println("Ta madre");
             showAlert(Alert.AlertType.WARNING, "Warning Message", " Favor de llenar todos los campos.");
         }
     } //botón.
@@ -2750,68 +2853,148 @@ public class ConductoresController implements Initializable {
     
     @FXML
     public void modificarReporte(ActionEvent e) {
-        Domicilio modificar = tblDatosConductor.getSelectionModel().getSelectedItem();
-        int id = tblDatosConductor.getSelectionModel().getSelectedItem().getId();
+        Conductor modificar = tblDatosConductor.getSelectionModel().getSelectedItem();
+        String idConductor = tblDatosConductor.getSelectionModel().getSelectedItem().getIdConductor();
+        int idDomicilio = tblDatosConductor.getSelectionModel().getSelectedItem().getIdDomicilio();
+        int idTelefono = tblDatosConductor.getSelectionModel().getSelectedItem().getIdTelefono();
+        
+        String nombres = txtNombres.getText();
+        String apellidoPaterno = txtApellidoPaterno.getText();
+        String apellidoMaterno = txtApellidoMaterno.getText();
+        LocalDate fechaNacimiento = dpFechaNacimiento.getValue();
+        String lugarNacimiento = txtLugarNacimiento.getText();
+        String estadoCivil = null;
+        RadioButton seleccion = (RadioButton) tggGrupoEstadoCivil.getSelectedToggle();
+        estadoCivil = seleccion.getText();
+       
+        LocalDate fechaIngreso = dpFechaIngreso.getValue();
+        LocalDate fechaSindicato = dpFechaSindicato.getValue();
+        String estudios = txtEstudios.getText();
+        String noIMSS = txtNoIMSS.getText();
+        String afore = txtAfore.getText();
+        String curp = txtCURP.getText();
+        String rfc = txtRFC.getText();
+        String claveElector = txtClaveElector.getText();
+        
         String estado = cbxEstado.getSelectionModel().getSelectedItem().toString();
         String ciudad = cbxCiudad.getSelectionModel().getSelectedItem().toString();
         String colonia = txtColonia.getText();
         String calle = txtCalle.getText();
         String numeroExt = txtNumExt.getText();
         String cp = txtCP.getText();
+        
+        String idLicencia = txtIdLicencia.getText();
+        LocalDate fechaExpiracion = dpFechaExpiracion.getValue(); 
+        LocalDate fechaExpedicion = dpFechaExpedicion.getValue();
+        
+        String noCuenta = txtNoCuenta.getText();
+        String base = txtBase.getText();
+        String servicio = txtServicio.getText();
+        
+        String telefono = txtTelefono.getText();
 
         if (modificar != null) {
-            if (estado != null && ciudad != null && !colonia.equals("")
-                    && !calle.equals("") && !numeroExt.equals("") && !cp.equals("")) {
+            if (estadoCivil != null && estado != null && ciudad != null && 
+                !idConductor.equals("") && !nombres.equals("") && !apellidoPaterno.equals("") &&
+                !apellidoMaterno.equals("") && fechaNacimiento != null && !lugarNacimiento.equals("") &&
+                fechaIngreso != null && fechaSindicato != null && !estudios.equals("") &&
+                !noIMSS.equals("") && !afore.equals("") && !curp.equals("") && !rfc.equals("") &&
+                !claveElector.equals("") &&
+                !colonia.equals("") && !telefono.equals("")
+                && !calle.equals("") && !numeroExt.equals("") && !cp.equals("")
+                && !idLicencia.equals("") && fechaExpiracion != null && fechaExpedicion != null
+                && !noCuenta.equals("") && !base.equals("") && !servicio.equals("")) {
 
                 Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-                confirm.setContentText("¿Desea modificar un domicilio?");
+                confirm.setContentText("¿Desea modificar un conductor?");
 
                 Optional<ButtonType> result = confirm.showAndWait();
 
                 //System.out.println(idConductor);
                 if (result.get() == ButtonType.OK) {
                     try {
-                        Domicilio m = new Domicilio();
+                        Conductor m = new Conductor();
+                        m.setIdConductor(idConductor);
+                        m.setNombres(nombres);
+                        m.setApellidoPaterno(apellidoPaterno);
+                        m.setApellidoMaterno(apellidoMaterno);
+                        m.setFechaNacimiento(String.valueOf(fechaNacimiento));
+                        m.setLugarNacimiento(lugarNacimiento);
+                        m.setEstadoCivil(estadoCivil);
+
+                        m.setFechaIngreso(String.valueOf(fechaIngreso));
+                        m.setFechaSindicato(String.valueOf(fechaSindicato));
+                        m.setEstudios(estudios);
+                        m.setNoIMSS(noIMSS);
+                        m.setAfore(afore);
+                        m.setCurp(curp);
+                        m.setRfc(rfc);
+                        m.setClaveElector(claveElector);
+
                         m.setEstado(estado);
                         m.setCiudad(ciudad);
                         m.setColonia(colonia);
                         m.setCalle(calle);
-                        m.setNumero(Integer.parseInt(numeroExt));
-                        m.setCp(Integer.parseInt(cp));
-                        if (m.modificarReporte(id) == true) {
+                        //bean.setNumExt(Integer.parseInt(numeroExt));
+                        m.setNumExt(numeroExt);
+                        //bean.setCp(Integer.parseInt(cp));
+                        m.setCp(cp);
+                        
+                        m.setIdLicencia(idLicencia);
+                        m.setFechaExpiracion(String.valueOf(fechaExpiracion));
+                        m.setFechaExpedicion(String.valueOf(fechaExpedicion));
+
+                        m.setNoCuenta(noCuenta);
+                        m.setBase(base);
+                        m.setServicio(servicio);
+                        
+                        m.setTelefono(telefono);
+                        
+                        if (m.modificarConductor(idConductor) 
+                            && m.modificarTelefono(idTelefono)
+                            && m.modificarEmpleado(idConductor)                              
+                            && m.modificarDomicilio(idDomicilio)
+                            && m.modificarLicencia(idLicencia)) {
                             insertarYRefrescar();
-                            showAlert(Alert.AlertType.INFORMATION, "Information Message", " El domicilio se ha modificado correctamente.");
+                            showAlert(Alert.AlertType.INFORMATION, "Information Message", " El conductor se ha modificado correctamente.");
 
                         } else {
-                            showAlert(Alert.AlertType.ERROR, "Error Message", " Error al modificar domicilio.");
+                            showAlert(Alert.AlertType.ERROR, "Error Message", " Error al modificar conductor.");
                         }
                     } catch (Exception ex) {
-                        showAlert(Alert.AlertType.ERROR, "Error Message", " Error al modificar domicilio.");
+                        showAlert(Alert.AlertType.ERROR, "Error Message", " Error al modificar conductor.");
                     }
                 }
             }
         } else {
-            showAlert(Alert.AlertType.WARNING, "Warning Message", " El domicilio se ha ingresado correctamente.");
+            showAlert(Alert.AlertType.WARNING, "Warning Message", "Favor de seleccionar un conductor.");
         }
     }
 
     @FXML
     public void eliminarReporte(ActionEvent e) {
-        Domicilio borrar = tblDatosConductor.getSelectionModel().getSelectedItem();
-        int id = tblDatosConductor.getSelectionModel().getSelectedItem().getId();
+        Conductor borrar = tblDatosConductor.getSelectionModel().getSelectedItem();
+        String idConductor = tblDatosConductor.getSelectionModel().getSelectedItem().getIdConductor();
+        int idDomicilio = tblDatosConductor.getSelectionModel().getSelectedItem().getIdDomicilio();
+        int idTelefono = tblDatosConductor.getSelectionModel().getSelectedItem().getIdTelefono();
+        String idLicencia = tblDatosConductor.getSelectionModel().getSelectedItem().getIdLicencia();
         
         if (borrar != null) {            
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-            confirm.setContentText("¿Desea eliminar un domicilio?");
+            confirm.setContentText("¿Desea eliminar un conductor?");
 
             Optional<ButtonType> result = confirm.showAndWait();
 
             if (result.get() == ButtonType.OK) {
                 //int idReporte = Integer.parseInt(txtReporte.getText());
 
-                Domicilio eliminar = new Domicilio();
+                Conductor eliminar = new Conductor();
                // eliminar.setId(id);
-                if (eliminar.eliminarReporte(id)) {
+                if (eliminar.eliminarConductor(idConductor) 
+                        && eliminar.eliminarTelefono(idTelefono)
+                        && eliminar.eliminarEmpleado(idConductor) 
+                        && eliminar.eliminarDomicilio(idDomicilio)
+                        && eliminar.eliminarLicencia(idLicencia)) {
                     eliminarYActualizar();
                     showAlert(Alert.AlertType.INFORMATION, "Information Message", " El reporte ha sido eliminado correctamente.");
                 } else {
@@ -2830,14 +3013,32 @@ public class ConductoresController implements Initializable {
     }
 
     public void llenarTablaBD() {
-        ResultSet rs;
-        String sql = "SELECT Id, Estado, Ciudad, Colonia, Calle, NumeroExt, CodigoPostal FROM Domicilio";
-
+        ResultSet rs, rsId, rsIdTel;
+        String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
+                + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
+                + "Empleado.RFC,Empleado.ClaveElector,"
+                + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
+                + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
+                + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono "
+                + "FROM ((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
+                + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.Id = Conductor.IdLicencia) "
+                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado;";
+        
+        String sqlId = "SELECT Id from Domicilio";
+        String sqlIdTel = "SELECT Id from Telefono";
+        
         try {
             conexionBD.conectar();
             rs = conexionBD.ejecutarSQLSelect(sql);
+            rsId = conexionBD.ejecutarSQLSelect(sqlId);
+            rsIdTel = conexionBD.ejecutarSQLSelect(sqlIdTel);
             metadata = rs.getMetaData();
+            metadataId = rsId.getMetaData();
+            metadataIdTel = rsIdTel.getMetaData();
             int cols = metadata.getColumnCount();
+            int colsId = metadataId.getColumnCount();
+            int colsIdTel = metadataIdTel.getColumnCount();
+            //System.out.println("Columnas: "+cols);
             while (rs.next()) {
                 Object[] fila = new Object[cols];
                 for (int i = 0; i < cols; i++) {
@@ -2848,18 +3049,89 @@ public class ConductoresController implements Initializable {
                         fila[i] = rs.getObject(i + 1);
                     }
                 }
-                String id = String.valueOf(fila[0]);
-                String estado = String.valueOf(fila[1]);
-                String ciudad = (String) fila[2];
-                String colonia = String.valueOf(fila[3]);
-                String calle = String.valueOf(fila[4]);
-                String num = String.valueOf(fila[5]);
-                String cp = String.valueOf(fila[6]);
-                Domicilio dom = new Domicilio(Integer.parseInt(id), estado, 
-                        ciudad, colonia, calle, Integer.parseInt(num), Integer.parseInt(cp));
+                
+                
+                String idConductor = String.valueOf(fila[0]);
+                String nombres = String.valueOf(fila[1]);
+                String apellidoPaterno = String.valueOf(fila[2]);
+                String apellidoMaterno = String.valueOf(fila[3]);
+                String fechaNacimiento = String.valueOf(rs.getDate(5));
+                String lugarNacimiento = String.valueOf(fila[5]);                
+                String estadoCivil = String.valueOf(fila[6]);
+                String fechaIngreso = String.valueOf(rs.getDate(9)); //[8]
+                String fechaSindicato = String.valueOf(rs.getDate(10)); //[9]
+                String estudios = String.valueOf(fila[10]);
+                String noIMSS = String.valueOf(fila[11]);
+                String afore = String.valueOf(fila[12]);
+                String curp = String.valueOf(fila[13]);
+                String rfc = String.valueOf(fila[14]);
+                String claveElector = String.valueOf(fila[15]);
+                //String foto = String.valueOf(fila[16]);
+                
+                String idDomicilio = String.valueOf(fila[16]);                
+                String estado = String.valueOf(fila[17]);
+                String ciudad = (String) fila[18];
+                String colonia = String.valueOf(fila[19]);
+                String calle = String.valueOf(fila[20]);
+                String num = String.valueOf(fila[21]);
+                String cp = String.valueOf(fila[22]);
+                
+                String idLicencia = String.valueOf(fila[23]);
+                String fechaExpiracion = String.valueOf(rs.getDate(25)); //[24]
+                String fechaExpedicion = String.valueOf(rs.getDate(26)); //[25]
+                
+                String base = String.valueOf(fila[26]);
+                String servicio = String.valueOf(fila[27]);
+                String noCuenta = String.valueOf(fila[28]);
+                
+                String telefonoID = String.valueOf(fila[29]);
+                String telefono = String.valueOf(fila[30]);
+
+                Conductor dom = new Conductor(idConductor, nombres, apellidoPaterno, 
+                        apellidoMaterno, fechaNacimiento, lugarNacimiento,Integer.parseInt(telefonoID),telefono,estadoCivil,
+                        fechaIngreso, fechaSindicato, estudios, noIMSS, afore, curp, rfc, claveElector,
+                         Integer.parseInt(idDomicilio),
+                        estado, ciudad, colonia, calle, num, cp,
+                        base, servicio, noCuenta, idLicencia, fechaExpiracion, fechaExpedicion);
+                        
                 colocarDatosColumna();
                 tblDatosConductor.getItems().add(dom);
             }
+            
+            while(rsId.next()) {
+                Object[] filaId = new Object[colsId];
+                for (int i = 0; i < colsId; i++) {
+                    if (rsId.getObject(i + 1) == null) {
+                        filaId[i] = "";
+
+                    } else {
+                        filaId[i] = rsId.getObject(i + 1);
+                    }
+                }
+                
+                String idDom = String.valueOf(filaId[0]);
+                Conductor conId = new Conductor(Integer.parseInt(idDom),"Domicilio");        
+                colocarDatosColumna();                
+                tblIdDomicilio.getItems().add(conId);
+            }
+            
+            while(rsIdTel.next()) {
+                Object[] filaIdTel = new Object[colsIdTel];
+                for (int i = 0; i < colsIdTel; i++) {
+                    if (rsIdTel.getObject(i + 1) == null) {
+                        filaIdTel[i] = "";
+
+                    } else {
+                        filaIdTel[i] = rsIdTel.getObject(i + 1);
+                    }
+                }
+                
+                String idDomTel = String.valueOf(filaIdTel[0]);
+                Conductor conIdTel = new Conductor(Integer.parseInt(idDomTel), "Telefono");        
+                colocarDatosColumna();                
+                tblIdTelefono.getItems().add(conIdTel);
+            }
+            
         } catch (SQLException e) {
             System.out.println("Error al rellenar la tabla." + e.getMessage());
         }
@@ -2867,18 +3139,39 @@ public class ConductoresController implements Initializable {
 
     public void actualizarTablaBD(ResultSet result) //Llenar la tabla con un result set.
     {
-        ResultSet rs;
+        ResultSet rs, rsId, rsIdTel;
         try {
             if (filtroActivo) { //Si el filtro está activado, quiere decir que el txtField está en escucha y se sustituye el result set por ese.
                 rs = result;
-            } else { //En caso contrario, solamente volvemos a ejecutar la sentencia normal de traer todo a la tabla.
-                String sql = "SELECT Id, Estado, Ciudad, Colonia, Calle, NumeroExt, CodigoPostal FROM Domicilio";
+                rsId = result;
+                rsIdTel = result;
+            } else { //En caso contrario, solamente volvemos a ejecutar la sentencia normal de traer todo a la tabla.                
+                String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
+                + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
+                + "Empleado.RFC,Empleado.ClaveElector,"
+                + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
+                + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
+                + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono "
+                + "FROM ((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
+                + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.Id = Conductor.IdLicencia) "
+                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado;";
+                
+                String sqlId = "SELECT Id from Domicilio";
+                String sqlIdTel = "SELECT Id from Telefono";
+                
                 rs = conexionBD.ejecutarSQLSelect(sql);
+                rsId = conexionBD.ejecutarSQLSelect(sqlId);
+                rsIdTel = conexionBD.ejecutarSQLSelect(sqlIdTel);
             }
             try {
                 conexionBD.conectar();
                 metadata = rs.getMetaData();
+                metadataId = rsId.getMetaData();
+                metadataIdTel = rsIdTel.getMetaData();
                 int cols = metadata.getColumnCount();
+                int colsId = metadataId.getColumnCount();
+                int colsIdTel = metadataIdTel.getColumnCount();
+
                 while (rs.next()) {
                     Object[] fila = new Object[cols];
                     for (int i = 0; i < cols; i++) {
@@ -2889,18 +3182,90 @@ public class ConductoresController implements Initializable {
                             fila[i] = rs.getObject(i + 1);
                         }
                     }
-                    String id = String.valueOf(fila[0]);
-                    String estado = String.valueOf(fila[1]);
-                    String ciudad = (String) fila[2];
-                    String colonia = String.valueOf(fila[3]);
-                    String calle = String.valueOf(fila[4]);
-                    String num = String.valueOf(fila[5]);
-                    String cp = String.valueOf(fila[6]);
-                    Domicilio dom = new Domicilio(Integer.parseInt(id), estado, 
-                            ciudad, colonia, calle, Integer.parseInt(num), Integer.parseInt(cp));
+                    String idConductor = String.valueOf(fila[0]);
+                    String nombres = String.valueOf(fila[1]);
+                    String apellidoPaterno = String.valueOf(fila[2]);
+                    String apellidoMaterno = String.valueOf(fila[3]);
+                    String fechaNacimiento = String.valueOf(rs.getDate(5));
+                    String lugarNacimiento = String.valueOf(fila[5]);                
+                    String estadoCivil = String.valueOf(fila[6]);
+                    String fechaIngreso = String.valueOf(rs.getDate(9)); //[8]
+                    String fechaSindicato = String.valueOf(rs.getDate(10)); //[9]
+                    String estudios = String.valueOf(fila[10]);
+                    String noIMSS = String.valueOf(fila[11]);
+                    String afore = String.valueOf(fila[12]);
+                    String curp = String.valueOf(fila[13]);
+                    String rfc = String.valueOf(fila[14]);
+                    String claveElector = String.valueOf(fila[15]);
+                    //String foto = String.valueOf(fila[16]);
+
+                    String idDomicilio = String.valueOf(fila[16]);                
+                    String estado = String.valueOf(fila[17]);
+                    String ciudad = (String) fila[18];
+                    String colonia = String.valueOf(fila[19]);
+                    String calle = String.valueOf(fila[20]);
+                    String num = String.valueOf(fila[21]);
+                    String cp = String.valueOf(fila[22]);
+
+                    String idLicencia = String.valueOf(fila[23]);
+                    String fechaExpiracion = String.valueOf(rs.getDate(25)); //[24]
+                    String fechaExpedicion = String.valueOf(rs.getDate(26)); //[25]
+
+                    String base = String.valueOf(fila[26]);
+                    String servicio = String.valueOf(fila[27]);
+                    String noCuenta = String.valueOf(fila[28]);
+
+                    String telefonoID = String.valueOf(fila[29]);
+                    String telefono = String.valueOf(fila[30]);
+                    
+                    Conductor dom = new Conductor(idConductor, nombres, apellidoPaterno, 
+                        apellidoMaterno, fechaNacimiento, lugarNacimiento,Integer.parseInt(telefonoID),telefono,estadoCivil,
+                        fechaIngreso, fechaSindicato, estudios, noIMSS, afore, curp, rfc, claveElector,
+                         Integer.parseInt(idDomicilio),
+                        estado, ciudad, colonia, calle, num, cp,
+                        base, servicio, noCuenta, idLicencia, fechaExpiracion, fechaExpedicion);
+                    
                     colocarDatosColumna();
                     tblDatosConductor.getItems().add(dom);
                 }
+                
+
+                while(rsId.next()) {
+                    Object[] filaId = new Object[colsId];
+                    for (int i = 0; i < colsId; i++) {
+                        if (rsId.getObject(i + 1) == null) {
+                            filaId[i] = "";
+
+                        } else {
+                            filaId[i] = rsId.getObject(i + 1);
+                        }
+                    }
+
+                    String idDom = String.valueOf(filaId[0]);
+                    Conductor conId = new Conductor(Integer.parseInt(idDom), "Domicilio");        
+                    colocarDatosColumna();                
+                    tblIdDomicilio.getItems().add(conId);
+            
+                }
+                
+                while(rsIdTel.next()) {
+                    Object[] filaIdTel = new Object[colsIdTel];
+                    for (int i = 0; i < colsIdTel; i++) {
+                        if (rsIdTel.getObject(i + 1) == null) {
+                            filaIdTel[i] = "";
+
+                        } else {
+                            filaIdTel[i] = rsIdTel.getObject(i + 1);
+                        }
+                    }
+
+                    String idDomTel = String.valueOf(filaIdTel[0]);
+                    Conductor conIdTel = new Conductor(Integer.parseInt(idDomTel), "Telefono");        
+                    colocarDatosColumna();                
+                    tblIdTelefono.getItems().add(conIdTel);
+            
+                }
+                
             } catch (SQLException e) {
                 System.out.println("Error al filtrar la tabla." + e.getMessage());
             }
@@ -2911,13 +3276,37 @@ public class ConductoresController implements Initializable {
     }
 
     void colocarDatosColumna() {
-        tbcID.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        tbcID.setCellValueFactory(new PropertyValueFactory<>("IdConductor"));
+        tbcNombres.setCellValueFactory(new PropertyValueFactory<>("Nombres"));
+        tbcApellidoPaterno.setCellValueFactory(new PropertyValueFactory<>("ApellidoPaterno"));
+        tbcApellidoMaterno.setCellValueFactory(new PropertyValueFactory<>("ApellidoMaterno"));
+        tbcFechaNacimiento.setCellValueFactory(new PropertyValueFactory<>("FechaNacimiento"));
+        tbcLugarNacimiento.setCellValueFactory(new PropertyValueFactory<>("LugarNacimiento"));
+        tbcTelefono.setCellValueFactory(new PropertyValueFactory<>("Telefono"));
+        tbcEstadoCivil.setCellValueFactory(new PropertyValueFactory<>("EstadoCivil"));
+        tbcFechaIngreso.setCellValueFactory(new PropertyValueFactory<>("FechaIngreso"));
+        tbcFechaSidicato.setCellValueFactory(new PropertyValueFactory<>("fechaSindicato"));
+        tbcEstudios.setCellValueFactory(new PropertyValueFactory<>("Estudios"));
+        tbcNoIMSS.setCellValueFactory(new PropertyValueFactory<>("NoIMSS"));
+        tbcAfore.setCellValueFactory(new PropertyValueFactory<>("Afore"));
+        tbcCURP.setCellValueFactory(new PropertyValueFactory<>("Curp"));
+        tbcRFC.setCellValueFactory(new PropertyValueFactory<>("Rfc"));
+        tbcClaveElector.setCellValueFactory(new PropertyValueFactory<>("ClaveElector"));
+        tbcIdDomicilio.setCellValueFactory(new PropertyValueFactory<>("IdDomicilio"));
         tbcEstado.setCellValueFactory(new PropertyValueFactory<>("Estado"));
         tbcCiudad.setCellValueFactory(new PropertyValueFactory<>("Ciudad"));
         tbcColonia.setCellValueFactory(new PropertyValueFactory<>("Colonia"));
         tbcCalle.setCellValueFactory(new PropertyValueFactory<>("calle"));
-        tbcNumExt.setCellValueFactory(new PropertyValueFactory<>("Numero"));
+        tbcNumExt.setCellValueFactory(new PropertyValueFactory<>("NumExt"));
         tbcCp.setCellValueFactory(new PropertyValueFactory<>("Cp"));
+        tbcBase.setCellValueFactory(new PropertyValueFactory<>("Base"));
+        tbcServicio.setCellValueFactory(new PropertyValueFactory<>("Servicio"));
+        tbcNoCuenta.setCellValueFactory(new PropertyValueFactory<>("NoCuenta"));
+        tbcIdLicencia.setCellValueFactory(new PropertyValueFactory<>("IdLicencia"));
+        tbcFechaExpiracion.setCellValueFactory(new PropertyValueFactory<>("FechaExpiracion"));
+        tbcFechaExpedicion.setCellValueFactory(new PropertyValueFactory<>("FechaExpedicion"));
+        tbcIdDomicilio2.setCellValueFactory(new PropertyValueFactory<>("IdDomicilio"));
+        tbcIdTelefono2.setCellValueFactory(new PropertyValueFactory<>("IdTelefono"));
     }
 /*
     void ActualizaRefresca() {
@@ -2931,6 +3320,8 @@ public class ConductoresController implements Initializable {
         LimpiarTabla();
         ResultSet r = null; //Se regresa un nulo porque no lo estamos usando al momento de insertar o modificar.
         actualizarTablaBD(r);
+        obtenerSizeTabla();
+        obtenerSizeTablaTel();
         LimpiarCampos();
 
     }
@@ -2941,8 +3332,10 @@ public class ConductoresController implements Initializable {
             LimpiarTabla();
             ResultSet r = null;
             actualizarTablaBD(r);
+            obtenerSizeTabla();
+            obtenerSizeTablaTel();
         } catch (Exception error) {
-            showAlert(Alert.AlertType.ERROR, "Error Message", " No se ha seleccionado ningún reporte. Favor de seleccionar.");
+            showAlert(Alert.AlertType.ERROR, "Error Message", " No se ha seleccionado ningún conductor. Favor de seleccionar.");
         }
     }
 
@@ -2953,39 +3346,108 @@ public class ConductoresController implements Initializable {
         cbxEstado.setValue("");
         cbxCiudad.setValue("");
         cbxCiudad.setDisable(true);
+        dpFechaNacimiento.setValue(null);
+        dpFechaIngreso.setValue(null);
+        dpFechaSindicato.setValue(null);
+        tggGrupoEstadoCivil.selectToggle(null);
+        
+        dpFechaExpiracion.setValue(null);
+        dpFechaExpedicion.setValue(null);
     }
 
     void LimpiarTabla() {
         for (int i = 0; i < tblDatosConductor.getItems().size(); i++) {
             tblDatosConductor.getItems().clear();
+            tblIdDomicilio.getItems().clear();
         }
     }
 
     public void mostrarFilaEnCampos() { //Aquí se llama otra vez el bean para obtener los datos seleccionados de la tabla.
-        Domicilio domicilio = tblDatosConductor.getSelectionModel().getSelectedItem();
-        if (domicilio == null) {
+        Conductor conductor = tblDatosConductor.getSelectionModel().getSelectedItem();
+        if (conductor == null) {
             LimpiarCampos();
         } else {
-            String estado = domicilio.getEstado();
-            String ciudad = domicilio.getCiudad();
-            String colonia = domicilio.getColonia();
-            String calle = domicilio.getCalle();
-            int numero = domicilio.getNumero();
-            int cp = domicilio.getCp();
+            String idConductor = conductor.getIdConductor();
+            String nombres = conductor.getNombres();
+            String apellidoPaterno = conductor.getApellidoPaterno();
+            String apellidoMaterno = conductor.getApellidoMaterno();
+            String fechaNacimiento = conductor.getFechaNacimiento();            
+            String lugarNacimiento = conductor.getLugarNacimiento();
+            String estadoCivil = conductor.getEstadoCivil();
+            System.out.println("ESTADO CIVIL: "+estadoCivil);
+            int idDomicilio = conductor.getIdDomicilio();
+            String fechaIngreso = conductor.getFechaIngreso();
+            String fechaSindicato = conductor.getFechaSindicato();
+            String estudios = conductor.getEstudios();
+            String noIMSS = conductor.getNoIMSS();
+            String afore = conductor.getAfore();
+            String curp = conductor.getCurp();
+            String rfc = conductor.getRfc();
+            String claveElector = conductor.getClaveElector();
+            String foto = conductor.getFoto();            
+            
+            String estado = conductor.getEstado();
+            String ciudad = conductor.getCiudad();
+            String colonia = conductor.getColonia();
+            String calle = conductor.getCalle();
+            String numero = conductor.getNumExt();
+            String cp = conductor.getCp();
+            
+            String idLicencia = conductor.getIdLicencia();
+            String fechaExpiracion = conductor.getFechaExpiracion();
+            String fechaExpedicion = conductor.getFechaExpedicion();
+            
+            String noCuenta = conductor.getNoCuenta();
+            String base = conductor.getBase();
+            String servicio = conductor.getServicio();
+            
+            String telefono = conductor.getTelefono();
+            int idTelefono = conductor.getIdTelefono();
+            
+            txtId.setText(idConductor);
+            txtNombres.setText(nombres);
+            txtApellidoPaterno.setText(apellidoPaterno);
+            txtApellidoMaterno.setText(apellidoMaterno);
+            dpFechaNacimiento.setValue(LocalDate.parse(fechaNacimiento));
+            txtLugarNacimiento.setText(lugarNacimiento);
+            if(estadoCivil.equals("Soltero")) tggGrupoEstadoCivil.selectToggle(rbtSoltero);
+            else if(estadoCivil.equals("Casado")) tggGrupoEstadoCivil.selectToggle(rbtCasado);            
+            txtIdDomicilio.setText(String.valueOf(idDomicilio));
+            
+            dpFechaIngreso.setValue(LocalDate.parse(fechaIngreso));
+            dpFechaSindicato.setValue(LocalDate.parse(fechaSindicato));
+            txtEstudios.setText(estudios);
+            txtNoIMSS.setText(noIMSS);
+            txtAfore.setText(afore);
+            txtCURP.setText(curp);
+            txtRFC.setText(rfc);
+            txtClaveElector.setText(claveElector);
+            
             cbxEstado.setValue(estado);
             cbxCiudad.setValue(ciudad);
             txtColonia.setText(String.valueOf(colonia));
             txtCalle.setText(String.valueOf(calle));
             txtNumExt.setText(String.valueOf(numero));
             txtCP.setText(String.valueOf(cp));
+            
+            txtIdLicencia.setText(idLicencia);
+            dpFechaExpiracion.setValue(LocalDate.parse(fechaExpiracion));
+            dpFechaExpedicion.setValue(LocalDate.parse(fechaExpedicion));
+            
+            txtNoCuenta.setText(noCuenta);
+            txtBase.setText(base);
+            txtServicio.setText(servicio);
+            
+            txtIdTelefono.setText(String.valueOf(idTelefono));
+            txtTelefono.setText(telefono);
         }
     }
 
     void manejadorFiltro() {
         if (filtroActivo) {
             String idConductor;
-            //idConductor = txtConductor.getText();
-            //leerFiltro(idConductor);
+            idConductor = txtId.getText();
+            leerFiltro(idConductor);
         }
     }
 
@@ -2999,31 +3461,28 @@ public class ConductoresController implements Initializable {
             btnEliminar.setDisable(true);
             btnEditar.setDisable(true);
 
-            /*txtConductor.textProperty().addListener(eventoFiltro);
-            txtDescripcion.setDisable(true);
-            txtReporte.setDisable(true);
-            txtLugar.setDisable(true);
-            comboBox.setDisable(true);
-            date.setDisable(true);*/
+            txtId.textProperty().addListener(eventoFiltro);
+            for (TextField campo : txtCAMPOS) {
+                campo.setDisable(true);
+            }            
 
         } else { // Sino, se vuelve un false y activamos todo a como estaba antes.
             btnAgregar.setDisable(false);
+            btnEditar.setDisable(false);
             btnEliminar.setDisable(false);
-            /*btnModificar.setDisable(false);
-            txtConductor.textProperty().removeListener(eventoFiltro);
-            txtDescripcion.setDisable(false);
-            txtLugar.setDisable(false);
-            txtDescripcion.setDisable(false);
-            comboBox.setDisable(false);
-            date.setDisable(false);*/
+            txtId.textProperty().removeListener(eventoFiltro);
+            for (TextField campo : txtCAMPOS) {
+                 campo.setDisable(false);
+             }
         }
+        txtId.setDisable(false);
     }
 
     // Este filtro limpia toda la tabla y busca por medio del resultset toda la información que yo quiero ver.
     private void leerFiltro(String idConductor) {
-        Reportes filtro = new Reportes();
+        Conductor filtro = new Conductor();
         LimpiarTabla();
-        actualizarTablaBD(filtro.filtrarReporte(idConductor)); //Checa en Modelo -> Reportes.
+        actualizarTablaBD(filtro.filtrarConductor(idConductor)); //Checa en Modelo -> Reportes.
 
     }
 
@@ -3033,121 +3492,6 @@ public class ConductoresController implements Initializable {
         public void changed(ObservableValue observable, Object oldValue, Object newValue) {
             manejadorFiltro(); //Aquí metes el manejadorFiltro, ya que contiene el leerFiltro(con su resultset).
         }
-    }
-    
-    
-    /*public void eliminarConductor(ActionEvent e) {
-        // Prueba de eliminación sin conexión a BD 
-        System.out.println("Eliminar conductor");
-        if(tblDatosConductor.getSelectionModel().getSelectedItems().isEmpty()){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Advertencia");
-                alert.setHeaderText(null);
-                alert.setContentText("Por favor elige un registro");
-                alert.show();
-                return;
-        }
-        
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmación");
-        alert.setHeaderText(null);
-        alert.setContentText("¿Realmente deseas eliminar el conductor seleccionado?");
-        
-        if(alert.showAndWait().get() == ButtonType.OK) {
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Información");
-            alert.setHeaderText(null);
-            alert.setContentText("La operación se ha realizado con éxito");
-            alert.show();
-                
-            ObservableList<Conductor> selectedRows, allPeople;
-            allPeople = tblDatosConductor.getItems();
-
-            // Esto nos devuelve los conductores (filas) a ser eliminados
-            selectedRows = tblDatosConductor.getSelectionModel().getSelectedItems();
-
-            // Elimina los conductores (filas) seleccionados
-            for (Conductor conductor : selectedRows) {
-                allPeople.remove(conductor);
-            }
-        } else {
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Información");
-            alert.setHeaderText(null);
-            alert.setContentText("Se ha cancelado la operación");
-            alert.show();
-        }
-            
-    }*/
-
-    /* Prueba de obtención de datos sin conexión a BD 
-    private ObservableList<Conductor> getPeople() {
-        ObservableList<Conductor> people  = FXCollections.observableArrayList();
-        people.add(new Conductor("1","Fernández", "Martínez", "Javier", "1526"));
-        people.add(new Conductor("2","Guzmán", "Soto", "Gabriela Estefanía", "1527"));
-        people.add(new Conductor("3","Hernández", "Aguilar", "Ernesto", "1528"));
-        return people;
-    } 
-    
-    ChangeListener<Number> changeListener = new ChangeListener<Number>() {
-        @Override
-        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-            //spConductores.setDividerPositions(0.8);            
-            //dimension = spConductores.getDividerPositions();
-            System.out.println("oldValue = " + oldValue);
-            System.out.println("newValue = " + newValue);
-        }
-    }; 
-    
-    
-    @FXML
-    private void filtrarMateria(){
-        filtroActivo=!filtroActivo;
-        if(filtroActivo){
-            
-            btnAgregar.setDisable(true);
-            //btnEditar.setDisable(true);
-            btnEliminar.setDisable(true);
-            for (int i = 0; i < txtCAMPOS.length; i++) {
-                txtCAMPOS[i].textProperty().addListener(manejador);                
-                txtCAMPOS[i].clear();
-            }            
-        }else{
-            btnAgregar.setDisable(false);
-            //btnEditar.setDisable(false);
-            btnEliminar.setDisable(false);
-            for (int i = 0; i < txtCAMPOS.length; i++){ 
-                txtCAMPOS[i].textProperty().removeListener(manejador);
-            }
-            tblDatosConductor.setItems(getPeople());
-            //llenarTabla(materiaBD.getMaterias());
-        }
-    }
-    
-    void ManejadorFiltro(){
-        if(filtroActivo){
-            String apellidoPaterno, apellidoMaterno, nombres, noTarjeta;
-            apellidoPaterno = txtApellidoPaterno.getText();
-            apellidoMaterno = txtApellidoMaterno.getText();
-            nombres = txtNombres.getText();
-            noTarjeta = txtNoTarjeta.getText();
-            /*String claveMateria, nombre, tipo, SATCA, semestre, planEstudios, descripcion;
-            claveMateria = txtClaveMateria.getText();
-            nombre = txtNombre.getText();
-            tipo = tggGrupoTipo.getSelectedToggle().getUserData().toString();
-            SATCA = txtSATCA.getText();
-            semestre = txtIdSemestre.getText();
-            planEstudios = txtPlanEstudios.getText();
-            descripcion = txaDescripcion.getText();
-            leerFiltrarTabla(claveMateria, nombre, tipo, SATCA, semestre, planEstudios, descripcion);
-        }
-    }
-    
-    class ManejadorFiltroKey implements ChangeListener{
-        @Override
-        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-            ManejadorFiltro();
-        }        
-    }    */
+    }    
     
 }

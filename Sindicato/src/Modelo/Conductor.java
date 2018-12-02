@@ -1,7 +1,9 @@
 package Modelo;
     
 import ConexionAccess.ConexionAccess;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Conductor {
@@ -11,6 +13,7 @@ public class Conductor {
     private String apellidoMaterno;    
     private String fechaNacimiento;
     private String lugarNacimiento;
+    private int    IdTelefono;
     private String telefono;  
     private String estadoCivil;      
     private String fechaIngreso;
@@ -41,13 +44,10 @@ public class Conductor {
     
     ConexionAccess conexion;
 
-    public Conductor(String idConductor, String nombres, String apellidoPaterno, 
-            String apellidoMaterno, String fechaNacimiento, String lugarNacimiento, 
-            String telefono, String estadoCivil, String fechaIngreso, String fechaSindicato, 
-            String estudios, String noIMSS, String afore, String curp, String rfc, 
-            String claveElector, String foto, int idDomicilio, String estado, String ciudad, 
-            String colonia, String calle, String numExt, String cp, String base, 
-            String servicio, String noCuenta, String idLicencia, String fechaExpiracion, String fechaExpedicion) {
+    public Conductor() {
+    }
+
+    public Conductor(String idConductor, String nombres, String apellidoPaterno, String apellidoMaterno, String fechaNacimiento, String lugarNacimiento, String telefono, String estadoCivil, String fechaIngreso, String fechaSindicato, String estudios, String noIMSS, String afore, String curp, String rfc, String claveElector, int idDomicilio, String estado, String ciudad, String colonia, String calle, String numExt, String cp) {
         this.idConductor = idConductor;
         this.nombres = nombres;
         this.apellidoPaterno = apellidoPaterno;
@@ -64,7 +64,46 @@ public class Conductor {
         this.curp = curp;
         this.rfc = rfc;
         this.claveElector = claveElector;
-        this.foto = foto;
+        this.idDomicilio = idDomicilio;
+        this.estado = estado;
+        this.ciudad = ciudad;
+        this.colonia = colonia;
+        this.calle = calle;
+        this.numExt = numExt;
+        this.cp = cp;
+    }
+
+    public Conductor(int id, String tipoId) {
+        if(tipoId.equals("Domicilio")) this.idDomicilio = id;
+        if(tipoId.equals("Telefono")) this.IdTelefono = id;
+        
+    }
+ 
+    public Conductor(String idConductor, String nombres, String apellidoPaterno, 
+            String apellidoMaterno, String fechaNacimiento, String lugarNacimiento, 
+            int IdTelefono, String telefono, String estadoCivil, String fechaIngreso, String fechaSindicato, 
+            String estudios, String noIMSS, String afore, String curp, String rfc, 
+            String claveElector, /*String foto,*/ int idDomicilio, String estado, String ciudad, 
+            String colonia, String calle, String numExt, String cp, String base, 
+            String servicio, String noCuenta, String idLicencia, String fechaExpiracion, String fechaExpedicion) {
+        this.idConductor = idConductor;
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.fechaNacimiento = fechaNacimiento;
+        this.lugarNacimiento = lugarNacimiento;
+        this.IdTelefono = IdTelefono;
+        this.telefono = telefono;
+        this.estadoCivil = estadoCivil;
+        this.fechaIngreso = fechaIngreso;
+        this.fechaSindicato = fechaSindicato;
+        this.estudios = estudios;
+        this.noIMSS = noIMSS;
+        this.afore = afore;
+        this.curp = curp;
+        this.rfc = rfc;
+        this.claveElector = claveElector;
+        //this.foto = foto;
         this.idDomicilio = idDomicilio;
         this.estado = estado;
         this.ciudad = ciudad;
@@ -128,6 +167,14 @@ public class Conductor {
         this.lugarNacimiento = lugarNacimiento;
     }
 
+    public int getIdTelefono() {
+        return IdTelefono;
+    }
+
+    public void setIdTelefono(int IdTelefono) {
+        this.IdTelefono = IdTelefono;
+    }
+    
     public String getTelefono() {
         return telefono;
     }
@@ -329,6 +376,7 @@ public class Conductor {
     }
     
     public boolean insertarDomicilio() {
+        //idDomicilio = IDDom;
         String sql = "INSERT INTO Domicilio(Estado,Ciudad,Colonia,Calle,NumeroExt,CodigoPostal)"
                 + "VALUES(?,?,?,?,?,?)";
         
@@ -352,26 +400,30 @@ public class Conductor {
         }
     }
     
-    public boolean insertarEmpleado(int idDomicilioForanea) {
-        this.idDomicilio = idDomicilioForanea;
+    public boolean insertarEmpleado() {
+        //idDomicilio = IDDom;
+        //this.idDomicilio = idDomicilioForanea;
+        //String sqlIdDomicilio = "SELECT TOP 1 Id from Domicilio ORDER BY Id DESC;";
+        //idDomicilio = IDDomicilio;
+        
         String sql = "INSERT INTO Empleado(Id,Nombres,ApellidoPaterno,ApellidoMaterno,FechaNacimiento,LugarNacimiento,"
                 + "EstadoCivil,IdDomicilio,FechaIngreso,FechaSindicato,Estudios,NumeroIMSS,Afore,Curp,RFC,ClaveElector,Foto)"
                 + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         
         conexion = new ConexionAccess();
-        conexion.conectar();
+        conexion.conectar();      
         try {
             try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
                 ps.setString(1, idConductor);
                 ps.setString(2, nombres);
                 ps.setString(3, apellidoPaterno);
-                ps.setString(4, apellidoMaterno);               
-                ps.setString(5, fechaNacimiento);
+                ps.setString(4, apellidoMaterno);
+                ps.setDate  (5, Date.valueOf(fechaNacimiento));
                 ps.setString(6, lugarNacimiento);
                 ps.setString(7, estadoCivil);
                 ps.setInt   (8, idDomicilio);
-                ps.setString(9, fechaIngreso);
-                ps.setString(10, fechaSindicato);
+                ps.setDate  (9, Date.valueOf(fechaIngreso));
+                ps.setDate  (10, Date.valueOf(fechaSindicato));
                 ps.setString(11, estudios);
                 ps.setString(12, noIMSS);
                 ps.setString(13, afore);
@@ -391,15 +443,16 @@ public class Conductor {
     }
     
     public boolean insertarLicencia() {
-        String sql = "INSERT INTO Licencia(FechaExpiracion,FechaExpedicion)"
-                + "VALUES(?,?)";
+        String sql = "INSERT INTO Licencia(Id,FechaExpiracion,FechaExpedicion)"
+                + "VALUES(?,?,?)";
         
         conexion = new ConexionAccess();
         conexion.conectar();
         try {
             try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
-                ps.setString(1, fechaExpiracion);
-                ps.setString(2, fechaExpedicion);
+                ps.setString(1, idLicencia);
+                ps.setDate  (2, Date.valueOf(fechaExpiracion));
+                ps.setDate  (3, Date.valueOf(fechaExpedicion));
                 ps.execute();
                 ps.close();
             }
@@ -424,7 +477,7 @@ public class Conductor {
                 ps.setString(2, idLicencia);
                 ps.setString(3, base);
                 ps.setString(4, servicio);
-                ps.setString(5, noCuenta);
+                ps.setInt(5, Integer.parseInt(noCuenta));
                 ps.execute();
                 ps.close();
             }
@@ -433,6 +486,254 @@ public class Conductor {
             System.out.println("Error al insertar conductor en la base de datos." + e.getMessage());
             return false;
         }
+    }
+    
+    public boolean insertarTelefono() {
+        //this.idConductor = idEmpleadoForanea;
+        String sql = "INSERT INTO Telefono(Id,IdEmpleado, NumeroTelefono)"
+                + "VALUES(?,?,?)";
+        
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.setInt(1, IdTelefono);
+                ps.setString(2, idConductor);
+                ps.setString(3, telefono);
+                ps.execute();
+                ps.close();
+            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al insertar conductor en la base de datos." + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean modificarDomicilio(int id) {
+        String sql = "UPDATE Domicilio SET Estado = ?,Ciudad =?, Colonia= ?, Calle=?, NumeroExt=?, CodigoPostal=?"
+                + "WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.setString(1, estado);
+                ps.setString(2, ciudad);
+                ps.setString(3, colonia);
+                ps.setString(4, calle);               
+                ps.setString(5, numExt);
+                ps.setString(6, cp);
+                ps.execute();
+                ps.close();
+            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al modificar Domicilio en la base de datos." + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean modificarEmpleado(String id) {
+        String sql = "UPDATE Empleado SET Id = ?,Nombres =?, ApellidoPaterno= ?, ApellidoMaterno=?, FechaNacimiento=?, "
+                + "LugarNacimiento=?, EstadoCivil=?, FechaIngreso=?, FechaSindicato=?, Estudios=?, NumeroIMSS=?, "
+                + "Afore=?, Curp=?, RFC=?, ClaveElector=?, Foto = ?"
+                + "WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.setString(1, idConductor);
+                ps.setString(2, nombres);
+                ps.setString(3, apellidoPaterno);
+                ps.setString(4, apellidoMaterno);               
+                ps.setDate  (5, Date.valueOf(fechaNacimiento));
+                ps.setString(6, lugarNacimiento);
+                ps.setString(7, estadoCivil);
+                ps.setDate  (8, Date.valueOf(fechaIngreso));
+                ps.setDate  (9, Date.valueOf(fechaSindicato));
+                ps.setString(10, estudios);
+                ps.setString(11, noIMSS);
+                ps.setString(12, afore);
+                ps.setString(13, curp);
+                ps.setString(14, rfc);
+                ps.setString(15, claveElector);
+                ps.setString(16, foto);
+                ps.execute();
+                ps.close();
+            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al modificar Empleado en la base de datos." + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean modificarLicencia(String id) {
+        String sql = "UPDATE Licencia SET Id = ?,FechaExpiracion = ?,FechaExpedicion =?"
+                + "WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.setString(1, idLicencia);
+                ps.setDate  (2, Date.valueOf(fechaExpiracion));
+                ps.setDate  (3, Date.valueOf(fechaExpedicion));
+                ps.execute();
+                ps.close();
+            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al modificar Licencia en la base de datos." + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean modificarTelefono(int id) {
+        String sql = "UPDATE Telefono SET NumeroTelefono = ?"
+                + "WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.setString(1, telefono);
+                ps.execute();
+                ps.close();
+            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al modificar Telefono en la base de datos." + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean modificarConductor(String id) {
+        String sql = "UPDATE Conductor SET IdLicencia = ?,Base = ?,Servicio =?,NoCuenta=?"
+                + "WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.setString(1, idLicencia);
+                ps.setString(2, base);
+                ps.setString(3, servicio);
+                ps.setInt   (4, Integer.parseInt(noCuenta));
+                ps.execute();
+                ps.close();
+            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al modificar Conductor en la base de datos." + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean eliminarDomicilio(int id) {
+        String sql = "DELETE FROM Domicilio WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                //ps.setInt(1, this.id);
+                ps.executeUpdate();
+                ps.close();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar de la base de datos Domicilio. " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean eliminarEmpleado(String id) {
+        String sql = "DELETE FROM Empleado WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                //ps.setInt(1, this.id);
+                ps.executeUpdate();
+                ps.close();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar de la base de datos Empleado. " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean eliminarTelefono(int id) {
+        String sql = "DELETE FROM Telefono WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                //ps.setInt(1, this.id);
+                ps.executeUpdate();
+                ps.close();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar de la base de datos Telefono. " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean eliminarLicencia(String id) {
+        String sql = "DELETE FROM Licencia WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                //ps.setInt(1, this.id);
+                ps.executeUpdate();
+                ps.close();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar de la base de datos Licencia. " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean eliminarConductor(String id) {
+        String sql = "DELETE FROM Conductor WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                //ps.setInt(1, this.id);
+                ps.executeUpdate();
+                ps.close();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar de la base de datos Conductor. " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public ResultSet filtrarConductor(String id) {
+        ResultSet resultado = null;
+        System.out.println("Entró al filtro de reportes.");
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try { //Este SQL contiene todo lo que necesito para traerme la lista de lo que quiero (Checar en el controller, parte: actualizarBD).
+            String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
+                + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
+                + "Empleado.RFC,Empleado.ClaveElector,"
+                + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
+                + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
+                + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono "
+                + "FROM ((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
+                + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.Id = Conductor.IdLicencia) "
+                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado WHERE Empleado.Id = ?";
+            PreparedStatement ps = conexion.getConexion().prepareStatement(sql);
+            ps.setString(1, id);
+            resultado = ps.executeQuery();
+        } catch (SQLException ex) {
+            System.out.println("No entró. Revísalo.");
+        }
+        return resultado;
     }
     
 }
