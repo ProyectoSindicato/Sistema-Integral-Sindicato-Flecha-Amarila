@@ -127,7 +127,7 @@ public class VistaMantenimientoController implements Initializable{
                 mantenimientoTabla.getItems().add(mantenimientos);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(IncapacidadesController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VistaIncapacidadesController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     public void putData(){
@@ -155,7 +155,7 @@ public class VistaMantenimientoController implements Initializable{
             }
             return "";
         } catch (SQLException ex) {
-            Logger.getLogger(IncapacidadesController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VistaIncapacidadesController.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
     }
@@ -183,7 +183,7 @@ public class VistaMantenimientoController implements Initializable{
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(IncapacidadesController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VistaIncapacidadesController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return driverId;
     }

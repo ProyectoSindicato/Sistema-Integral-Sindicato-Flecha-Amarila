@@ -116,7 +116,7 @@ public class VistaAsesoriaLegalController implements Initializable {
                 asesoriaTabla.getItems().add(asesorias);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(IncapacidadesController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VistaIncapacidadesController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     public void putData(){
@@ -144,7 +144,7 @@ public class VistaAsesoriaLegalController implements Initializable {
             }
             return "";
         } catch (SQLException ex) {
-            Logger.getLogger(IncapacidadesController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VistaIncapacidadesController.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
     }
