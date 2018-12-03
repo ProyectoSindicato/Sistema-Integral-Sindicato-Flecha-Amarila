@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,11 +50,13 @@ public class VistaAutobusesController implements Initializable {
     @FXML private TextField txtAutobus2, txtConductor;
     /* Sección de extras.*/
     ConexionAccess conexionBD;
-    private boolean filtroActivo;
-    private DatePicker date;
+    private boolean filtroActivo, filtroAsignacion;
+    private final DatePicker date;
     private Alert alert;
     private ResultSetMetaData metadata;
     private ResultSetMetaData metadata2;
+    ManejadorEventos evento;
+    ManejadorEventosAsignacion evento2;
     /* Sección Empleado */
     private Empleado employee;
 
@@ -84,6 +88,9 @@ public class VistaAutobusesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cargarElementos();
         filtroActivo = false;
+        filtroAsignacion = false;
+        evento = new ManejadorEventos();
+        evento2 = new ManejadorEventosAsignacion();
         llenarAutobusesBD();
         llenarAsignacionBD();
     }    
@@ -323,6 +330,55 @@ public class VistaAutobusesController implements Initializable {
         }
     }
     
+    // Filtro para la tabla de autobuses.
+    @FXML
+     private void handleFiltroBus(ActionEvent e){
+         filtroActivo = !filtroActivo;
+         
+         if(filtroActivo){
+             btnAgregar.setDisable(true);
+             btnModificar.setDisable(true);
+             btnEliminar.setDisable(true);
+             txtModelo.setDisable(true);
+             txtMarca.setDisable(true);
+             txtAutobus.textProperty().addListener(evento);
+             txtAutobus.setPromptText("Buscar autobús...");
+         }else{
+             btnAgregar.setDisable(false);
+             btnModificar.setDisable(false);
+             btnEliminar.setDisable(false);
+             txtModelo.setDisable(false);
+             txtMarca.setDisable(false);
+             txtAutobus.textProperty().removeListener(evento);
+             txtAutobus.setPromptText("XX-XX-XX");
+             ResultSet r =null;
+             limpiarTablaAutobus();
+             actualizarAutobusBD(r);
+         }
+     }
+    
+    void manejadorFiltro(){
+        if(filtroActivo){
+            String id = txtAutobus.getText();
+            leerFiltroBus(Integer.parseInt(id));
+        }
+    }
+    
+    private void leerFiltroBus(int id){
+        Autobuses filtro = new Autobuses();
+        limpiarTablaAutobus();
+        actualizarAutobusBD(filtro.filtroBus(id));
+    }
+    
+    class ManejadorEventos implements ChangeListener { //Manejador de eventos para el changelistener.
+
+        @Override
+        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+            manejadorFiltro(); //Aquí metes el manejadorFiltro, ya que contiene el leerFiltro(con su resultset).
+        }
+    }
+    
+    
     /* ***********************Parte 2. Segunda Tabla.****************************** */
     //Sección botones.
     @FXML 
@@ -373,7 +429,7 @@ public class VistaAutobusesController implements Initializable {
         if(modificar != null){
             if((!(autobus.equals(""))) && (!(conductor.equals(""))) && value!=null){
                 Alert confirm = new Alert(AlertType.CONFIRMATION);
-                confirm.setContentText("¿Desea modificar un reporte?");
+                confirm.setContentText("¿Desea modificar una asignación?");
 
                 Optional<ButtonType> result = confirm.showAndWait();
                 
@@ -448,6 +504,52 @@ public class VistaAutobusesController implements Initializable {
     } 
     
     
+    @FXML
+     private void handleFiltroAsignacion(ActionEvent e){
+         filtroAsignacion = !filtroAsignacion;
+         if(filtroAsignacion){
+             btnAgregar2.setDisable(true);
+             btnModificar2.setDisable(true);
+             btnEliminar2.setDisable(true);
+             txtConductor.setDisable(true);
+             date.setDisable(true);
+             txtAutobus2.textProperty().addListener(evento2);
+             txtAutobus2.setPromptText("Buscar autobús...");
+         }else{
+             btnAgregar2.setDisable(false);
+             btnModificar2.setDisable(false);
+             btnEliminar2.setDisable(false);
+             txtConductor.setDisable(false);
+             date.setDisable(false);
+             txtAutobus2.textProperty().removeListener(evento2);
+             txtAutobus2.setPromptText("XX-XX-XX");
+             ResultSet r =null;
+             limpiarTablaAsignacion();
+             actualizarAsignacionBD(r);
+         }
+     }
+    
+    void manejadorFiltroAsign(){
+        if(filtroAsignacion){
+            String id = txtAutobus2.getText();
+            leerFiltroAsignacion(Integer.parseInt(id));
+        }
+    }
+    
+    private void leerFiltroAsignacion(int id){
+        ConductorAutobus filtro = new ConductorAutobus();
+        limpiarTablaAsignacion();
+        actualizarAsignacionBD(filtro.filtroAsignacion(id));
+    }
+    
+    class ManejadorEventosAsignacion implements ChangeListener { //Manejador de eventos para el changelistener.
+
+        @Override
+        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+            manejadorFiltroAsign(); //Aquí metes el manejadorFiltro, ya que contiene el leerFiltro(con su resultset).
+        }
+    }
+    
     // Sección tabla.
     @FXML 
     private void tablaAsignacionAction(MouseEvent e){
@@ -492,7 +594,7 @@ public class VistaAutobusesController implements Initializable {
     public void actualizarAsignacionBD(ResultSet result){
         ResultSet rs;
         try{
-            if(filtroActivo){
+            if(filtroAsignacion){
                 rs = result;
             }else{
                 String sql = "SELECT IdAutobus,IdConductor,FechaAsignacion FROM ConductorAutobus";

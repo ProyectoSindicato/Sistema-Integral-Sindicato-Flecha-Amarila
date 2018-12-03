@@ -471,6 +471,7 @@ public class VistaAccidentesController implements Initializable {
             txtPlace.setDisable(false);
             date.setDisable(false);
             ResultSet r = null;
+            clearTable();
             updateFillTable(r);
         }
     }

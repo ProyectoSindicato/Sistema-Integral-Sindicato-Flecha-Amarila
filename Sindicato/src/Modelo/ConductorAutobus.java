@@ -3,6 +3,7 @@ package Modelo;
 import ConexionAccess.ConexionAccess;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -113,6 +114,25 @@ public class ConductorAutobus {
         }catch(SQLException ex){
             return false;
         }
+    }
+    
+    public ResultSet filtroAsignacion(int id){
+     this.IdAutobus = id;
+     ResultSet res = null;
+     conexion = new ConexionAccess();
+     String sql = "SELECT IdAutobus, IdConductor, FechaAsignacion FROM ConductorAutobus WHERE IdAutobus=?";
+     try{
+         conexion.conectar();
+         PreparedStatement ps = conexion.getConexion().prepareStatement(sql);
+         try {
+             ps.setInt(1, IdAutobus);
+             res = ps.executeQuery();
+         } catch (Exception e) {}
+     }catch(SQLException e){
+         System.out.println("Error al cargar la base de datos." + e.getMessage());
+     }
+     return res;
+
     }
     
 }

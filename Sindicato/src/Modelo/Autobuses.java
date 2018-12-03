@@ -109,7 +109,25 @@ public class Autobuses {
             System.out.println("Error al eliminar autobús en la base de datos." + e.getMessage());
             return false;
         }
-        
     }
+    
+    public ResultSet filtroBus(int id){
+        this.Id = id;
+        ResultSet res = null;
+        conexion = new ConexionAccess();
+        try{
+            conexion.conectar();
+            String sql = "SELECT Id, Marca, Modelo FROM Autobus WHERE Id=?";
+            PreparedStatement ps = conexion.getConexion().prepareStatement(sql);
+            try{
+                ps.setInt(1, Id);
+                res = ps.executeQuery();
+            }catch(Exception ex){}
+        }catch(SQLException e){
+            System.out.println("Error. No hace la conexión a la base de datos." + e.getMessage());
+        }
+        return res;
+    }
+    
     
 }

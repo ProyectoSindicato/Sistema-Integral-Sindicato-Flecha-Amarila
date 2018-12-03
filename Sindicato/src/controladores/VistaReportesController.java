@@ -457,6 +457,7 @@ public class VistaReportesController implements Initializable {
             comboBox.setDisable(false);
             date.setDisable(false);
             ResultSet r = null;
+            LimpiarTabla();
             actualizarTablaBD(r);
         }
     }

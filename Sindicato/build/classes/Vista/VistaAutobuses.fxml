@@ -35,7 +35,7 @@
                 <Button fx:id="btnAgregar" layoutX="48.0" layoutY="7.0" mnemonicParsing="false" onAction="#agregarAuto" prefHeight="63.000099999997474" prefWidth="64.0" styleClass="btnAdd" text="" />
                 <Button fx:id="btnModificar" layoutX="48.0" layoutY="82.0" mnemonicParsing="false" onAction="#modificarAuto" prefHeight="63.0" prefWidth="62.0" styleClass="btnModify" text="" />
                 <Button fx:id="btnEliminar" layoutX="48.0" layoutY="158.0" mnemonicParsing="false" onAction="#eliminarAuto" prefHeight="71.0" prefWidth="62.0" styleClass="btnDelete" text="" />
-                <Button fx:id="btnBuscar" layoutX="48.0" layoutY="238.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="62.0" styleClass="btnSearch" text="" />
+                <Button fx:id="btnBuscar" layoutX="48.0" layoutY="238.0" mnemonicParsing="false" onAction="#handleFiltroBus" prefHeight="63.0" prefWidth="62.0" styleClass="btnSearch" text="" />
               </children>
             </Pane>
             <Button layoutX="35.0" layoutY="256.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="62.0" styleClass="back" text="" />
@@ -65,7 +65,7 @@
                 <Button fx:id="btnAgregar2" layoutX="45.0" layoutY="7.0" mnemonicParsing="false" onAction="#agregarAsignacion" prefHeight="71.0" prefWidth="68.0" styleClass="btnAdd" text="" />
                 <Button id="btnModificar" fx:id="btnModificar2" layoutX="45.0" layoutY="81.0" mnemonicParsing="false" onAction="#modificarAsignacion" prefHeight="63.0" prefWidth="68.0" styleClass="btnModify" text="" />
                 <Button fx:id="btnEliminar2" layoutX="45.0" layoutY="161.0" mnemonicParsing="false" onAction="#eliminarAsignacion" prefHeight="63.0" prefWidth="68.0" styleClass="btnDelete" text="" />
-                <Button fx:id="btnBuscar2" layoutX="48.0" layoutY="252.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="62.0" styleClass="btnSearch" text="" />
+                <Button fx:id="btnBuscar2" layoutX="48.0" layoutY="244.0" mnemonicParsing="false" onAction="#handleFiltroAsignacion" prefHeight="63.0" prefWidth="62.0" styleClass="btnSearch" text="" />
               </children>
             </AnchorPane>
             <TableView fx:id="tablaAsignacion" layoutX="688.0" layoutY="14.0" onMousePressed="#tablaAsignacionAction" prefHeight="300.0" prefWidth="620.0">
