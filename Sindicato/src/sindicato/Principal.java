@@ -25,12 +25,12 @@ public class Principal extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaAutobuses.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
         
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-        stage.setMaximized(true);
+      //  stage.setMaximized(true);
        /* ConexionAccess conexion = new ConexionAccess();
         conexion.conectar();
         Empleado employee = new Empleado(3,"123");

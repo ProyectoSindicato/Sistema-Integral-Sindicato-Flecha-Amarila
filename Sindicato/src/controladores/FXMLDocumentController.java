@@ -34,7 +34,7 @@ public class FXMLDocumentController implements Initializable {
     private Label label;
 
     @FXML
-    private Button btnButton1, btnReporte, btnAccidentes, btnInfracciones;
+    private Button btnButton1, btnReporte, btnAccidentes, btnInfracciones, btnAutobuses;
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -101,9 +101,24 @@ public class FXMLDocumentController implements Initializable {
         s.show();
     }
     
+    @FXML 
+    void handleAutobuses(ActionEvent event) throws IOException{
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/Vista/VistaAutobuses.fxml"));
+        loader.load();
+        VistaAutobusesController document = loader.getController();
+        document.setParameters(employee, conexion);
+        Parent p = loader.getRoot();
+        Scene scene = new Scene(p);
+        Stage s = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        s.setScene(scene);
+        s.setMaximized(true);
+        s.setResizable(true);
+        s.show();
+    }
     
-    
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

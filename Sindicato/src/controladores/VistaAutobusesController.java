@@ -63,8 +63,8 @@ public class VistaAutobusesController implements Initializable {
     public void setParameters(Empleado employee, ConexionAccess conexion) {
         this.employee = employee;
         this.conexionBD = conexion;
-        /*¿Quiénes hacen esto? */
-        if( this.employee.getType() != 1){
+        /*¿Quiénes hacen esto? Dir. (1), Asistente 2(8) y Dir. Organización(3).*/
+        if( this.employee.getType() != 1 && this.employee.getType() != 8 && this.employee.getType() != 3 ){
             btnAgregar.setDisable(true);
             btnEliminar.setDisable(true);
             btnModificar.setDisable(true);

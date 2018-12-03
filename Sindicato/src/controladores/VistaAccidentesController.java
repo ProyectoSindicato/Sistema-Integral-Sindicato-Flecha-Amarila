@@ -85,7 +85,7 @@ public class VistaAccidentesController implements Initializable {
         this.employee = employee;
         this.conexionBD = conexion;
         /* Dir. Seguridad y Prevención social - 4.*/
-        if(this.employee.getType() != 4 && this.employee.getType() != 1){
+        if(this.employee.getType() != 4){
          btnAdd.setDisable(true);
          btnModify.setDisable(true);
          btnErase.setDisable(true);
@@ -472,6 +472,7 @@ public class VistaAccidentesController implements Initializable {
             date.setDisable(false);
             ResultSet r = null;
             clearTable();
+            
             updateFillTable(r);
         }
     }
