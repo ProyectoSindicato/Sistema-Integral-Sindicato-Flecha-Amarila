@@ -228,7 +228,7 @@ public class VistaAccidentesController implements Initializable {
                         deleteRefresh();
                         showAlert(AlertType.INFORMATION, "Information Message", "Se ha eliminado el accidente correctamente.");
                     } else {
-                        showAlert(AlertType.ERROR, "Error Message", "Error al eliminar un reporte.");
+                        showAlert(AlertType.ERROR, "Error Message", "Error al eliminar un accidente.");
                     }
                 }
             } else {
@@ -389,7 +389,7 @@ public class VistaAccidentesController implements Initializable {
             ResultSet r = null;
             updateFillTable(r);
         } catch (Exception ex) {
-            showAlert(AlertType.ERROR, "Error Message", "No se ha seleccionado");
+            showAlert(AlertType.ERROR, "Error Message", "No se ha seleccionado nada.");
         }
     }
    

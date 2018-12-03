@@ -22,6 +22,7 @@ public class ConductorAutobus {
     public void setNombreConductor(String NombreConductor) {
         this.NombreConductor = NombreConductor;
     }
+    
     ConexionAccess conexion;
     
     public ConductorAutobus(){

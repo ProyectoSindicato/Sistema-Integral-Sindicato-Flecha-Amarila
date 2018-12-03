@@ -17,19 +17,36 @@ public class Infracciones {
     String IdDirector;
     String Fecha;
     String Motivo;
-    
+    String nombreEmpleado;
     ConexionAccess conexion;
-    
-    public Infracciones(){
-        
+
+    public Infracciones() {
+
     }
 
-    public Infracciones(int Id, int IdAutobus, String IdConductor, String Fecha, String Motivo) {
+    public Infracciones(int Id, int IdAutobus, String IdConductor, String Fecha, String Motivo, String nombreEmpleado) {
         this.Id = Id;
         this.IdAutobus = IdAutobus;
         this.IdConductor = IdConductor;
         this.Fecha = Fecha;
         this.Motivo = Motivo;
+        this.nombreEmpleado = nombreEmpleado;
+    }
+
+    public String getNombreEmpleado() {
+        return nombreEmpleado;
+    }
+
+    public void setNombreEmpleado(String nombreEmpleado) {
+        this.nombreEmpleado = nombreEmpleado;
+    }
+
+    public ConexionAccess getConexion() {
+        return conexion;
+    }
+
+    public void setConexion(ConexionAccess conexion) {
+        this.conexion = conexion;
     }
 
     public int getId() {
@@ -80,14 +97,14 @@ public class Infracciones {
         this.Motivo = Motivo;
     }
 
-    public boolean insertarInfraccion(String id){
+    public boolean insertarInfraccion(String id) {
         this.IdDirector = id;
-        String sql = "INSERT INTO Infracciones(IdAutobus,IdConductor,IdDirector,Fecha,Motivo)" + 
-                      "VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Infracciones(IdAutobus,IdConductor,IdDirector,Fecha,Motivo)"
+                + "VALUES(?,?,?,?,?)";
         conexion = new ConexionAccess();
         conexion.conectar();
-        try{
-            try(PreparedStatement ps = conexion.getConexion().prepareStatement(sql)){
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
                 ps.setInt(1, IdAutobus);
                 ps.setString(2, IdConductor);
                 ps.setString(3, IdDirector);
@@ -97,12 +114,12 @@ public class Infracciones {
                 ps.close();
             }
             return true;
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error al ingresar una infracción en la base de datos." + e.getMessage());
             return false;
         }
     }
-    
+
     public boolean modificarInfraccion(String id) {
         this.IdDirector = id;
         String sql = "UPDATE Infracciones SET IdAutobus = ?,IdConductor =?,IdDirector=?,  Fecha=?, Motivo=?"
@@ -126,8 +143,8 @@ public class Infracciones {
             return false;
         }
     }
-    
-     public boolean eliminarInfraccion(int id) {
+
+    public boolean eliminarInfraccion(int id) {
         this.Id = id;
         String sql = "DELETE FROM Infracciones WHERE Id=?";
         conexion = new ConexionAccess();
@@ -144,21 +161,21 @@ public class Infracciones {
             return false;
         }
     }
-     
-    public ResultSet filtrarInfraccion(String idConductor){
+
+    public ResultSet filtrarInfraccion(String idConductor) {
         this.IdConductor = idConductor;
         ResultSet res = null;
         conexion = new ConexionAccess();
         conexion.conectar();
-        try{
+        try {
             String sql = "SELECT Id, IdAutobus, IdConductor, Fecha, Motivo FROM Infracciones WHERE IdConductor= ? ";
             PreparedStatement ps = conexion.getConexion().prepareStatement(sql);
             ps.setString(1, IdConductor);
             res = ps.executeQuery();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return res;
-    } 
-    
+    }
+
 }

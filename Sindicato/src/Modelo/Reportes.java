@@ -19,21 +19,31 @@ public class Reportes {
     private String Lugar;
     private String Fecha;
     private String Descripcion;
-
+    private String nombreEmpleado;
     ConexionAccess conexion;
 
     public Reportes() {
 
     }
 
-    public Reportes(int Id, String IdConductor, String Tipo, String Lugar, String Fecha, String Descripcion) {
+    public Reportes(int Id, String IdConductor, String Tipo, String Lugar, String Fecha, String Descripcion, String nombreEmpleado) {
         this.Id = Id;
         this.IdConductor = IdConductor;
         this.Tipo = Tipo;
         this.Lugar = Lugar;
         this.Fecha = Fecha;
         this.Descripcion = Descripcion;
+        this.nombreEmpleado = nombreEmpleado;
     }
+
+    public String getNombreEmpleado() {
+        return nombreEmpleado;
+    }
+
+    public void setNombreEmpleado(String nombreEmpleado) {
+        this.nombreEmpleado = nombreEmpleado;
+    }
+    
 
     public int getId() {
         return Id;
