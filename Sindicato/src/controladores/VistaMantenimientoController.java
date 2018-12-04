@@ -108,21 +108,14 @@ public class VistaMantenimientoController implements Initializable{
             while(result.next()){
                 mantenimientos = new Mantenimiento();
                 mantenimientos.setClaveMantenimiento(result.getString(1));
-                System.out.println("Meti "+result.getString(1));
                 mantenimientos.setClaveAutobus(result.getString(2));
-                System.out.println("Meti "+ result.getString(2));
                 mantenimientos.setClaveConductor(getIdConductor(result.getString(2)));
-                System.out.println("Meti "+getIdConductor(result.getString(2)));
                 mantenimientos.setNombreConductor(employeeName(mantenimientos.getClaveConductor()));
                 System.out.println(employeeName(mantenimientos.getClaveConductor()));
                 mantenimientos.setFecha(result.getDate(4).toString());
-                System.out.println("Meti "+result.getDate(4).toString());
                 mantenimientos.setMotivo(result.getString(5));
-                System.out.println("Meti "+result.getString(5));
-                mantenimientos.setIdEmpleado(employee.getIdEmpleado());
-                System.out.println("Meti "+employee.getIdEmpleado());
-                mantenimientos.setNombreJefe(employeeName(employee.getIdEmpleado()));
-                System.out.println("Meti "+employeeName(employee.getIdEmpleado()));
+                mantenimientos.setIdEmpleado(result.getString(3));
+                mantenimientos.setNombreJefe(employeeName(result.getString(3)));
                 putData();
                 mantenimientoTabla.getItems().add(mantenimientos);
             }

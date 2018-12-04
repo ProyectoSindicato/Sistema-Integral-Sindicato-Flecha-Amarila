@@ -109,8 +109,8 @@ public class VistaAsesoriaLegalController implements Initializable {
                 asesorias.setNombreConductor(employeeName(result.getString(2)));
                 asesorias.setFecha(result.getDate(4).toString());
                 asesorias.setTipo(result.getString(5));
-                asesorias.setIdEmpleado(employee.getIdEmpleado());
-                asesorias.setNombreJefe(employeeName(employee.getIdEmpleado()));
+                asesorias.setIdEmpleado(result.getString(3));
+                asesorias.setNombreJefe(employeeName(result.getString(3)));
                 asesorias.setObservaciones(result.getString(6));
                 putData();
                 asesoriaTabla.getItems().add(asesorias);
