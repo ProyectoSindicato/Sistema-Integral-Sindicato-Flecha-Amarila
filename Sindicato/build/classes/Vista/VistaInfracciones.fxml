@@ -11,9 +11,9 @@
   <content>
     <SplitPane dividerPositions="0.5" focusTraversable="true" orientation="VERTICAL" prefHeight="694.0" prefWidth="1359.0">
       <items>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: GRAY">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #030014">
           <children>
-            <AnchorPane layoutX="1145.0" layoutY="1.0" prefHeight="343.0" prefWidth="200.0" style="" styleClass="panelButtons">
+            <AnchorPane layoutX="1145.0" layoutY="1.0" prefHeight="343.0" prefWidth="200.0" style="-fx-background-color: #cacab8" styleClass="panelButtons">
               <children>
                 <Button fx:id="btnAgregar" layoutX="63.0" layoutY="14.0" mnemonicParsing="false" onAction="#agregarInfraccion" prefHeight="70.0" prefWidth="74.0" styleClass="btnAdd" text="" />
                 <Button fx:id="btnModificar" layoutX="67.0" layoutY="93.0" mnemonicParsing="false" onAction="#modificarInfraccion" prefHeight="70.0" prefWidth="70.0" styleClass="btnModify" text="" />
@@ -66,7 +66,8 @@
                 <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="113.0" text="ID Autobús" fx:id="colBus" />
                 <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="113.0" text="ID Conductor" fx:id="colConductor" />
                 <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="181.0" text="Fecha" fx:id="colFecha" />
-                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="821.0" text="Motivo" fx:id="colMotivo" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="709.0" text="Motivo" fx:id="colMotivo" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="109.0" text="Empleado" fx:id="colNombre" />
               </columns>
             </TableView>
           </children>

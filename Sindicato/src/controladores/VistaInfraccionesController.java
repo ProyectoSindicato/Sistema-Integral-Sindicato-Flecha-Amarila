@@ -47,7 +47,7 @@ public class VistaInfraccionesController implements Initializable {
    @FXML private DatePicker date;
    @FXML private Button btnAgregar, btnModificar, btnEliminar, btnBuscar, btnBack;
    @FXML private TableView<Infracciones> tablaInfraccion;
-   @FXML private TableColumn<Infracciones,String> colID, colBus, colConductor, colFecha,colMotivo;
+   @FXML private TableColumn<Infracciones,String> colID, colBus, colConductor, colFecha,colMotivo, colNombre;
     
    /* Sección adicional.*/
    private boolean filtroActivo;
@@ -236,7 +236,7 @@ public class VistaInfraccionesController implements Initializable {
         
      public void llenarTablaBD() {
         ResultSet rs;
-        String sql = "SELECT Id, IdAutobus, IdConductor, Fecha, Motivo FROM Infracciones";
+        String sql = "SELECT Id, IdAutobus, IdConductor, Fecha, Motivo, IdDirector FROM Infracciones";
 
         try {
             conexionBD.conectar();
@@ -258,8 +258,8 @@ public class VistaInfraccionesController implements Initializable {
                 String idConductor = String.valueOf(fila[2]);
                 String fecha = String.valueOf(rs.getDate(4));
                 String motivo = String.valueOf(fila[4]);
-                
-                Infracciones inf = new Infracciones(id, idAutobus, idConductor, fecha, motivo);
+                String nombre = nombreEmpleado(String.valueOf(fila[5]));
+                Infracciones inf = new Infracciones(id, idAutobus, idConductor, fecha, motivo, nombre);
                 colocarDatosColumna();
                 tablaInfraccion.getItems().add(inf);
             }
@@ -270,7 +270,7 @@ public class VistaInfraccionesController implements Initializable {
     
      public void actualizarTablaBD(ResultSet result) {
         ResultSet rs;
-        String sql = "SELECT Id, IdAutobus, IdConductor, Fecha, Motivo FROM Infracciones";
+        String sql = "SELECT Id, IdAutobus, IdConductor, Fecha, Motivo, IdDirector FROM Infracciones";
         try{
             if(filtroActivo){
                 rs = result;
@@ -296,8 +296,8 @@ public class VistaInfraccionesController implements Initializable {
                 String idConductor = String.valueOf(fila[2]);
                 String fecha = String.valueOf(rs.getDate(4));
                 String motivo = String.valueOf(fila[4]);
-                
-                Infracciones inf = new Infracciones(id, idAutobus, idConductor, fecha, motivo);
+                String nombre = nombreEmpleado(String.valueOf(fila[5]));
+                Infracciones inf = new Infracciones(id, idAutobus, idConductor, fecha, motivo, nombre);
                 colocarDatosColumna();
                 tablaInfraccion.getItems().add(inf);
             }
@@ -316,6 +316,7 @@ public class VistaInfraccionesController implements Initializable {
         colConductor.setCellValueFactory(new PropertyValueFactory<>("IdConductor"));
         colFecha.setCellValueFactory(new PropertyValueFactory<>("Fecha"));
         colMotivo.setCellValueFactory(new PropertyValueFactory<>("Motivo"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreEmpleado"));
     }
     
     void limpiarCampos(){
@@ -446,4 +447,22 @@ public class VistaInfraccionesController implements Initializable {
             manejadorFiltro(); 
         }
     }
+    
+    public String nombreEmpleado(String empleado){ //debe ser el id del conductor.
+        String nombre = "";
+        try{
+            PreparedStatement ps = conexionBD.getConexion().prepareStatement("SELECT Nombres, ApellidoPaterno FROM Empleado WHERE Id=? ");
+            ps.setString(1, empleado);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                nombre = rs.getString(1) + " " + rs.getString(2);
+                return nombre;
+            }
+            return "";
+        }catch(SQLException ex){
+            ex.printStackTrace();
+            return "";
+        } 
+    }
+    
 }

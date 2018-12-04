@@ -66,8 +66,9 @@
                 <TableColumn prefWidth="75.0" text="ID Conductor" fx:id="colConductor" />
                 <TableColumn prefWidth="75.0" text="Tipo" fx:id="colTipo" />
                 <TableColumn prefWidth="75.0" text="Fecha" fx:id="colDate" />
-                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="900.0" text="Descripcion" fx:id="colDescripcion" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="764.0" text="Descripcion" fx:id="colDescripcion" />
                 <TableColumn prefWidth="140.0" text="Lugar" fx:id="colLugar" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="139.0" text="Empleado" fx:id="colNombre" />
               </columns>
             </TableView>
           </children>

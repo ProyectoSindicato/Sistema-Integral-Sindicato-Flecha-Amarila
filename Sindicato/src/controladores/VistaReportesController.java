@@ -71,6 +71,8 @@ public class VistaReportesController implements Initializable {
     @FXML
     private TableColumn<Reportes, String> colConductor;
     @FXML
+    private TableColumn<Reportes, String> colNombre;
+    @FXML
     ComboBox<String> comboBox = new ComboBox<String>();
     @FXML
     private Button btnAgregar, btnModificar, btnEliminar, btnBack;
@@ -280,7 +282,7 @@ public class VistaReportesController implements Initializable {
 
     public void llenarTablaBD() {
         ResultSet rs;
-        String sql = "SELECT Id, IdConductor, Tipo, Fecha, Descripcion, Lugar FROM Reportes";
+        String sql = "SELECT Id, IdConductor, Tipo, Fecha, Descripcion, Lugar, IdEmpleado FROM Reportes";
 
         try {
             conexionBD.conectar();
@@ -303,9 +305,9 @@ public class VistaReportesController implements Initializable {
                 String fecha = String.valueOf(rs.getDate(4));
                 String desc = String.valueOf(fila[4]);
                 String lugar = String.valueOf(fila[5]);
-                Reportes rep = new Reportes(Integer.parseInt(id), idCond, tipo, lugar, fecha, desc);
+                String nombre = nombreEmpleado(String.valueOf(fila[6]));
+                Reportes rep = new Reportes(Integer.parseInt(id), idCond, tipo, lugar, fecha, desc, nombre);
                 colocarDatosColumna();
-
                 tablaReporte.getItems().add(rep);
             }
         } catch (SQLException e) {
@@ -320,7 +322,7 @@ public class VistaReportesController implements Initializable {
             if (filtroActivo) { //Si el filtro está activado, quiere decir que el txtField está en escucha y se sustituye el result set por ese.
                 rs = result;
             } else { //En caso contrario, solamente volvemos a ejecutar la sentencia normal de traer todo a la tabla.
-                String sql = "SELECT Id, IdConductor, Tipo, Fecha, Descripcion, Lugar FROM Reportes";
+                String sql = "SELECT Id, IdConductor,  Tipo, Fecha, Descripcion, Lugar, IdEmpleado FROM Reportes";
                 rs = conexionBD.ejecutarSQLSelect(sql);
             }
             try {
@@ -343,7 +345,8 @@ public class VistaReportesController implements Initializable {
                     String fecha = String.valueOf(rs.getDate(4));
                     String desc = String.valueOf(fila[4]);
                     String lugar = String.valueOf(fila[5]);
-                    Reportes rep = new Reportes(Integer.parseInt(id), idCond, tipo, lugar, fecha, desc);
+                    String nombre = nombreEmpleado(String.valueOf(fila[6]));
+                    Reportes rep = new Reportes(Integer.parseInt(id), idCond, tipo, lugar, fecha, desc, nombre);
                     colocarDatosColumna();
                     tablaReporte.getItems().add(rep);
                 }
@@ -363,6 +366,7 @@ public class VistaReportesController implements Initializable {
         colDate.setCellValueFactory(new PropertyValueFactory<>("Fecha"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("Descripcion"));
         colLugar.setCellValueFactory(new PropertyValueFactory<>("Lugar"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreEmpleado"));
     }
 
     public void insertarYRefrescar() {
@@ -457,6 +461,7 @@ public class VistaReportesController implements Initializable {
             comboBox.setDisable(false);
             date.setDisable(false);
             ResultSet r = null;
+            LimpiarTabla();
             actualizarTablaBD(r);
         }
     }
@@ -501,5 +506,22 @@ public class VistaReportesController implements Initializable {
             return false;
         }
     }
-//    
+      
+      public String nombreEmpleado(String empleado){ //debe ser el id del conductor.
+        String nombre = "";
+        try{
+            PreparedStatement ps = conexionBD.getConexion().prepareStatement("SELECT Nombres, ApellidoPaterno FROM Empleado WHERE Id=? ");
+            ps.setString(1, empleado);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                nombre = rs.getString(1) + " " + rs.getString(2);
+                return nombre;
+            }
+            return "";
+        }catch(SQLException ex){
+            ex.printStackTrace();
+            return "";
+        } 
+    }
+      
 }

@@ -85,7 +85,7 @@ public class VistaAccidentesController implements Initializable {
         this.employee = employee;
         this.conexionBD = conexion;
         /* Dir. Seguridad y Prevención social - 4.*/
-        if(this.employee.getType() != 4 && this.employee.getType() != 1){
+        if(this.employee.getType() != 4){
          btnAdd.setDisable(true);
          btnModify.setDisable(true);
          btnErase.setDisable(true);
@@ -228,7 +228,7 @@ public class VistaAccidentesController implements Initializable {
                         deleteRefresh();
                         showAlert(AlertType.INFORMATION, "Information Message", "Se ha eliminado el accidente correctamente.");
                     } else {
-                        showAlert(AlertType.ERROR, "Error Message", "Error al eliminar un reporte.");
+                        showAlert(AlertType.ERROR, "Error Message", "Error al eliminar un accidente.");
                     }
                 }
             } else {
@@ -389,7 +389,7 @@ public class VistaAccidentesController implements Initializable {
             ResultSet r = null;
             updateFillTable(r);
         } catch (Exception ex) {
-            showAlert(AlertType.ERROR, "Error Message", "No se ha seleccionado");
+            showAlert(AlertType.ERROR, "Error Message", "No se ha seleccionado nada.");
         }
     }
    
@@ -471,6 +471,8 @@ public class VistaAccidentesController implements Initializable {
             txtPlace.setDisable(false);
             date.setDisable(false);
             ResultSet r = null;
+            clearTable();
+            
             updateFillTable(r);
         }
     }
