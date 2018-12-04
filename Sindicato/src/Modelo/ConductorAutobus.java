@@ -133,7 +133,6 @@ public class ConductorAutobus {
          System.out.println("Error al cargar la base de datos." + e.getMessage());
      }
      return res;
-
     }
     
 }
