@@ -726,9 +726,9 @@ public class Conductor {
                 + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono "
                 + "FROM ((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
                 + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.Id = Conductor.IdLicencia) "
-                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado WHERE Empleado.Id = ?";
+                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado WHERE Empleado.Id LIKE \""+id+"*\" ";
             PreparedStatement ps = conexion.getConexion().prepareStatement(sql);
-            ps.setString(1, id);
+            //ps.setString(1, id);
             resultado = ps.executeQuery();
         } catch (SQLException ex) {
             System.out.println("No entró. Revísalo.");

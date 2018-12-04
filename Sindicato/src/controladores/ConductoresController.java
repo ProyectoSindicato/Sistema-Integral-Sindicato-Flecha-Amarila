@@ -66,7 +66,7 @@ public class ConductoresController implements Initializable {
     private ToggleGroup tggGrupoEstadoCivil;
     
     @FXML
-    private RadioButton rbtSoltero, rbtCasado;
+    private RadioButton rbtSoltero, rbtCasado, rbtUnionLibre;
     
     @FXML
     private ComboBox cbxEstado, cbxCiudad;
@@ -109,6 +109,7 @@ public class ConductoresController implements Initializable {
         tggGrupoEstadoCivil = new ToggleGroup();
         rbtSoltero.setToggleGroup(tggGrupoEstadoCivil);
         rbtCasado.setToggleGroup(tggGrupoEstadoCivil);
+        rbtUnionLibre.setToggleGroup(tggGrupoEstadoCivil);
         
         txtCAMPOS = new TextField[]{txtId, txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
                                     txtLugarNacimiento, txtTelefono, txtCalle, txtNumExt, txtColonia,
@@ -3374,7 +3375,7 @@ public class ConductoresController implements Initializable {
             String fechaNacimiento = conductor.getFechaNacimiento();            
             String lugarNacimiento = conductor.getLugarNacimiento();
             String estadoCivil = conductor.getEstadoCivil();
-            System.out.println("ESTADO CIVIL: "+estadoCivil);
+            //System.out.println("ESTADO CIVIL: "+estadoCivil);
             int idDomicilio = conductor.getIdDomicilio();
             String fechaIngreso = conductor.getFechaIngreso();
             String fechaSindicato = conductor.getFechaSindicato();
@@ -3411,7 +3412,8 @@ public class ConductoresController implements Initializable {
             dpFechaNacimiento.setValue(LocalDate.parse(fechaNacimiento));
             txtLugarNacimiento.setText(lugarNacimiento);
             if(estadoCivil.equals("Soltero")) tggGrupoEstadoCivil.selectToggle(rbtSoltero);
-            else if(estadoCivil.equals("Casado")) tggGrupoEstadoCivil.selectToggle(rbtCasado);            
+            else if(estadoCivil.equals("Casado")) tggGrupoEstadoCivil.selectToggle(rbtCasado);
+            else if(estadoCivil.equals("Union Libre")) tggGrupoEstadoCivil.selectToggle(rbtUnionLibre);            
             txtIdDomicilio.setText(String.valueOf(idDomicilio));
             
             dpFechaIngreso.setValue(LocalDate.parse(fechaIngreso));
@@ -3423,6 +3425,8 @@ public class ConductoresController implements Initializable {
             txtRFC.setText(rfc);
             txtClaveElector.setText(claveElector);
             
+            estado = firstLetterCaps(estado);
+            ciudad = firstLetterCaps(ciudad);
             cbxEstado.setValue(estado);
             cbxCiudad.setValue(ciudad);
             txtColonia.setText(String.valueOf(colonia));
@@ -3442,6 +3446,12 @@ public class ConductoresController implements Initializable {
             txtTelefono.setText(telefono);
         }
     }
+    
+    static public String firstLetterCaps ( String data ) {
+      String firstLetter = data.substring(0,1).toUpperCase();
+      String restLetters = data.substring(1).toLowerCase();
+      return firstLetter + restLetters;
+  }
 
     void manejadorFiltro() {
         if (filtroActivo) {
@@ -3460,11 +3470,22 @@ public class ConductoresController implements Initializable {
             btnAgregar.setDisable(true);
             btnEliminar.setDisable(true);
             btnEditar.setDisable(true);
-
+            
+            LimpiarCampos();
             txtId.textProperty().addListener(eventoFiltro);
             for (TextField campo : txtCAMPOS) {
                 campo.setDisable(true);
-            }            
+            }
+            dpFechaExpedicion.setDisable(true);
+            dpFechaExpiracion.setDisable(true);
+            dpFechaIngreso.setDisable(true);
+            dpFechaNacimiento.setDisable(true);
+            dpFechaSindicato.setDisable(true);
+            cbxCiudad.setDisable(true);
+            cbxEstado.setDisable(true);
+            rbtCasado.setDisable(true);
+            rbtSoltero.setDisable(true);
+            rbtUnionLibre.setDisable(true);
 
         } else { // Sino, se vuelve un false y activamos todo a como estaba antes.
             btnAgregar.setDisable(false);
@@ -3473,7 +3494,21 @@ public class ConductoresController implements Initializable {
             txtId.textProperty().removeListener(eventoFiltro);
             for (TextField campo : txtCAMPOS) {
                  campo.setDisable(false);
-             }
+            }
+            dpFechaExpedicion.setDisable(false);
+            dpFechaExpiracion.setDisable(false);
+            dpFechaIngreso.setDisable(false);
+            dpFechaNacimiento.setDisable(false);
+            dpFechaSindicato.setDisable(false);
+            cbxCiudad.setDisable(false);
+            cbxEstado.setDisable(false);
+            rbtCasado.setDisable(false);
+            rbtSoltero.setDisable(false);
+            rbtUnionLibre.setDisable(false);
+            
+            LimpiarCampos();
+            LimpiarTabla();
+            llenarTablaBD();
         }
         txtId.setDisable(false);
     }

@@ -25,17 +25,18 @@ public class Principal extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
-        /*Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
         
         Scene scene = new Scene(root);
+        
         stage.setScene(scene);
-        stage.show();*/
-        //stage.setMaximized(true);
-        ConexionAccess conexion = new ConexionAccess();
+        stage.show();
+        stage.setMaximized(true);
+        /*ConexionAccess conexion = new ConexionAccess();
         conexion.conectar();
         Empleado employee = new Empleado(3,"123");
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/Vista/VistaEventos.fxml"));
+        loader.setLocation(getClass().getResource("/Vista/VistaLogin.fxml"));
         loader.load();
         VistaEventosController document = loader.getController();
         document.setParameters(employee,conexion);
@@ -44,9 +45,9 @@ public class Principal extends Application {
         Scene s = new Scene(p);
         stage.setScene(s);
         stage.setTitle("Eventos");
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         stage.setResizable(true);
-        stage.show(); 
+        stage.show(); */
     }
 
     /**

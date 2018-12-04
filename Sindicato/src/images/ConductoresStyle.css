@@ -116,7 +116,7 @@
 }
 
 .panelButtons {
-    -fx-background-color: #aaaaaa;
+    -fx-background-color: #999;
     -fx-border-color: rgba(255,255,255,0.5);
     -fx-border-width: 1px;
     -fx-border-radius: 15px;
