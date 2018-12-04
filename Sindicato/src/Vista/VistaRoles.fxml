@@ -15,10 +15,10 @@
           <children>
             <AnchorPane layoutX="1201.0" layoutY="-1.0" prefHeight="345.0" prefWidth="147.99990000000253" styleClass="panelButtons">
               <children>
-                <Button fx:id="btnAgregar2" layoutX="43.0" layoutY="14.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" styleClass="btnAdd" text="" />
-                <Button fx:id="btnModificar2" layoutX="43.0" layoutY="89.0" mnemonicParsing="false" prefHeight="63.000099999997474" prefWidth="64.0" styleClass="btnModify" text="" />
-                <Button fx:id="btnEliminar2" layoutX="42.0" layoutY="173.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="63.0" styleClass="btnDelete" text="" />
-                <Button fx:id="btnBuscar2" layoutX="43.0" layoutY="268.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="63.0" styleClass="btnSearch" text="" />
+                <Button fx:id="btnAgregar2" layoutX="43.0" layoutY="14.0" mnemonicParsing="false" onAction="#agregarAsignacion" prefHeight="64.0" prefWidth="64.0" styleClass="btnAdd" text="" />
+                <Button fx:id="btnModificar2" layoutX="43.0" layoutY="89.0" mnemonicParsing="false" onAction="#modificarAsignacion" prefHeight="63.000099999997474" prefWidth="64.0" styleClass="btnModify" text="" />
+                <Button fx:id="btnEliminar2" layoutX="42.0" layoutY="173.0" mnemonicParsing="false" onAction="#eliminarAsignacion" prefHeight="63.0" prefWidth="63.0" styleClass="btnDelete" text="" />
+                <Button fx:id="btnBuscar2" layoutX="43.0" layoutY="268.0" mnemonicParsing="false" onAction="#handleRolAsignacion" prefHeight="63.0" prefWidth="63.0" styleClass="btnSearch" text="" />
               </children>
             </AnchorPane>
             <AnchorPane layoutX="92.0" layoutY="27.0" prefHeight="295.0" prefWidth="328.0" styleClass="gridSection">
@@ -50,7 +50,7 @@
                 <Button fx:id="btnAgregar" layoutX="22.0" layoutY="14.0" mnemonicParsing="false" onAction="#agregarRol" prefHeight="69.0" prefWidth="64.0" styleClass="btnAdd" text="" />
                 <Button fx:id="btnModificar" layoutX="22.0" layoutY="98.0" mnemonicParsing="false" onAction="#modificarRol" prefHeight="69.0" prefWidth="63.999900000002526" styleClass="btnModify" text="" />
                 <Button fx:id="btnEliminar" layoutX="22.0" layoutY="176.0" mnemonicParsing="false" onAction="#eliminarRol" prefHeight="64.0" prefWidth="64.0" styleClass="btnDelete" text="" />
-                <Button fx:id="btnBuscar" layoutX="22.0" layoutY="251.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="63.0" styleClass="btnSearch" text="" />
+                <Button fx:id="btnBuscar" layoutX="22.0" layoutY="251.0" mnemonicParsing="false" onAction="#handleRol" prefHeight="67.0" prefWidth="63.0" styleClass="btnSearch" text="" />
               </children>
             </AnchorPane>
             <AnchorPane layoutX="729.0" layoutY="27.0" prefHeight="198.0" prefWidth="351.0" styleClass="gridSection">
@@ -85,11 +85,11 @@
                 <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="181.0" text="Corrida" fx:id="colCorrida" />
               </columns>
             </TableView>
-            <TableView layoutX="681.0" layoutY="0.0" prefHeight="332.0" prefWidth="668.0">
+            <TableView fx:id="tablaConRol" layoutX="681.0" layoutY="0.0" onMousePressed="#tablaRolAsAction" prefHeight="332.0" prefWidth="668.0">
               <columns>
-                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="153.0" text="ID Rol" />
-                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="173.0" text="ID Conductor" />
-                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="340.0" text="Nombre Conductor" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="153.0" text="ID Rol" fx:id="colRolAsignacion" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="173.0" text="ID Conductor" fx:id="colConductor" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="340.0" text="Nombre Conductor" fx:id="colNombreConductor" />
               </columns>
             </TableView>
           </children>

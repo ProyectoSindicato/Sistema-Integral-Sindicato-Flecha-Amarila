@@ -2,6 +2,7 @@ package controladores;
 
 import ConexionAccess.ConexionAccess;
 import Empleado.Empleado;
+import Modelo.ConductoresRoles;
 import Modelo.Roles;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -10,6 +11,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -34,12 +37,17 @@ public class VistaRolesController implements Initializable {
     @FXML private TableView<Roles> tablaRoles;
     @FXML private TableColumn<Roles, Integer> colRol;
     @FXML private TableColumn<Roles, String> colEmpleado, colNombre, colCorrida;
-    
+    @FXML private TableView<ConductoresRoles> tablaConRol;
+    @FXML private TableColumn<ConductoresRoles, Integer> colRolAsignacion;
+    @FXML private TableColumn<ConductoresRoles, String> colConductor, colNombreConductor;
     private boolean filtroTablaRol;
     private boolean filtroTablaAsignar;
     Alert alert;
     ConexionAccess conexionBD;
     ResultSetMetaData metadata;
+    
+    ManejadorEventos evento;
+    ManejadorEventosAsignacion eventoAsign;
     
     public VistaRolesController(){
         conexionBD = new ConexionAccess();
@@ -51,8 +59,11 @@ public class VistaRolesController implements Initializable {
         filtroTablaAsignar = false;
         filtroTablaRol     = false;
         llenarRolesBD();
+        llenarRolesAsignadosBD();
          txtRol.setDisable(true);
-      //  txtEmpleado.setDisable(true);
+         evento =new ManejadorEventos();
+         eventoAsign = new ManejadorEventosAsignacion();
+         txtEmpleado.setDisable(true);
     }    
     
     /* Empleados.*/
@@ -61,7 +72,7 @@ public class VistaRolesController implements Initializable {
     public void setParameters(Empleado employee, ConexionAccess conexion) {
         this.employee = employee;
         this.conexionBD = conexion;
-        /*¿Quiénes hacen esto? Dir. (1), Asistente 2(8) y Dir. Organización(3).*/
+        /*¿Quiénes hacen esto? Delegados, Actas y Acuerdos.*/
         if( this.employee.getType() != 0 && this.employee.getType() != 6){
             btnAgregar.setDisable(true);
             btnEliminar.setDisable(true);
@@ -308,8 +319,335 @@ public class VistaRolesController implements Initializable {
          }
      }
      
-     /* ***************** TABLA ASIGNACION DE CORRIDAS**************** */
+     // FILTRADO.
+     @FXML
+     private void handleRol(ActionEvent e){
+         filtroTablaRol =! filtroTablaRol;
+         if(filtroTablaRol){
+             btnAgregar.setDisable(true);
+             btnModificar.setDisable(true);
+             btnEliminar.setDisable(true);
+             txtCorrida.textProperty().addListener(evento);
+             txtCorrida.setPromptText("Buscar por corrida.");
+         }else{
+             btnAgregar.setDisable(false);
+             btnModificar.setDisable(false);
+             btnEliminar.setDisable(false);
+             txtCorrida.textProperty().removeListener(evento);
+             ResultSet r = null;
+             actualizarRolesBD(r);
+         }
+     }
      
+     void manejadorFiltro(){
+        if(filtroTablaRol){
+            String corrida = txtCorrida.getText();
+            leerFiltroRol(corrida);
+        }
+    }
+     
+     private void leerFiltroRol(String corrida){
+        Roles filtro = new Roles();
+        limpiarTablaRoles();
+        actualizarRolesBD(filtro.filtroRoles(corrida));
+    }
+     
+     class ManejadorEventos implements ChangeListener { //Manejador de eventos para el changelistener.
+
+        @Override
+        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+            manejadorFiltro(); //Aquí metes el manejadorFiltro, ya que contiene el leerFiltro(con su resultset).
+        }
+    }
+     
+     /* ***************** TABLA ASIGNACION DE ROLES**************** */
+     @FXML 
+     public void agregarAsignacion(ActionEvent e){
+         String conductor = txtConductor.getText();
+         String rol = txtRolAsignado.getText();
+          if((!(conductor.equals(""))) && (!(rol.equals("")))){
+            
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setContentText("¿Desea asignar un rol?");
+            Optional<ButtonType> result = confirm.showAndWait();
+            
+            if(result.get() == ButtonType.OK){
+                if(isIdConductorCorrect()){
+                    try{
+                    ConductoresRoles bean = new ConductoresRoles();
+                    bean.setIdRol(Integer.parseInt(rol));
+                    bean.setIdConductor(conductor);
+                    if(bean.agregarRolConductor(Integer.parseInt(rol)) == true){
+                        insertarRefrescarAsignacion();
+                        showAlert(AlertType.INFORMATION, "Information Message.","Se añadió el rol asignado correctamente.");
+                    }else{
+                        showAlert(AlertType.ERROR, "Error Message.","Error al añadir el rol asignado.");
+                    }
+                      }catch(NumberFormatException ex){
+                     showAlert(AlertType.ERROR, "Error Message.","Error al añadir el rol asignado.");
+                   
+                     }
+                }
+            }
+        }else{
+            showAlert(AlertType.WARNING, "Warning Message.","Favor de rellenar los campos.");
+        } 
+     }
+     
+     @FXML 
+     public void modificarAsignacion(ActionEvent e){
+         ConductoresRoles asig = tablaConRol.getSelectionModel().getSelectedItem();
+         String conductor = txtConductor.getText();
+         String rol = txtRolAsignado.getText();
+          
+         if(asig !=null){
+             if((!(conductor.equals(""))) && (!(rol.equals("")))){
+            
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setContentText("¿Desea modificar un rol?");
+            Optional<ButtonType> result = confirm.showAndWait();
+            
+            if(result.get() == ButtonType.OK){
+                if(isIdEmployeeCorrect()){
+                    if(isIdRolCorrect()){
+                        try{
+                    ConductoresRoles bean = new ConductoresRoles();
+                    bean.setIdRol(Integer.parseInt(rol));
+                    bean.setIdConductor(conductor);
+                    if(bean.modificarRolConductor(Integer.parseInt(rol)) == true){
+                        insertarRefrescarAsignacion();
+                        showAlert(AlertType.INFORMATION, "Information Message.","Se modificó el rol asignado correctamente.");
+                    }else{
+                        showAlert(AlertType.ERROR, "Error Message.","Error al modificar el rol asignado.");
+                    }
+                      }catch(NumberFormatException ex){
+                     showAlert(AlertType.ERROR, "Error Message.","Error al modificar el rol asignado.");
+                   
+                     }
+                    }
+                }
+            }
+        }else{
+            showAlert(AlertType.WARNING, "Warning Message.","Favor de rellenar los campos.");
+        }
+         }else{
+              showAlert(AlertType.WARNING, "Warning Message.","Favor de seleccionar un dato.");
+         }
+     }
+     
+     @FXML 
+     public void eliminarAsignacion(ActionEvent e){
+         ConductoresRoles eliminar = tablaConRol.getSelectionModel().getSelectedItem();
+         String conductor = txtConductor.getText();
+         String rol = txtRolAsignado.getText();
+         
+         if(eliminar!= null){
+              if((!(conductor.equals(""))) && (!(rol.equals("")))){
+            
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setContentText("¿Desea eliminar un rol asignado?");
+            Optional<ButtonType> result = confirm.showAndWait();
+            
+            if(result.get() == ButtonType.OK){
+                if(isIdConductorCorrect()){
+                    try{
+                    ConductoresRoles bean = new ConductoresRoles();
+                    bean.setIdRol(Integer.parseInt(rol));
+                    bean.setIdConductor(conductor);
+                    if(bean.eliminarRolConductor(Integer.parseInt(rol),conductor) == true){
+                       eliminarYActualizarAsignacion();
+                        showAlert(AlertType.INFORMATION, "Information Message.","Se eliminó el rol asignado correctamente.");
+                    }else{
+                        showAlert(AlertType.ERROR, "Error Message.","Error al eliminar el rol asignado.");
+                    }
+                      }catch(NumberFormatException ex){
+                     showAlert(AlertType.ERROR, "Error Message.","Error al eliminar el rol asignado.");
+                   
+                     }
+                }
+            }
+        }else{
+            showAlert(AlertType.WARNING, "Warning Message.","Favor de rellenar los campos.");
+        } 
+         }else{
+             showAlert(AlertType.WARNING, "Warning Message.","Favor de seleccionar un rol asignado.");
+         }
+     }
+     
+     // TABLA ROL ASIGNADO.
+     @FXML
+     public void tablaRolAsAction(MouseEvent event){
+         mostrarAsignacionesCampos();
+     }
+     
+     public void llenarRolesAsignadosBD(){
+         ResultSet rs;
+        String sql = "SELECT IdRol,IdConductor FROM ConductoresRoles";
+        try
+        {
+         conexionBD.conectar();
+         rs = conexionBD.ejecutarSQLSelect(sql);
+         metadata = rs.getMetaData();
+         int cols = metadata.getColumnCount();
+         
+         while(rs.next())
+         {
+             Object[] fila = new Object[cols];
+             for (int i = 0; i < cols; i++) {
+                 if(rs.getObject(i+1) == null){
+                     fila[i] = "";
+                 }else{
+                     fila[i] = rs.getObject(i+1);
+                 }
+             }
+             
+             String rol = String.valueOf(fila[0]);
+             String conductor = String.valueOf(fila[1]);
+             String nombre = nombreEmpleado(conductor);
+             ConductoresRoles cr = new ConductoresRoles(Integer.parseInt(rol), conductor, nombre);
+             colocarDatosAsignacion();
+             tablaConRol.getItems().add(cr);
+         }
+        }catch(SQLException e){
+            showAlert(AlertType.ERROR, "Error Message.", "Error al llenar la tabla.");
+            e.getMessage();
+        }
+     }
+     
+     public void insertarRolesAsignadosBD(ResultSet result){
+         ResultSet rs;
+        if(filtroTablaAsignar){
+            rs = result;
+        }else{
+            String sql = "SELECT IdRol,IdConductor FROM ConductoresRoles";
+            rs = conexionBD.ejecutarSQLSelect(sql);
+        }
+         
+        try
+        {
+         conexionBD.conectar(); 
+         metadata = rs.getMetaData();
+         int cols = metadata.getColumnCount();
+         
+         while(rs.next())
+         {
+             Object[] fila = new Object[cols];
+             for (int i = 0; i < cols; i++) {
+                 if(rs.getObject(i+1) == null){
+                     fila[i] = "";
+                 }else{
+                     fila[i] = rs.getObject(i+1);
+                 }
+             }
+             
+             String rol = String.valueOf(fila[0]);
+             String conductor = String.valueOf(fila[1]);
+             String nombre = nombreEmpleado(conductor);
+             ConductoresRoles cr = new ConductoresRoles(Integer.parseInt(rol), conductor, nombre);
+             colocarDatosAsignacion();
+             tablaConRol.getItems().add(cr);
+         }
+        }catch(SQLException e){
+            showAlert(AlertType.ERROR, "Error Message.", "Error al llenar la tabla.");
+            e.getMessage();
+        }
+     }
+     
+     
+     
+     void colocarDatosAsignacion(){
+         colConductor.setCellValueFactory(new PropertyValueFactory<>("IdConductor"));
+         colNombreConductor.setCellValueFactory(new PropertyValueFactory<>("nombreConductor"));
+         colRolAsignacion.setCellValueFactory(new PropertyValueFactory<>("IdRol"));
+     }
+     
+     void limpiarCamposAsignacion(){
+         txtRolAsignado.clear();
+         txtConductor.clear();
+     }
+     
+     void limpiarTablaRolesAsignacion(){
+         for (int i = 0; i < tablaConRol.getItems().size(); i++) {
+             tablaConRol.getItems().clear();
+         }
+     }
+     
+     void insertarRefrescarAsignacion(){
+         limpiarCamposAsignacion();
+         limpiarTablaRolesAsignacion();
+         ResultSet r = null;
+        insertarRolesAsignadosBD(r);
+     }
+     
+     public void eliminarYActualizarAsignacion() { //Intenta eliminarlo. Es por precaución por el resultset.
+        try {
+            limpiarCamposAsignacion();
+            limpiarTablaRolesAsignacion();
+            ResultSet r = null;
+             insertarRolesAsignadosBD(r);
+        } catch (Exception error) {
+            showAlert(AlertType.ERROR, "Error Message", " No se ha seleccionado ningún rol asignado. Favor de seleccionar.");
+        }
+    }
+     
+      public void mostrarAsignacionesCampos(){
+          ConductoresRoles asignar = tablaConRol.getSelectionModel().getSelectedItem();
+          if(asignar == null){
+              limpiarCamposAsignacion();
+          }else{
+              String id = String.valueOf(asignar.getIdRol());
+              String conductor = asignar.getIdConductor();
+              
+              txtRolAsignado.setText(id);
+              txtConductor.setText(conductor);
+          }
+      }
+     
+      // FILTRADO.
+     @FXML
+     private void handleRolAsignacion(ActionEvent e){
+         filtroTablaAsignar =! filtroTablaAsignar;
+         if(filtroTablaAsignar){
+             btnAgregar2.setDisable(true);
+             btnModificar2.setDisable(true);
+             btnEliminar2.setDisable(true);
+             txtRolAsignado.setDisable(true);
+             txtConductor.textProperty().addListener(eventoAsign);
+             txtConductor.setPromptText("Buscar por conductor...");
+         }else{
+             btnAgregar2.setDisable(false);
+             btnModificar2.setDisable(false);
+             btnEliminar2.setDisable(false);
+             txtRolAsignado.setDisable(false);
+             txtConductor.textProperty().removeListener(eventoAsign);
+             ResultSet r = null;
+             insertarRolesAsignadosBD(r);
+         }
+     }
+     
+     void manejadorFiltroAsignacion(){
+        if(filtroTablaAsignar){
+            String conductor = txtConductor.getText();
+            leerFiltroRolAsignacion(conductor);
+        }
+    }
+     
+     private void leerFiltroRolAsignacion(String conductor){
+        ConductoresRoles filtro = new ConductoresRoles();
+        limpiarTablaRolesAsignacion();
+        insertarRolesAsignadosBD(filtro.filtroRolesAsignados(conductor));
+    }
+     
+     class ManejadorEventosAsignacion implements ChangeListener { //Manejador de eventos para el changelistener.
+
+        @Override
+        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+            manejadorFiltroAsignacion(); //Aquí metes el manejadorFiltro, ya que contiene el leerFiltro(con su resultset).
+        }
+    }
+      
+      
+      
     /* EXTRAS */
     public boolean isIdConductorCorrect(){
         try {
@@ -321,7 +659,7 @@ public class VistaRolesController implements Initializable {
             if(result.next()){
              return true;   
             }else{
-                showAlert(Alert.AlertType.ERROR,"Error","Clave de conductor incorrecta favor de verificar");
+                showAlert(Alert.AlertType.ERROR,"Error","Clave de conductor incorrecta, favor de verificar");
                 return false;
             }
         } catch (SQLException ex) {
@@ -340,7 +678,7 @@ public class VistaRolesController implements Initializable {
             if(result.next()){
              return true;   
             }else{
-                showAlert(Alert.AlertType.ERROR,"Error","Clave de empleado incorrecta favor de verificar.");
+                showAlert(Alert.AlertType.ERROR,"Error","Clave de empleado incorrecta, favor de verificar.");
                 return false;
             }
         } catch (SQLException ex) {
@@ -349,6 +687,24 @@ public class VistaRolesController implements Initializable {
         }
     }
     
+    public boolean isIdRolCorrect(){
+        try {
+            PreparedStatement statement = conexionBD.getConexion().prepareStatement("Select Id "
+                    + "From Roles "
+                    + "where Id=?");
+             statement.setString(1, txtRolAsignado.getText()); 
+            ResultSet result = statement.executeQuery();
+            if(result.next()){
+             return true;   
+            }else{
+                showAlert(Alert.AlertType.ERROR,"Error","Clave de rol incorrecta, favor de verificar.");
+                return false;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
     
     public String nombreEmpleado(String id){ //debe ser el id del conductor.
         String nombre = "";

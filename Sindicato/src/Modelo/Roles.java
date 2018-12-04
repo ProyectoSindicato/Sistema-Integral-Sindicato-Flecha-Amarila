@@ -120,18 +120,16 @@ public class Roles {
         }
     }
     
-    public ResultSet filtroRoles(int id){
-     this.Id = id;
+    public ResultSet filtroRoles(String corrida){
+     this.Corrida = corrida;
      ResultSet res = null;
      conexion = new ConexionAccess();
-     String sql = "SELECT Id, IdEmpleado, Corrida FROM Roles WHERE Id=?";
+     String sql = "SELECT Id, IdEmpleado, Corrida FROM Roles WHERE Corrida=?";
      try{
          conexion.conectar();
          PreparedStatement ps = conexion.getConexion().prepareStatement(sql);
-         try {
-             ps.setInt(1, Id);
+             ps.setString(1, Corrida);
              res = ps.executeQuery();
-         } catch (Exception e) {}
      }catch(SQLException e){
          System.out.println("Error al cargar la base de datos." + e.getMessage());
      }
