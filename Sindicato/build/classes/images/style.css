@@ -1,0 +1,425 @@
+  
+.bodybgLoginTest{ 
+    -fx-background-color: white;
+    -fx-background-size: 170% 100%;
+}
+
+.bodyPanelBotones{ 
+    -fx-background-color: black;
+    -fx-background-size: 170% 100%;
+}
+
+.bodyPanelCentro{ 
+    -fx-background-color: darkslategrey;
+    -fx-background-image: url("bgd_login.png");
+    /*-fx-background-color: snow;*/
+    -fx-background-size: 100% 100%;
+}
+/*
+*/.iconLogo {
+    -fx-background-image: url("UNICO_SINDICATO.png");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}/*
+
+*/.iconLogo_login {
+    -fx-background-image: url("logo.png");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}/*
+
+*/ .iconLogo:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}/*
+
+*/.btn {    
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 8;
+    -fx-background-color: rgb(228,229,230);    
+    -fx-text-fill: black;
+    -fx-font-family: 'Helvetica', Arial, sans-serif;
+}
+
+.txt {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-color: rgba(0,0,0,0) rgba(0,0,0,0) rgba(255,255,255,0.35) rgba(0,0,0,0);
+    -fx-border-width: 0 0 3 0;
+    -fx-text-fill: white;
+    -fx-font-family: 'Helvetica', Arial, sans-serif;
+    -fx-font-size: 1.2em;
+}
+
+.txt:hover, 
+.txt:focused {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-color: rgba(0,0,0,0) rgba(0,0,0,0) rgba(0,255,255,0.35) rgba(0,0,0,0);
+    -fx-text-fill: white;
+}
+
+
+
+.iconButton1 {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("usuario2.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconButton1:hover {
+    -fx-background-image: url("usuario2.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconButton1:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconDescuento {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("descuentos2.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconDescuento:hover {
+    -fx-background-image: url("descuentos2.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconDescuento:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+
+.iconAutobus {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("autobus2.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconAutobus:hover {
+    -fx-background-image: url("autobus2.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconAutobus:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconMantenimiento {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("mantenimiento2.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconMantenimiento:hover {
+    -fx-background-image: url("mantenimiento2.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconMantenimiento:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconRol {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("roles.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconRol:hover {
+    -fx-background-image: url("roles.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconRol:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconEventos {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("eventos.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconEventos:hover {
+    -fx-background-image: url("eventos.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconEventos:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconIncapacidad {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("incapacidad2.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconIncapacidad:hover {
+    -fx-background-image: url("incapacidad2.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconIncapacidad:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconReportes {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("reporte.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconReportes:hover {
+    -fx-background-image: url("reporte.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconReportes:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+
+.iconAccidentes {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("accidentes.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconAccidentes:hover {
+    -fx-background-image: url("accidentes.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconAccidentes:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconPermisos {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("permisos.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconPermisos:hover {
+    -fx-background-image: url("permisos.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconPermisos:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconInfracciones {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("infracciones.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconInfracciones:hover {
+    -fx-background-image: url("infracciones.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconInfracciones:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconDemandas {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("demandas.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconDemandas:hover {
+    -fx-background-image: url("demandas.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconDemandas:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconAsesoriaLegal {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("asesorialegal.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconAsesoriaLegal:hover {
+    -fx-background-image: url("asesorialegal.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconAsesoriaLegal:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconLibroActas{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("libroactas.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconLibroActas:hover {
+    -fx-background-image: url("libroactas.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconLibroActas:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconKilometraje {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("kilometraje.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconKilometraje:hover {
+    -fx-background-image: url("kilometraje.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconKilometraje:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}
+
+.iconSalir {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("salir.png");
+    -fx-background-position: center;
+    -fx-background-size: 55px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconSalir:hover {
+    -fx-background-image: url("salir.png");
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+.iconSalir:pressed {
+    -fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;
+}
+
+
+.iconSuspender {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("suspender.png");
+    -fx-background-position: center;
+    -fx-background-size: 55px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconSuspender:hover {
+    -fx-background-image: url("suspender.png");
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+.iconSuspender:pressed {
+    -fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;
+}
+
+.iconUser {
+    -fx-background-color:white;
+/*    -fx-background-image: url("ejemplo.png");*/
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.lblIconName {
+    -fx-text-fill: snow;
+    -fx-font-family: 'Helvetica', Arial, sans-serif;
+    -fx-font-size: 16pt;
+}
+
+.iconGNR {
+    -fx-border-color: rgba(255,255,255,0.1);
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+}
+
+.iconGNR:hover {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+.iconGNR:pressed {
+    -fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;
+}
+
+.elements:hover {
+    -fx-translate-x: 5.5;
+}
+
+.elements:pressed {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane prefHeight="695.0" prefWidth="1360.0" styleClass="null" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controladores.VistaAccidentesController">
+  <content>
+    <SplitPane dividerPositions="0.5" focusTraversable="true" orientation="VERTICAL" prefHeight="694.0" prefWidth="1359.0">
+      <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: GRAY">
+          <children>
+            <AnchorPane layoutX="107.0" layoutY="34.0" prefHeight="263.0" prefWidth="297.0" styleClass="gridSection">
+              <children>
+                <Label layoutX="23.0" layoutY="22.0" text="ID Accidente:" />
+                <Label layoutX="23.0" layoutY="62.0" text="ID Empleado:" />
+                <Label layoutX="23.0" layoutY="95.0" text="ID Conductor:" />
+                <Label layoutX="27.0" layoutY="127.0" text="Fecha:" />
+                <Label layoutX="27.0" layoutY="157.0" text="Lugar:" />
+                <Label layoutX="28.0" layoutY="199.0" text="Motivo:" />
+                <GridPane fx:id="datePickerPanel" layoutX="102.0" layoutY="124.0" prefHeight="23.0" prefWidth="170.0">
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                </GridPane>
+                <TextField fx:id="txtAccident" layoutX="102.0" layoutY="19.0" prefWidth="170.0" styleClass="txt" />
+                <TextField id="txtEmployee" fx:id="txtUser" layoutX="102.0" layoutY="59.0" prefWidth="170.0" styleClass="txt" />
+                <TextField fx:id="txtDriver" layoutX="102.0" layoutY="92.0" prefWidth="170.0" styleClass="txt" />
+                <TextField fx:id="txtPlace" layoutX="102.0" layoutY="162.0" prefWidth="170.0" styleClass="txt" />
+                <TextArea fx:id="txtReason" layoutX="102.0" layoutY="199.0" prefHeight="50.0" prefWidth="170.0" wrapText="true" />
+              </children>
+            </AnchorPane>
+            <SplitPane dividerPositions="0.49894736842105264" focusTraversable="true" layoutX="507.0" layoutY="32.0" prefHeight="263.0000999999975" prefWidth="477.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                  <children>
+                    <Label layoutX="28.0" layoutY="14.0" text="Detalles:" />
+                    <TextArea fx:id="txtDetails" layoutX="20.0" layoutY="46.0" prefHeight="202.0" prefWidth="200.0" wrapText="true" />
+                  </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                  <children>
+                    <Label layoutX="24.0" layoutY="14.0" text="Observaciones:" />
+                    <TextArea fx:id="txtObs" layoutX="18.0" layoutY="46.0" prefHeight="202.00009999999747" prefWidth="200.0" wrapText="true" />
+                  </children>
+                </AnchorPane>
+              </items>
+            </SplitPane>
+            <AnchorPane layoutX="1143.0" layoutY="4.0" prefHeight="338.9999084472656" prefWidth="200.0" styleClass="panelButtons">
+              <children>
+                <Button fx:id="btnAdd" layoutX="68.0" layoutY="26.0" mnemonicParsing="false" onAction="#addAccident" prefHeight="60.999900000002526" prefWidth="64.0" styleClass="btnAdd" text="" />
+                <Button fx:id="btnModify" layoutX="68.0" layoutY="106.0" mnemonicParsing="false" onAction="#modifyAccident" prefHeight="60.999900000002526" prefWidth="62.9998779296875" styleClass="btnModify" text="" />
+                <Button fx:id="btnErase" layoutX="68.0" layoutY="180.0" mnemonicParsing="false" onAction="#deleteAccident" prefHeight="60.0" prefWidth="63.0" styleClass="btnDelete" text="" />
+                <Button fx:id="btnSearch" layoutX="68.0" layoutY="263.0" mnemonicParsing="false" onAction="#handlerFilter" prefHeight="60.0" prefWidth="63.0" styleClass="btnSearch" text="" />
+              </children>
+            </AnchorPane>
+            <Button fx:id="btnBack" layoutX="24.0" layoutY="41.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="61.000099999997474" prefWidth="65.0" styleClass="back" text="" />
+          </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <children>
+            <TableView fx:id="tableAccidents" onMousePressed="#tableFillAction" prefHeight="343.0" prefWidth="1357.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="87.0" text="IDAccidente" fx:id="colID" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="89.0" text="IDConductor" fx:id="colDriver" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="92.0" text="Fecha" fx:id="colDate" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="143.0" text="Lugar" fx:id="colPlace" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="186.0" text="Motivo" fx:id="colReason" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="308.0" text="Detalles" fx:id="colDetails" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="439.0" text="Observaciones" fx:id="colObs" />
+              </columns>
+            </TableView>
+          </children>
+        </AnchorPane>
+      </items>
+    </SplitPane>
+  </content>
+  <stylesheets>
+    <URL value="@../images/ConductoresStyle.css" />
+  </stylesheets>
+</ScrollPane>

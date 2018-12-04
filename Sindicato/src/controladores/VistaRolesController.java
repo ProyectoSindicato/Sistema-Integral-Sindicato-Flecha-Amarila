@@ -105,9 +105,6 @@ public class VistaRolesController implements Initializable {
                         s.setResizable(true);
                         s.show();
     }
-    
-    
-    
     /* ************************TABLA ROLES ********************************/
     @FXML
     public void agregarRol(ActionEvent e){

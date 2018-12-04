@@ -1,0 +1,151 @@
+.btn {    
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 8;
+    -fx-background-color: rgba(228,229,230,0);    
+    -fx-text-fill: black;
+    -fx-font-family: 'Helvetica', Arial, sans-serif;
+}
+
+.imageButon {
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: rgba(0,0,0,0);
+}
+
+.back {
+    -fx-background-image: url("back.png");      
+}
+
+.back:hover {
+    -fx-background-image: url("back2.png");  
+}
+
+.back:pressed {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.btnAdd {
+    -fx-background-image: url("Button-Add-icon.png");
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.btnAdd:hover {
+    -fx-background-image: url("Button-Add-icon2.png");
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnAdd:pressed {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.btnDelete {
+    -fx-background-image: url("delete.png");
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.btnDelete:hover {
+    -fx-background-image: url("delete2.png");
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnDelete:pressed {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.btnModify {
+    -fx-background-image: url("Pencil.png");
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.btnModify:hover {
+    -fx-background-image: url("Pencil2.png");
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnModify:pressed {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.btnSearch {
+    -fx-background-image: url("search.png");
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.btnSearch:hover {
+    -fx-background-image: url("search2.png");
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnSearch:pressed {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.btnClear {
+    -fx-background-image: url("clear.png");
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.btnClear:hover {
+    -fx-background-image: url("clear2.png");
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnClear:pressed {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.panelButtons {
+    -fx-background-color: #aaaaaa;
+    -fx-border-color: rgba(255,255,255,0.5);
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+}
+
+.txt {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-color: rgba(0,0,0,0) rgba(0,0,0,0) rgba(255,255,255,0.35) rgba(0,0,0,0);
+    -fx-border-width: 0 0 3 0;
+    -fx-text-fill: white;
+    -fx-font-family: 'Helvetica', Arial, sans-serif;
+    -fx-font-size: 1em;
+}
+
+.txt:hover, 
+.txt:focused {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-color: rgba(0,0,0,0) rgba(0,0,0,0) rgba(0,255,255,0.35) rgba(0,0,0,0);    
+}
+
+.lbl {
+    -fx-text-fill: white;
+    -fx-font-family: 'Helvetica', Arial, sans-serif;
+    -fx-font-size: 13pt;
+}
+
+.gridSection { /* Panel. */
+    -fx-padding: 15px;
+    -fx-border-width: 1px;
+    -fx-border-color: white;
+    -fx-border-radius: 12px;
+}

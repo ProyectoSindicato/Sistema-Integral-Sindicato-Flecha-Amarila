@@ -81,7 +81,7 @@
         </Pane>
         <Pane layoutX="904.0" layoutY="158.0" prefHeight="144.0" prefWidth="157.0" styleClass="iconGNR">
           <children>
-            <Button layoutX="-2.0" layoutY="1.0" mnemonicParsing="false" prefHeight="144.0" prefWidth="157.0" styleClass="null, iconRol" text="" textFill="BLACK">
+            <Button layoutX="-2.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleRoles" prefHeight="144.0" prefWidth="157.0" styleClass="null, iconRol" text="" textFill="BLACK">
               <stylesheets>
                 <URL value="@../images/style.css" />
               </stylesheets>
