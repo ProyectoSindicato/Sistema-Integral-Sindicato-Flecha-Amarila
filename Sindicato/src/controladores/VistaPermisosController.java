@@ -153,7 +153,7 @@ public class VistaPermisosController implements Initializable {
                         showAlert(AlertType.WARNING,"¡Usuario ya cuenta con un permiso!"
                                 ,"Actualmente el conductor \""+employeeName(claveConductorTextField.getText())
                         + "\" cuenta con un permiso \nvigente, si deseas extender o reducir su periodo"+
-                                "\npor favor actualiza su la información.");
+                                "\npor favor actualiza la información.");
                     }
                 }
             }else{
@@ -304,7 +304,7 @@ public class VistaPermisosController implements Initializable {
                 if(dateValue.isAfter(result.getDate(1).toLocalDate())){
                     maxDate = true;
                 }else{
-                    maxDate = false;
+                    return false;
                 }
             }
         } catch (SQLException ex) {

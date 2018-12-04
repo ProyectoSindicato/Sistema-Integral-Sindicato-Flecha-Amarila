@@ -296,7 +296,7 @@ public class VistaIncapacidadesController implements Initializable {
                 if(dateValue.isAfter(result.getDate(1).toLocalDate())){
                     maxDate = true;
                 }else{
-                    maxDate = false;
+                    return false;
                 }
             }
         } catch (SQLException ex) {
