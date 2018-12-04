@@ -13,6 +13,7 @@ import controladores.VistaAsesoriaLegalController;
 import controladores.VistaDemandasController;
 import controladores.VistaEventosController;
 import controladores.VistaMantenimientoController;
+import controladores.VistaPermisosController;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
@@ -25,20 +26,20 @@ public class Principal extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
+        /*Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
         
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
         stage.show();
-        stage.setMaximized(true);
-        /*ConexionAccess conexion = new ConexionAccess();
+        stage.setMaximized(true);*/
+        ConexionAccess conexion = new ConexionAccess();
         conexion.conectar();
-        Empleado employee = new Empleado(3,"123");
+        Empleado employee = new Empleado(0,"12345");
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/Vista/VistaLogin.fxml"));
+        loader.setLocation(getClass().getResource("/Vista/VistaPermisos.fxml"));
         loader.load();
-        VistaEventosController document = loader.getController();
+        VistaPermisosController document = loader.getController();
         document.setParameters(employee,conexion);
         document.fillTable("");
         Parent p = loader.getRoot();
@@ -47,7 +48,7 @@ public class Principal extends Application {
         stage.setTitle("Eventos");
         //stage.setMaximized(true);
         stage.setResizable(true);
-        stage.show(); */
+        stage.show();
     }
 
     /**
