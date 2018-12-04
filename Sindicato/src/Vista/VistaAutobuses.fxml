@@ -38,7 +38,7 @@
                 <Button fx:id="btnBuscar" layoutX="48.0" layoutY="238.0" mnemonicParsing="false" onAction="#handleFiltroBus" prefHeight="63.0" prefWidth="62.0" styleClass="btnSearch" text="" />
               </children>
             </Pane>
-            <Button layoutX="35.0" layoutY="256.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="62.0" styleClass="back" text="" />
+            <Button layoutX="35.0" layoutY="256.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="63.0" prefWidth="62.0" styleClass="back" text="" />
           </children>
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: GRAY">

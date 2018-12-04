@@ -44,7 +44,7 @@
                 </GridPane>
               </children>
             </AnchorPane>
-            <Button fx:id="btnBack" layoutX="22.0" layoutY="26.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="63.0" styleClass="back" text="" />
+            <Button fx:id="btnBack" layoutX="22.0" layoutY="26.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="63.0" prefWidth="63.0" styleClass="back" text="" />
             <AnchorPane layoutX="474.0" layoutY="-2.0" prefHeight="346.0" prefWidth="107.0" styleClass="panelButtons">
               <children>
                 <Button fx:id="btnAgregar" layoutX="22.0" layoutY="14.0" mnemonicParsing="false" onAction="#agregarRol" prefHeight="69.0" prefWidth="64.0" styleClass="btnAdd" text="" />
