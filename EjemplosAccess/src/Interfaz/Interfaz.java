@@ -12,17 +12,10 @@ public class Interfaz extends JFrame implements ActionListener{
     private ConexionBaseDatos conexion;
     
     public Interfaz (){  
-        registrar = new JButton("Registrar");
+        registrar = new JButton("Almacenar fotos");
         registrar.addActionListener(this);
         add(registrar);
-        
-        buscar = new JButton("Buscar");
-        buscar.addActionListener(this);
-        add(buscar); 
-        
-        eliminar = new JButton("Eliminar");
-        eliminar.addActionListener(this);
-        add(eliminar); 
+
     }
 
     @Override
@@ -34,18 +27,6 @@ public class Interfaz extends JFrame implements ActionListener{
             */
             Registrar registrar = new Registrar();
             registrar.setLayout(new GridLayout(5,1));
-        }else if(e.getSource() == buscar){
-            /*
-                Frame que contiene la interfaz necesaria para realizar consultas sencillas de tipo "select"
-            */
-            Buscar buscar = new Buscar ();
-            buscar.setLayout(new GridLayout(5,1));
-        }else if(e.getSource() == eliminar){
-            /*
-                Frame que contiene la interfaz necesaria para realizar consultas sencillas de tipo "select"
-            */
-            Eliminar eliminar = new Eliminar ();
-            eliminar.setLayout(new GridLayout(2,1));
         }
     } 
 }
