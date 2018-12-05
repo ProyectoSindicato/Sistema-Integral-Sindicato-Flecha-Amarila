@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -84,7 +83,7 @@ public class VistaMantenimientoController implements Initializable{
     public void setParameters(Empleado employee,ConexionAccess conexion){
         this.employee = employee;
         this.conexion = conexion;
-        if(this.employee.getType() != 5){
+        if(this.employee.getType() != 5 && this.employee.getType() != 1){
             agregar.setDisable(true);
             eliminar.setDisable(true);
             modificar.setDisable(true);
@@ -342,12 +341,12 @@ public class VistaMantenimientoController implements Initializable{
         if(!search){
             search = true;
             clearFields();
-            if(this.employee.getType() == 5){agregar.setDisable(true);}
+            if(this.employee.getType() == 5 || this.employee.getType()==1){agregar.setDisable(true);}
             claveAutobusTextField.textProperty().addListener(searchListener);
         }else{
             search = false;
             clearFields();
-            if(this.employee.getType() == 5){agregar.setDisable(false);}
+            if(this.employee.getType() == 5 || this.employee.getType()==1){agregar.setDisable(false);}
             mantenimientoTabla.getItems().clear();
             fillTable("");
             claveAutobusTextField.textProperty().removeListener(searchListener);

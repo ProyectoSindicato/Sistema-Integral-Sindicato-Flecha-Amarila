@@ -83,7 +83,7 @@ public class VistaDemandasController implements Initializable{
     public void setParameters(Empleado employee,ConexionAccess conexion){
         this.employee = employee;
         this.conexion = conexion;
-        if(this.employee.getType() != 4){
+        if(this.employee.getType() != 4 && this.employee.getType()!=1){
             agregar.setDisable(true);
             eliminar.setDisable(true);
             modificar.setDisable(true);
@@ -309,12 +309,12 @@ public class VistaDemandasController implements Initializable{
         if(!search){
             search = true;
             clearFields();
-            if(this.employee.getType() == 4){agregar.setDisable(true);}
+            if(this.employee.getType() == 4 || this.employee.getType()==1){agregar.setDisable(true);}
             claveConductorTextField.textProperty().addListener(searchListener);
         }else{
             search = false;
             clearFields();
-            if(this.employee.getType() == 4){agregar.setDisable(false);}
+            if(this.employee.getType() == 4 || this.employee.getType()==1){agregar.setDisable(false);}
             demandaTabla.getItems().clear();
             fillTable("");
             claveConductorTextField.textProperty().removeListener(searchListener);
