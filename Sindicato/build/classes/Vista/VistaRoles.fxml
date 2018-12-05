@@ -6,12 +6,13 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <ScrollPane prefHeight="700.0" prefWidth="1366.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controladores.VistaRolesController">
   <content>
     <SplitPane dividerPositions="0.49928263988522237" focusTraversable="true" orientation="VERTICAL" prefHeight="699.0" prefWidth="1365.0">
       <items>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: GRAY">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: white">
           <children>
             <AnchorPane layoutX="1201.0" layoutY="-1.0" prefHeight="345.0" prefWidth="147.99990000000253" styleClass="panelButtons">
               <children>
@@ -25,12 +26,16 @@
               <children>
                 <GridPane prefHeight="272.0" prefWidth="451.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <children>
-                    <Label styleClass="lbl" text="ID Empleado:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label styleClass="lbl" text="ID Rol:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label text="ID Empleado:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                      <font>
+                        <Font size="13.0" fx:id="x1" />
+                      </font>
+                    </Label>
+                    <Label font="$x1" text="ID Rol:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <TextField fx:id="txtEmpleado" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                     <TextField fx:id="txtRol" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <TextField fx:id="txtCorrida" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <Label styleClass="lbl" text="Corrida:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label font="$x1" text="Corrida:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                   </children>
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -44,7 +49,7 @@
                 </GridPane>
               </children>
             </AnchorPane>
-            <Button fx:id="btnBack" layoutX="22.0" layoutY="26.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="63.0" prefWidth="63.0" styleClass="back" text="" />
+            <Button fx:id="btnBack" layoutX="22.0" layoutY="26.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="64.0" prefWidth="63.0" styleClass="back, btn, imageButon" text="" />
             <AnchorPane layoutX="474.0" layoutY="-2.0" prefHeight="346.0" prefWidth="107.0" styleClass="panelButtons">
               <children>
                 <Button fx:id="btnAgregar" layoutX="22.0" layoutY="14.0" mnemonicParsing="false" onAction="#agregarRol" prefHeight="69.0" prefWidth="64.0" styleClass="btnAdd" text="" />
@@ -57,8 +62,8 @@
               <children>
                 <GridPane prefHeight="198.0" prefWidth="351.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <children>
-                    <Label styleClass="lbl" text="ID Rol:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label styleClass="lbl" text="ID Conductor:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label font="$x1" text="ID Rol:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label font="$x1" text="ID Conductor:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <TextField fx:id="txtRolAsignado" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                     <TextField fx:id="txtConductor" prefWidth="200.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   </children>

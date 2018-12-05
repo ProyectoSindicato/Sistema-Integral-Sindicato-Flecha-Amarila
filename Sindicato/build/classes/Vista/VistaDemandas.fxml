@@ -6,6 +6,7 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
 <ScrollPane id="AnchorPane" prefHeight="695.0" prefWidth="1360.0" style="" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controladores.VistaDemandasController">
@@ -14,7 +15,7 @@
       <children>
         <Pane layoutX="-1.0" layoutY="3.0" prefHeight="345.0" prefWidth="1213.0">
           <children>
-            <AnchorPane id="Content" layoutX="0.0" layoutY="0.0" minHeight="0.0" minWidth="0.0" prefHeight="345.0" prefWidth="1213.0" style="-fx-background-color:gray;&#10;">
+            <AnchorPane id="Content" layoutX="0.0" layoutY="0.0" minHeight="0.0" minWidth="0.0" prefHeight="345.0" prefWidth="1213.0" style="-fx-background-color:white">
               <children>
                 <GridPane layoutX="211.0" layoutY="51.0" prefHeight="258.0" prefWidth="352.0" styleClass="gridSection">
                   <children>
@@ -29,7 +30,7 @@
                         <URL value="@../images/ConductoresStyle.css" />
                       </stylesheets>
                     </GridPane>
-                    <Label text="Clave del conductor" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Clave del conductor" textAlignment="RIGHT" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="0">
                       <font>
                         <Font name="Arial" size="14.0" fx:id="x1" />
                       </font>
@@ -42,7 +43,7 @@
                       </labelFor>
                     </Label>
                     <fx:reference source="claveConductorTextField" />
-                    <Label font="$x1" text="Fecha" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label font="$x1" text="Fecha" textAlignment="RIGHT" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                   </children>
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="163.0" minWidth="10.0" prefWidth="158.0" />
@@ -64,14 +65,17 @@
                 </Button>
                 <GridPane layoutX="586.0" layoutY="51.0" maxWidth="385.0" minWidth="385.0" prefHeight="258.0" prefWidth="385.0" styleClass="gridSection">
                   <children>
-                    <Label font="$x1" text="Motivo" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label font="$x1" text="Motivo" GridPane.columnIndex="0" GridPane.rowIndex="0">
                       <labelFor>
                         <TextArea fx:id="motivoTextArea" maxWidth="350.0" minHeight="-1.0" minWidth="350.0" prefHeight="92.99990844726562" prefWidth="350.0" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                       </labelFor>
+                      <textFill>
+                        <Color blue="0.000" green="0.000" red="0.200" fx:id="x2" />
+                      </textFill>
                     </Label>
                     <fx:reference source="motivoTextArea" />
                     <TextArea id="motivoTextArea" fx:id="observacionesTextArea" maxWidth="350.0" minHeight="-1.0" minWidth="350.0" prefHeight="-1.0" prefWidth="350.0" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <Label font="$x1" text="Observaciones" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label font="$x1" text="Observaciones" textFill="$x2" GridPane.columnIndex="0" GridPane.rowIndex="2">
                       <labelFor>
                         <TextArea id="motivoTextArea" maxWidth="350.0" minHeight="-1.0" minWidth="350.0" prefHeight="-1.0" prefWidth="350.0" wrapText="true" />
                       </labelFor>
@@ -128,4 +132,7 @@
       </children>
     </AnchorPane>
   </content>
+  <stylesheets>
+    <URL value="@../images/ConductoresStyle.css" />
+  </stylesheets>
 </ScrollPane>

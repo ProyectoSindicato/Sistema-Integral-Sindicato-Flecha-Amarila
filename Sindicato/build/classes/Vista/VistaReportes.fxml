@@ -7,15 +7,16 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <ScrollPane prefHeight="695.0" prefWidth="1360.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controladores.VistaReportesController">
   <content>
     <SplitPane dividerPositions="0.4985549132947977" focusTraversable="true" orientation="VERTICAL" prefHeight="694.0" prefWidth="1359.0">
       <items>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #030014">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: snow">
           <children>
-            <Button fx:id="btnBack" layoutX="7.0" layoutY="16.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="62.0" prefWidth="64.0" styleClass="back" text="" />
-            <AnchorPane layoutX="1125.0" layoutY="0.0" prefHeight="342.0" prefWidth="219.0" style="-fx-background-color: #cacab8" styleClass="panelButtons">
+            <Button fx:id="btnBack" layoutX="7.0" layoutY="16.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="68.0" prefWidth="64.0" styleClass="back, btn, imageButon" text="" />
+            <AnchorPane layoutX="1125.0" layoutY="0.0" prefHeight="342.0" prefWidth="219.0" style="" styleClass="panelButtons">
               <children>
                 <Button fx:id="btnAgregar" layoutX="71.0" layoutY="14.0" mnemonicParsing="false" onAction="#agregarReporte" prefHeight="77.00009999999747" prefWidth="82.0" styleClass="btnAdd" text="" />
                 <Button fx:id="btnModificar" layoutX="79.0" layoutY="103.0" mnemonicParsing="false" onAction="#modificarReporte" prefHeight="68.0" prefWidth="66.0" styleClass="btnModify" text="" />
@@ -25,15 +26,19 @@
             </AnchorPane>
             <AnchorPane layoutX="79.0" layoutY="14.0" prefHeight="314.0" prefWidth="333.0" styleClass="gridSection">
               <children>
-                <Label layoutX="24.0" layoutY="47.0" styleClass="lbl" text="ID Reporte:" />
-                <Label layoutX="21.0" layoutY="76.0" styleClass="lbl" text="ID Empleado:" />
+                <Label layoutX="24.0" layoutY="47.0" text="ID Reporte:">
+                  <font>
+                    <Font size="13.0" fx:id="x1" />
+                  </font>
+                </Label>
+                <Label font="$x1" layoutX="21.0" layoutY="76.0" text="ID Empleado:" />
                 <ComboBox fx:id="comboBox" layoutX="131.0" layoutY="136.0" prefHeight="21.0" prefWidth="141.0">
                   <items>
                     <FXCollections fx:factory="observableArrayList" />
                   </items>
                 </ComboBox>
-                <Label layoutX="20.0" layoutY="139.0" styleClass="lbl" text="Tipo reporte:" />
-                <Label layoutX="20.0" layoutY="109.0" styleClass="lbl" text="ID Conductor:" />
+                <Label font="$x1" layoutX="20.0" layoutY="139.0" text="Tipo reporte:" />
+                <Label font="$x1" layoutX="20.0" layoutY="109.0" text="ID Conductor:" />
                 <TextField fx:id="txtReporte" disable="true" layoutX="131.0" layoutY="44.0" prefWidth="141.0" promptText="XXXXXXXXXX" styleClass="txt" />
                 <TextField id="txtEmpleado" fx:id="txtUsuario" layoutX="131.0" layoutY="73.0" prefWidth="141.0" styleClass="txt" />
                 <TextField fx:id="txtConductor" layoutX="131.0" layoutY="106.0" prefWidth="141.0" promptText="XXXXXXXXXX" styleClass="txt" />
@@ -45,20 +50,20 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                 </GridPane>
-                <Label layoutX="29.0" layoutY="178.0" styleClass="lbl" text="Fecha:" />
-                <Label layoutX="29.0" layoutY="215.0" styleClass="lbl" text="Lugar:" />
+                <Label font="$x1" layoutX="29.0" layoutY="178.0" text="Fecha:" />
+                <Label font="$x1" layoutX="29.0" layoutY="215.0" text="Lugar:" />
                 <TextField fx:id="txtLugar" layoutX="131.0" layoutY="212.0" prefWidth="141.0" styleClass="txt" />
               </children>
             </AnchorPane>
             <AnchorPane layoutX="431.0" layoutY="14.0" prefHeight="314.0" prefWidth="650.0" styleClass="gridSection">
               <children>
-                <Label layoutX="39.0" layoutY="14.0" styleClass="lbl" text="Descripción:" />
+                <Label font="$x1" layoutX="39.0" layoutY="14.0" text="Descripción:" />
                 <TextArea fx:id="txtDescripcion" layoutX="37.0" layoutY="42.0" prefHeight="248.0" prefWidth="576.0" wrapText="true" />
               </children>
             </AnchorPane>
           </children>
         </AnchorPane>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #030014">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="">
           <children>
             <TableView fx:id="tablaReporte" onMousePressed="#tablaReportesAction" opacity="1.0" prefHeight="343.0" prefWidth="1357.0" style="" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
