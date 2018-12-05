@@ -42,6 +42,11 @@ public class Conductor {
     private String fechaExpiracion;
     private String fechaExpedicion;
     
+    private int    idBeneficiarios;
+    private String beneficiarios;
+    private String parentesco;
+    private String porcentaje;
+    
     ConexionAccess conexion;
 
     public Conductor() {
@@ -76,6 +81,7 @@ public class Conductor {
     public Conductor(int id, String tipoId) {
         if(tipoId.equals("Domicilio")) this.idDomicilio = id;
         if(tipoId.equals("Telefono")) this.IdTelefono = id;
+        if(tipoId.equals("Beneficiarios")) this.idBeneficiarios = id;
         
     }
  
@@ -85,7 +91,8 @@ public class Conductor {
             String estudios, String noIMSS, String afore, String curp, String rfc, 
             String claveElector, /*String foto,*/ int idDomicilio, String estado, String ciudad, 
             String colonia, String calle, String numExt, String cp, String base, 
-            String servicio, String noCuenta, String idLicencia, String fechaExpiracion, String fechaExpedicion) {
+            String servicio, String noCuenta, String idLicencia, String fechaExpiracion, String fechaExpedicion, 
+            int idBeneficiarios, String beneficiarios, String parentesco,String porcentaje) {
         this.idConductor = idConductor;
         this.nombres = nombres;
         this.apellidoPaterno = apellidoPaterno;
@@ -117,6 +124,10 @@ public class Conductor {
         this.idLicencia = idLicencia;
         this.fechaExpiracion = fechaExpiracion;
         this.fechaExpedicion = fechaExpedicion;
+        this.idBeneficiarios = idBeneficiarios;
+        this.beneficiarios = beneficiarios;
+        this.parentesco = parentesco;
+        this.porcentaje = porcentaje;
     }
 
     public String getIdConductor() {
@@ -366,6 +377,38 @@ public class Conductor {
     public void setFechaExpedicion(String fechaExpedicion) {
         this.fechaExpedicion = fechaExpedicion;
     }
+
+    public int getIdBeneficiarios() {
+        return idBeneficiarios;
+    }
+
+    public void setIdBeneficiarios(int idBeneficiarios) {
+        this.idBeneficiarios = idBeneficiarios;
+    }
+
+    public String getBeneficiarios() {
+        return beneficiarios;
+    }
+
+    public void setBeneficiarios(String beneficiarios) {
+        this.beneficiarios = beneficiarios;
+    }
+
+    public String getParentesco() {
+        return parentesco;
+    }
+
+    public void setParentesco(String parentesco) {
+        this.parentesco = parentesco;
+    }
+
+    public String getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(String porcentaje) {
+        this.porcentaje = porcentaje;
+    }    
     
     public ConexionAccess getConexion() {
         return conexion;
@@ -510,6 +553,30 @@ public class Conductor {
         }
     }
     
+    public boolean insertarBeneficiarios() {
+        //this.idConductor = idEmpleadoForanea;
+        String sql = "INSERT INTO Beneficiarios(Id, IdConductor, Beneficiarios, Parentesco, Porcentaje)"
+                + "VALUES(?,?,?,?,?)";
+        
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.setInt(1, idBeneficiarios);
+                ps.setString(2, idConductor);
+                ps.setString(3, beneficiarios);
+                ps.setString(4, parentesco);
+                ps.setString(5, porcentaje);
+                ps.execute();
+                ps.close();
+            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al insertar beneficiarios en la base de datos." + e.getMessage());
+            return false;
+        }
+    }
+    
     public boolean modificarDomicilio(int id) {
         String sql = "UPDATE Domicilio SET Estado = ?,Ciudad =?, Colonia= ?, Calle=?, NumeroExt=?, CodigoPostal=?"
                 + "WHERE Id="+id;
@@ -570,7 +637,7 @@ public class Conductor {
     
     public boolean modificarLicencia(String id) {
         String sql = "UPDATE Licencia SET Id = ?,FechaExpiracion = ?,FechaExpedicion =?"
-                + "WHERE Id="+id;
+                + "WHERE Id=\""+id+"\"";
         conexion = new ConexionAccess();
         conexion.conectar();
         try {
@@ -602,6 +669,26 @@ public class Conductor {
             return true;
         } catch (SQLException e) {
             System.out.println("Error al modificar Telefono en la base de datos." + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean modificarBeneficiarios(int id) {
+        String sql = "UPDATE Beneficiarios SET Beneficiarios = ?, Parentesco = ?, Porcentaje = ?"
+                + "WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.setString(1, beneficiarios);
+                ps.setString(2, parentesco);
+                ps.setString(3, porcentaje);
+                ps.execute();
+                ps.close();
+            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al modificar Beneficiarios en la base de datos." + e.getMessage());
             return false;
         }
     }
@@ -678,8 +765,25 @@ public class Conductor {
         }
     }
     
+    public boolean eliminarBeneficiarios(int id) {
+        String sql = "DELETE FROM Beneficiarios WHERE Id="+id;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                //ps.setInt(1, this.id);
+                ps.executeUpdate();
+                ps.close();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar de la base de datos Beneficiarios. " + e.getMessage());
+            return false;
+        }
+    }
+    
     public boolean eliminarLicencia(String id) {
-        String sql = "DELETE FROM Licencia WHERE Id="+id;
+        String sql = "DELETE FROM Licencia WHERE Id=\""+id+"\"";
         conexion = new ConexionAccess();
         conexion.conectar();
         try {
@@ -718,7 +822,7 @@ public class Conductor {
         conexion = new ConexionAccess();
         conexion.conectar();
         try { //Este SQL contiene todo lo que necesito para traerme la lista de lo que quiero (Checar en el controller, parte: actualizarBD).
-            String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
+            /*String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
                 + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
                 + "Empleado.RFC,Empleado.ClaveElector,"
                 + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
@@ -726,7 +830,17 @@ public class Conductor {
                 + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono "
                 + "FROM ((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
                 + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.Id = Conductor.IdLicencia) "
-                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado WHERE Empleado.Id LIKE \""+id+"*\" ";
+                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado WHERE Empleado.Id LIKE \""+id+"*\" ";*/
+            String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
+                + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
+                + "Empleado.RFC,Empleado.ClaveElector,"
+                + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
+                + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
+                + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono, Beneficiarios.Id AS Beneficiarios_id, Beneficiarios.Beneficiarios, Beneficiarios.Parentesco, Beneficiarios.Porcentaje "
+                + "FROM (((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
+                + "INNER JOIN Telefono ON Empleado.[Id] = Telefono.[IdEmpleado]) "
+                + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.[Id] = Conductor.[IdLicencia]) ON Empleado.[Id] = Conductor.[Id]) "
+                + "INNER JOIN Beneficiarios ON Conductor.[Id] = Beneficiarios.[IdConductor] WHERE Empleado.Id LIKE \""+id+"*\" ";
             PreparedStatement ps = conexion.getConexion().prepareStatement(sql);
             //ps.setString(1, id);
             resultado = ps.executeQuery();

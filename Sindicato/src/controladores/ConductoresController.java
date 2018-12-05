@@ -28,32 +28,52 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 public class ConductoresController implements Initializable {
     
     ResultSetMetaData metadata = null;
     ResultSetMetaData metadataId = null;
     ResultSetMetaData metadataIdTel = null;
+    ResultSetMetaData metadataIdBen = null;
     ManejadorEventos eventoFiltro;
     private final ConexionAccess conexionBD;
     double[] dimension;
+    DatePicker[] dpCampos;
     TextField[] txtCAMPOS;
+    Label[] lblCamposTxt, lblCamposRest, lblCamposArea;
+    TextArea[] txaCampos;
     private boolean filtroActivo;
     //ManejadorFiltroKey manejador;
     private Alert alert;
-    int IDDomicilio, IDTelefono;
-    int idDom, idTel;
+    int IDDomicilio, IDTelefono, IDBeneficiarios;
+    int idDom, idTel, idBen;
     
     @FXML
     private Button btnAgregar, btnEditar, btnEliminar, btnBuscar, btnLimpiar;
+    
+    @FXML
+    private Label lblId, lblApellidoPaterno, lblApellidoMaterno, lblNombres, 
+                  lblLugarNacimiento, lblTelefono, lblCalle, lblNumExt, lblColonia,
+                  lblCP, lblEstudios, lblNoIMSS, lblAfore, lblCURP,
+                  lblRFC, lblClaveElector, lblIdLicencia,lblNoCuenta, lblBase, lblServicio;
+    
+    @FXML
+    private Label lblFechaNacimiento, lblEstadoCivil, lblFechaIngreso, lblFechaSindicato, 
+                  lblEstado, lblCiudad, lblFechaExpiracion, lblFechaExpedicion;
+    
+    @FXML
+    private Label lblBeneficiarios, lblParentesco, lblPorcentaje;
     
     @FXML
     private TextField txtId, txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
@@ -61,7 +81,10 @@ public class ConductoresController implements Initializable {
                       txtColonia, txtCalle, txtNumExt, txtCP, 
                       txtEstudios, txtNoIMSS, txtAfore, txtCURP,
                       txtRFC, txtClaveElector, txtNoCuenta, txtBase, txtServicio, 
-                      txtIdLicencia, txtIdTelefono;
+                      txtIdLicencia, txtIdTelefono, txtIdBeneficiarios, txtIdConductorBen;
+    
+    @FXML
+    private TextArea txaBeneficiarios, txaParentesco, txaPorcentaje;
     
     private ToggleGroup tggGrupoEstadoCivil;
     
@@ -85,7 +108,7 @@ public class ConductoresController implements Initializable {
     private ImageView foto; 
     
     @FXML
-    private TableView<Conductor> tblDatosConductor, tblIdDomicilio, tblIdTelefono;
+    private TableView<Conductor> tblDatosConductor, tblIdDomicilio, tblIdTelefono, tblIdBeneficiarios;
     
     @FXML
     private TableColumn<Conductor, String> tbcID, tbcNombres, tbcApellidoPaterno, 
@@ -93,7 +116,8 @@ public class ConductoresController implements Initializable {
             tbcBase, tbcServicio, tbcNoCuenta, tbcIdDomicilio, tbcEstado, tbcCiudad, 
             tbcColonia, tbcCalle, tbcNumExt, tbcCp, tbcFechaNacimiento, tbcLugarNacimiento,
             tbcEstadoCivil, tbcTelefono, tbcFechaIngreso, tbcFechaSidicato, tbcEstudios,
-            tbcNoIMSS, tbcAfore, tbcCURP, tbcRFC, tbcClaveElector, tbcIdDomicilio2, tbcIdTelefono2;
+            tbcNoIMSS, tbcAfore, tbcCURP, tbcRFC, tbcClaveElector, tbcIdDomicilio2, tbcIdTelefono2, 
+            tbcIdBeneficiarios, tbcBeneficiarios, tbcParentesco, tbcPorcentaje, tbcIdBeneficiarios2;
     
     public ConductoresController() {
         conexionBD = new ConexionAccess();
@@ -109,12 +133,24 @@ public class ConductoresController implements Initializable {
         tggGrupoEstadoCivil = new ToggleGroup();
         rbtSoltero.setToggleGroup(tggGrupoEstadoCivil);
         rbtCasado.setToggleGroup(tggGrupoEstadoCivil);
-        rbtUnionLibre.setToggleGroup(tggGrupoEstadoCivil);
+        rbtUnionLibre.setToggleGroup(tggGrupoEstadoCivil);                
         
         txtCAMPOS = new TextField[]{txtId, txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
                                     txtLugarNacimiento, txtTelefono, txtCalle, txtNumExt, txtColonia,
                                     txtCP, txtEstudios, txtNoIMSS, txtAfore, txtCURP,
                                     txtRFC, txtClaveElector, txtIdLicencia,txtNoCuenta, txtBase, txtServicio};
+        
+        lblCamposTxt = new Label[] {lblId, lblApellidoPaterno, lblApellidoMaterno, lblNombres, 
+                                    lblLugarNacimiento, lblTelefono, lblCalle, lblNumExt, lblColonia,
+                                    lblCP, lblEstudios, lblNoIMSS, lblAfore, lblCURP,
+                                    lblRFC, lblClaveElector, lblIdLicencia,lblNoCuenta, lblBase, lblServicio};
+        
+        lblCamposRest = new Label[] {lblFechaNacimiento, lblFechaIngreso, lblFechaSindicato, 
+                                     lblFechaExpiracion, lblFechaExpedicion};
+        
+        lblCamposArea = new Label[]{lblBeneficiarios, lblParentesco, lblPorcentaje};
+        
+        txaCampos = new TextArea[]{txaBeneficiarios, txaParentesco, txaPorcentaje};
         
         dpFechaNacimiento = new DatePicker();
         //dpFechaNacimiento.setValue(LocalDate.now());
@@ -125,6 +161,10 @@ public class ConductoresController implements Initializable {
         
         dpFechaExpiracion = new DatePicker();
         dpFechaExpedicion = new DatePicker();
+        
+        dpCampos = new DatePicker[]{dpFechaNacimiento, dpFechaIngreso, dpFechaSindicato, 
+                                    dpFechaExpiracion, dpFechaExpedicion};
+        
         //dpFechaIngreso.setValue(LocalDate.now());
         //dpFechaSindicato.setValue(LocalDate.now());
         gridPaneSindicato.add(dpFechaIngreso, 1, 1);     
@@ -147,19 +187,8 @@ public class ConductoresController implements Initializable {
                                     "Yucatán", "Zacatecas"
                                     );
         cbxCiudad.setDisable(true);
-        //btnEditar.setDisable(true);
-        //btnEliminar.setDisable(true);
         btnLimpiar.setVisible(false);
-        
-        /*tbcID.setCellValueFactory(new PropertyValueFactory<Conductor, String>("id"));
-        tbcApellidoPaterno.setCellValueFactory(new PropertyValueFactory<Conductor, String>("apellidoPaterno"));
-        tbcApellidoMaterno.setCellValueFactory(new PropertyValueFactory<Conductor, String>("apellidoMaterno"));
-        tbcNombres.setCellValueFactory(new PropertyValueFactory<Conductor, String>("nombres"));
-        tbcNoTajeta.setCellValueFactory(new PropertyValueFactory<Conductor, String>("noTarjeta"));*/
-        
-        //tblDatosConductor.setItems(getPeople());
-        
-        //manejador = new ManejadorFiltroKey();
+
         foto.setImage(new Image("FotosConductor/default-photo.png"));
         foto.setOpacity(0.65);        
         llenarTablaBD();
@@ -180,6 +209,12 @@ public class ConductoresController implements Initializable {
             txtIdTelefono.setText("1");        
             IDTelefono = 1;
             txtIdTelefono.setDisable(true);
+        }
+        if(tblIdBeneficiarios.getItems().size() > 0) obtenerSizeTablaBen();
+        else {
+            txtIdBeneficiarios.setText("1");        
+            IDBeneficiarios = 1;
+            txtIdBeneficiarios.setDisable(true);
         }
     }
     
@@ -205,6 +240,19 @@ public class ConductoresController implements Initializable {
         IDTelefono = idTel;
         txtIdTelefono.setText(String.valueOf(idTel));
         txtIdTelefono.setDisable(true);
+    }
+    
+    public void obtenerSizeTablaBen() {
+        // obtener el ultimo id de la columna idTelefono
+        int sizeBen = tblIdBeneficiarios.getItems().size() - 1;
+        Object value3 = tblIdBeneficiarios.getColumns().get(0).getCellObservableValue(sizeBen).getValue();
+        idBen = (int)value3 + 1;
+        System.out.println("Valor último IdBeneficiairos (siguiente valor): "+idBen);
+        IDBeneficiarios = idBen;
+        txtIdBeneficiarios.setText(String.valueOf(idBen));
+        txtIdBeneficiarios.setDisable(true);
+        if(!txtId.getText().equals("")) txtIdConductorBen.setText(txtId.getText());
+        txtIdConductorBen.setDisable(true);
     }
 
     public void cbxEstadoUpdated() {
@@ -2769,7 +2817,13 @@ public class ConductoresController implements Initializable {
         
         int idTelefono = idTel;
         String telefono = txtTelefono.getText();
-
+        
+        int idBeneficiarios = idBen;
+        String idConductorBen = idConductor;
+        String beneficiarios = txaBeneficiarios.getText();
+        String parentesco = txaParentesco.getText();
+        String porcentaje = txaPorcentaje.getText();
+        
         if (estadoCivil != null && estado != null && ciudad != null && 
             !idConductor.equals("") && !nombres.equals("") && !apellidoPaterno.equals("") &&
             !apellidoMaterno.equals("") && fechaNacimiento != null && !lugarNacimiento.equals("") &&
@@ -2779,7 +2833,10 @@ public class ConductoresController implements Initializable {
             !colonia.equals("") && !telefono.equals("")
             && !calle.equals("") && !numeroExt.equals("") && !cp.equals("")
             && !idLicencia.equals("") && fechaExpiracion != null && fechaExpedicion != null
-            && !noCuenta.equals("") && !base.equals("") && !servicio.equals("")) {
+            && !noCuenta.equals("") && !base.equals("") && !servicio.equals("")
+            && !beneficiarios.equals("") && !parentesco.equals("") && !porcentaje.equals("")) {
+            
+            identificarCamposVacios(0);
 
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
             confirm.setContentText("¿Desea ingresar un conductor?");
@@ -2826,10 +2883,17 @@ public class ConductoresController implements Initializable {
                     bean.setIdTelefono(idTelefono);
                     bean.setTelefono(telefono);
                     
+                    bean.setIdBeneficiarios(idBeneficiarios);
+                    bean.setBeneficiarios(beneficiarios);
+                    bean.setParentesco(parentesco);
+                    bean.setPorcentaje(porcentaje);
+                    
                     if (bean.insertarDomicilio() && bean.insertarEmpleado() && bean.insertarTelefono()
-                            && bean.insertarLicencia() && bean.insertarConductor(idConductor, idLicencia)) {
+                            && bean.insertarLicencia() && bean.insertarConductor(idConductor, idLicencia)
+                            && bean.insertarBeneficiarios()) {
                         obtenerSizeTabla();
                         obtenerSizeTablaTel();
+                        obtenerSizeTablaBen();
                         insertarYRefrescar(); //Aquí se cambia por el insertar(que contiene el rs).
                         showAlert(Alert.AlertType.INFORMATION, "Information Message", " El conductor se ha ingresado correctamente.");
                     } else {
@@ -2841,6 +2905,8 @@ public class ConductoresController implements Initializable {
                 }
             }
         } else { //Else de validación de campos vacíos.
+            identificarCamposVacios(0);            
+            identificarCamposVacios(1);            
             showAlert(Alert.AlertType.WARNING, "Warning Message", " Favor de llenar todos los campos.");
         }
     } //botón.
@@ -2854,47 +2920,54 @@ public class ConductoresController implements Initializable {
     
     @FXML
     public void modificarReporte(ActionEvent e) {
-        Conductor modificar = tblDatosConductor.getSelectionModel().getSelectedItem();
-        String idConductor = tblDatosConductor.getSelectionModel().getSelectedItem().getIdConductor();
-        int idDomicilio = tblDatosConductor.getSelectionModel().getSelectedItem().getIdDomicilio();
-        int idTelefono = tblDatosConductor.getSelectionModel().getSelectedItem().getIdTelefono();
-        
-        String nombres = txtNombres.getText();
-        String apellidoPaterno = txtApellidoPaterno.getText();
-        String apellidoMaterno = txtApellidoMaterno.getText();
-        LocalDate fechaNacimiento = dpFechaNacimiento.getValue();
-        String lugarNacimiento = txtLugarNacimiento.getText();
-        String estadoCivil = null;
-        RadioButton seleccion = (RadioButton) tggGrupoEstadoCivil.getSelectedToggle();
-        estadoCivil = seleccion.getText();
-       
-        LocalDate fechaIngreso = dpFechaIngreso.getValue();
-        LocalDate fechaSindicato = dpFechaSindicato.getValue();
-        String estudios = txtEstudios.getText();
-        String noIMSS = txtNoIMSS.getText();
-        String afore = txtAfore.getText();
-        String curp = txtCURP.getText();
-        String rfc = txtRFC.getText();
-        String claveElector = txtClaveElector.getText();
-        
-        String estado = cbxEstado.getSelectionModel().getSelectedItem().toString();
-        String ciudad = cbxCiudad.getSelectionModel().getSelectedItem().toString();
-        String colonia = txtColonia.getText();
-        String calle = txtCalle.getText();
-        String numeroExt = txtNumExt.getText();
-        String cp = txtCP.getText();
-        
-        String idLicencia = txtIdLicencia.getText();
-        LocalDate fechaExpiracion = dpFechaExpiracion.getValue(); 
-        LocalDate fechaExpedicion = dpFechaExpedicion.getValue();
-        
-        String noCuenta = txtNoCuenta.getText();
-        String base = txtBase.getText();
-        String servicio = txtServicio.getText();
-        
-        String telefono = txtTelefono.getText();
-
+        Conductor modificar = tblDatosConductor.getSelectionModel().getSelectedItem();        
+ 
         if (modificar != null) {
+            String idConductor = tblDatosConductor.getSelectionModel().getSelectedItem().getIdConductor();
+            int idDomicilio = tblDatosConductor.getSelectionModel().getSelectedItem().getIdDomicilio();
+            int idTelefono = tblDatosConductor.getSelectionModel().getSelectedItem().getIdTelefono();
+            int idBeneficiarios = tblDatosConductor.getSelectionModel().getSelectedItem().getIdBeneficiarios();
+            
+            String idConductorBen = idConductor;
+            String nombres = txtNombres.getText();
+            String apellidoPaterno = txtApellidoPaterno.getText();
+            String apellidoMaterno = txtApellidoMaterno.getText();
+            LocalDate fechaNacimiento = dpFechaNacimiento.getValue();
+            String lugarNacimiento = txtLugarNacimiento.getText();
+            String estadoCivil = null;
+            RadioButton seleccion = (RadioButton) tggGrupoEstadoCivil.getSelectedToggle();
+            estadoCivil = seleccion.getText();
+
+            LocalDate fechaIngreso = dpFechaIngreso.getValue();
+            LocalDate fechaSindicato = dpFechaSindicato.getValue();
+            String estudios = txtEstudios.getText();
+            String noIMSS = txtNoIMSS.getText();
+            String afore = txtAfore.getText();
+            String curp = txtCURP.getText();
+            String rfc = txtRFC.getText();
+            String claveElector = txtClaveElector.getText();
+
+            String estado = cbxEstado.getSelectionModel().getSelectedItem().toString();
+            String ciudad = cbxCiudad.getSelectionModel().getSelectedItem().toString();
+            String colonia = txtColonia.getText();
+            String calle = txtCalle.getText();
+            String numeroExt = txtNumExt.getText();
+            String cp = txtCP.getText();
+
+            String idLicencia = txtIdLicencia.getText();
+            LocalDate fechaExpiracion = dpFechaExpiracion.getValue(); 
+            LocalDate fechaExpedicion = dpFechaExpedicion.getValue();
+
+            String noCuenta = txtNoCuenta.getText();
+            String base = txtBase.getText();
+            String servicio = txtServicio.getText();
+
+            String telefono = txtTelefono.getText();        
+
+            String beneficiarios = txaBeneficiarios.getText();
+            String parentesco = txaParentesco.getText();
+            String porcentaje = txaPorcentaje.getText();
+            
             if (estadoCivil != null && estado != null && ciudad != null && 
                 !idConductor.equals("") && !nombres.equals("") && !apellidoPaterno.equals("") &&
                 !apellidoMaterno.equals("") && fechaNacimiento != null && !lugarNacimiento.equals("") &&
@@ -2904,8 +2977,11 @@ public class ConductoresController implements Initializable {
                 !colonia.equals("") && !telefono.equals("")
                 && !calle.equals("") && !numeroExt.equals("") && !cp.equals("")
                 && !idLicencia.equals("") && fechaExpiracion != null && fechaExpedicion != null
-                && !noCuenta.equals("") && !base.equals("") && !servicio.equals("")) {
-
+                && !noCuenta.equals("") && !base.equals("") && !servicio.equals("")
+                && !beneficiarios.equals("") && !parentesco.equals("") && !porcentaje.equals("")) {
+                
+                identificarCamposVacios(0);
+                
                 Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
                 confirm.setContentText("¿Desea modificar un conductor?");
 
@@ -2951,7 +3027,12 @@ public class ConductoresController implements Initializable {
                         
                         m.setTelefono(telefono);
                         
-                        if (m.modificarConductor(idConductor) 
+                        m.setBeneficiarios(beneficiarios);
+                        m.setParentesco(parentesco);
+                        m.setPorcentaje(porcentaje);
+                        
+                        if (m.modificarBeneficiarios(idBeneficiarios)
+                            && m.modificarConductor(idConductor) 
                             && m.modificarTelefono(idTelefono)
                             && m.modificarEmpleado(idConductor)                              
                             && m.modificarDomicilio(idDomicilio)
@@ -2966,21 +3047,69 @@ public class ConductoresController implements Initializable {
                         showAlert(Alert.AlertType.ERROR, "Error Message", " Error al modificar conductor.");
                     }
                 }
+            } else { //Else de validación de campos vacíos.
+                identificarCamposVacios(0);            
+                identificarCamposVacios(1);            
+                showAlert(Alert.AlertType.WARNING, "Warning Message", " Favor de llenar todos los campos.");
             }
         } else {
             showAlert(Alert.AlertType.WARNING, "Warning Message", "Favor de seleccionar un conductor.");
         }
     }
+    
+    private void identificarCamposVacios(int valor) {
+        if(valor == 1){
+            for (int i = 0; i < txtCAMPOS.length; i++) {
+                if(txtCAMPOS[i].getText().equals("")) {
+                    lblCamposTxt[i].setTextFill(Color.RED);
+                    txtCAMPOS[i].getStyleClass().add("txtBorderRed");
+                }
+            }        
+            for (int i = 0; i < dpCampos.length; i++) {
+                if(dpCampos[i].getValue() == null) {
+                    lblCamposRest[i].setTextFill(Color.RED);
+                }
+            }
+            for (int i = 0; i < txaCampos.length; i++) {
+                if(txaCampos[i].getText().equals("")) {
+                    lblCamposArea[i].setTextFill(Color.RED);
+                }
+            }
+            if(cbxEstado.getValue() == null)
+                lblEstado.setTextFill(Color.RED);
+            if(cbxCiudad.getValue() == null)
+                lblCiudad.setTextFill(Color.RED);
+            if(tggGrupoEstadoCivil.getSelectedToggle() == null)
+                lblEstadoCivil.setTextFill(Color.RED);
+        } else if (valor == 0) {
+            for (int i = 0; i < txtCAMPOS.length; i++) {                
+                lblCamposTxt[i].setTextFill(Color.WHITE);
+                txtCAMPOS[i].getStyleClass().remove("txtBorderRed");
+            }        
+            for (int i = 0; i < dpCampos.length; i++) {                
+                lblCamposRest[i].setTextFill(Color.WHITE);
+            }
+            for (int i = 0; i < txaCampos.length; i++) {                
+                lblCamposArea[i].setTextFill(Color.WHITE);
+            } 
+            lblEstado.setTextFill(Color.WHITE);            
+            lblCiudad.setTextFill(Color.WHITE);
+            lblEstadoCivil.setTextFill(Color.WHITE);
+        }
+        
+    }
 
     @FXML
     public void eliminarReporte(ActionEvent e) {
-        Conductor borrar = tblDatosConductor.getSelectionModel().getSelectedItem();
-        String idConductor = tblDatosConductor.getSelectionModel().getSelectedItem().getIdConductor();
-        int idDomicilio = tblDatosConductor.getSelectionModel().getSelectedItem().getIdDomicilio();
-        int idTelefono = tblDatosConductor.getSelectionModel().getSelectedItem().getIdTelefono();
-        String idLicencia = tblDatosConductor.getSelectionModel().getSelectedItem().getIdLicencia();
+        Conductor borrar = tblDatosConductor.getSelectionModel().getSelectedItem();        
         
-        if (borrar != null) {            
+        if (borrar != null) {
+            String idConductor = tblDatosConductor.getSelectionModel().getSelectedItem().getIdConductor();
+            int idDomicilio = tblDatosConductor.getSelectionModel().getSelectedItem().getIdDomicilio();
+            int idTelefono = tblDatosConductor.getSelectionModel().getSelectedItem().getIdTelefono();
+            String idLicencia = tblDatosConductor.getSelectionModel().getSelectedItem().getIdLicencia();
+            int idBeneficiarios = tblDatosConductor.getSelectionModel().getSelectedItem().getIdBeneficiarios();
+            
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
             confirm.setContentText("¿Desea eliminar un conductor?");
 
@@ -2991,54 +3120,71 @@ public class ConductoresController implements Initializable {
 
                 Conductor eliminar = new Conductor();
                // eliminar.setId(id);
-                if (eliminar.eliminarConductor(idConductor) 
+                if (eliminar.eliminarBeneficiarios(idBeneficiarios)
+                        && eliminar.eliminarConductor(idConductor) 
                         && eliminar.eliminarTelefono(idTelefono)
                         && eliminar.eliminarEmpleado(idConductor) 
                         && eliminar.eliminarDomicilio(idDomicilio)
                         && eliminar.eliminarLicencia(idLicencia)) {
                     eliminarYActualizar();
-                    showAlert(Alert.AlertType.INFORMATION, "Information Message", " El reporte ha sido eliminado correctamente.");
+                    showAlert(Alert.AlertType.INFORMATION, "Information Message", " El conductor ha sido eliminado correctamente.");
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error Message", " Error al modificar reporte.");
+                    showAlert(Alert.AlertType.ERROR, "Error Message", " Error al modificar conductor.");
                 }
             }
 
         } else if (borrar == null) {
-            showAlert(Alert.AlertType.WARNING, "Warning Message", " Favor de seleccionar un reporte.");
+            showAlert(Alert.AlertType.WARNING, "Warning Message", " Favor de seleccionar un conductor.");
         }
     }
     
     @FXML
     private void tablaDomicilioAction(MouseEvent e) {
+        identificarCamposVacios(0);
         mostrarFilaEnCampos();
     }
 
     public void llenarTablaBD() {
-        ResultSet rs, rsId, rsIdTel;
+        ResultSet rs, rsId, rsIdTel, rsIdBen;
+        /*String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
+                + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
+                + "Empleado.RFC,Empleado.ClaveElector,"
+                + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
+                + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
+                + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono, Beneficiarios.Beneficiarios, Beneficiarios.Parentesco, Beneficiarios.Porcentaje "
+                + "FROM (((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
+                + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.Id = Conductor.IdLicencia) "
+                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado)"
+                + "INNER JOIN Beneficiarios ON Beneficiarios.[id] = Conductor.[idConductor];";*/
         String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
                 + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
                 + "Empleado.RFC,Empleado.ClaveElector,"
                 + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
                 + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
-                + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono "
-                + "FROM ((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
-                + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.Id = Conductor.IdLicencia) "
-                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado;";
+                + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono, Beneficiarios.Id AS Beneficiarios_id, Beneficiarios.Beneficiarios, Beneficiarios.Parentesco, Beneficiarios.Porcentaje "
+                + "FROM (((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
+                + "INNER JOIN Telefono ON Empleado.[Id] = Telefono.[IdEmpleado]) "
+                + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.[Id] = Conductor.[IdLicencia]) ON Empleado.[Id] = Conductor.[Id]) "
+                + "INNER JOIN Beneficiarios ON Conductor.[Id] = Beneficiarios.[IdConductor];";
         
         String sqlId = "SELECT Id from Domicilio";
         String sqlIdTel = "SELECT Id from Telefono";
+        String sqlIdBen = "SELECT Id from Beneficiarios";
         
         try {
             conexionBD.conectar();
             rs = conexionBD.ejecutarSQLSelect(sql);
             rsId = conexionBD.ejecutarSQLSelect(sqlId);
             rsIdTel = conexionBD.ejecutarSQLSelect(sqlIdTel);
+            rsIdBen = conexionBD.ejecutarSQLSelect(sqlIdBen);
             metadata = rs.getMetaData();
             metadataId = rsId.getMetaData();
             metadataIdTel = rsIdTel.getMetaData();
+            metadataIdBen = rsIdBen.getMetaData();
             int cols = metadata.getColumnCount();
             int colsId = metadataId.getColumnCount();
             int colsIdTel = metadataIdTel.getColumnCount();
+            int colsIdBen = metadataIdBen.getColumnCount();
             //System.out.println("Columnas: "+cols);
             while (rs.next()) {
                 Object[] fila = new Object[cols];
@@ -3087,13 +3233,19 @@ public class ConductoresController implements Initializable {
                 
                 String telefonoID = String.valueOf(fila[29]);
                 String telefono = String.valueOf(fila[30]);
+                
+                String idBeneficiarios = String.valueOf(fila[31]);
+                String beneficiarios = String.valueOf(fila[32]);
+                String parentesco = String.valueOf(fila[33]);
+                String porcentaje = String.valueOf(fila[34]);
 
                 Conductor dom = new Conductor(idConductor, nombres, apellidoPaterno, 
                         apellidoMaterno, fechaNacimiento, lugarNacimiento,Integer.parseInt(telefonoID),telefono,estadoCivil,
                         fechaIngreso, fechaSindicato, estudios, noIMSS, afore, curp, rfc, claveElector,
                          Integer.parseInt(idDomicilio),
                         estado, ciudad, colonia, calle, num, cp,
-                        base, servicio, noCuenta, idLicencia, fechaExpiracion, fechaExpedicion);
+                        base, servicio, noCuenta, idLicencia, fechaExpiracion, fechaExpedicion,
+                        Integer.parseInt(idBeneficiarios), beneficiarios, parentesco, porcentaje);
                         
                 colocarDatosColumna();
                 tblDatosConductor.getItems().add(dom);
@@ -3133,6 +3285,23 @@ public class ConductoresController implements Initializable {
                 tblIdTelefono.getItems().add(conIdTel);
             }
             
+            while(rsIdBen.next()) {
+                Object[] filaIdBen = new Object[colsIdBen];
+                for (int i = 0; i < colsIdBen; i++) {
+                    if (rsIdBen.getObject(i + 1) == null) {
+                        filaIdBen[i] = "";
+
+                    } else {
+                        filaIdBen[i] = rsIdBen.getObject(i + 1);
+                    }
+                }
+                
+                String idDomBen = String.valueOf(filaIdBen[0]);
+                Conductor conIdBen = new Conductor(Integer.parseInt(idDomBen), "Beneficiarios");        
+                colocarDatosColumna();                
+                tblIdBeneficiarios.getItems().add(conIdBen);
+            }
+            
         } catch (SQLException e) {
             System.out.println("Error al rellenar la tabla." + e.getMessage());
         }
@@ -3140,14 +3309,15 @@ public class ConductoresController implements Initializable {
 
     public void actualizarTablaBD(ResultSet result) //Llenar la tabla con un result set.
     {
-        ResultSet rs, rsId, rsIdTel;
+        ResultSet rs, rsId, rsIdTel, rsIdBen;
         try {
             if (filtroActivo) { //Si el filtro está activado, quiere decir que el txtField está en escucha y se sustituye el result set por ese.
                 rs = result;
                 rsId = result;
                 rsIdTel = result;
+                rsIdBen = result;
             } else { //En caso contrario, solamente volvemos a ejecutar la sentencia normal de traer todo a la tabla.                
-                String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
+                /*String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
                 + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
                 + "Empleado.RFC,Empleado.ClaveElector,"
                 + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
@@ -3155,23 +3325,37 @@ public class ConductoresController implements Initializable {
                 + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono "
                 + "FROM ((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
                 + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.Id = Conductor.IdLicencia) "
-                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado;";
+                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado;";*/
+                String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
+                + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
+                + "Empleado.RFC,Empleado.ClaveElector,"
+                + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
+                + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
+                + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono, Beneficiarios.Id AS Beneficiarios_id, Beneficiarios.Beneficiarios, Beneficiarios.Parentesco, Beneficiarios.Porcentaje "
+                + "FROM (((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
+                + "INNER JOIN Telefono ON Empleado.[Id] = Telefono.[IdEmpleado]) "
+                + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.[Id] = Conductor.[IdLicencia]) ON Empleado.[Id] = Conductor.[Id]) "
+                + "INNER JOIN Beneficiarios ON Conductor.[Id] = Beneficiarios.[IdConductor];";
                 
                 String sqlId = "SELECT Id from Domicilio";
                 String sqlIdTel = "SELECT Id from Telefono";
+                String sqlIdBen = "SELECT Id from Beneficiarios";
                 
                 rs = conexionBD.ejecutarSQLSelect(sql);
                 rsId = conexionBD.ejecutarSQLSelect(sqlId);
                 rsIdTel = conexionBD.ejecutarSQLSelect(sqlIdTel);
+                rsIdBen = conexionBD.ejecutarSQLSelect(sqlIdBen);
             }
             try {
                 conexionBD.conectar();
                 metadata = rs.getMetaData();
                 metadataId = rsId.getMetaData();
                 metadataIdTel = rsIdTel.getMetaData();
+                metadataIdBen = rsIdBen.getMetaData();
                 int cols = metadata.getColumnCount();
                 int colsId = metadataId.getColumnCount();
                 int colsIdTel = metadataIdTel.getColumnCount();
+                int colsIdBen = metadataIdBen.getColumnCount();
 
                 while (rs.next()) {
                     Object[] fila = new Object[cols];
@@ -3219,13 +3403,19 @@ public class ConductoresController implements Initializable {
                     String telefonoID = String.valueOf(fila[29]);
                     String telefono = String.valueOf(fila[30]);
                     
+                    String idBeneficiarios = String.valueOf(fila[31]);
+                    String beneficiarios = String.valueOf(fila[32]);
+                    String parentesco = String.valueOf(fila[33]);
+                    String porcentaje = String.valueOf(fila[34]);
+
                     Conductor dom = new Conductor(idConductor, nombres, apellidoPaterno, 
-                        apellidoMaterno, fechaNacimiento, lugarNacimiento,Integer.parseInt(telefonoID),telefono,estadoCivil,
-                        fechaIngreso, fechaSindicato, estudios, noIMSS, afore, curp, rfc, claveElector,
-                         Integer.parseInt(idDomicilio),
-                        estado, ciudad, colonia, calle, num, cp,
-                        base, servicio, noCuenta, idLicencia, fechaExpiracion, fechaExpedicion);
-                    
+                            apellidoMaterno, fechaNacimiento, lugarNacimiento,Integer.parseInt(telefonoID),telefono,estadoCivil,
+                            fechaIngreso, fechaSindicato, estudios, noIMSS, afore, curp, rfc, claveElector,
+                             Integer.parseInt(idDomicilio),
+                            estado, ciudad, colonia, calle, num, cp,
+                            base, servicio, noCuenta, idLicencia, fechaExpiracion, fechaExpedicion,
+                            Integer.parseInt(idBeneficiarios), beneficiarios, parentesco, porcentaje);
+
                     colocarDatosColumna();
                     tblDatosConductor.getItems().add(dom);
                 }
@@ -3265,6 +3455,23 @@ public class ConductoresController implements Initializable {
                     colocarDatosColumna();                
                     tblIdTelefono.getItems().add(conIdTel);
             
+                }
+                
+                while(rsIdBen.next()) {
+                    Object[] filaIdBen = new Object[colsIdBen];
+                    for (int i = 0; i < colsIdBen; i++) {
+                        if (rsIdBen.getObject(i + 1) == null) {
+                            filaIdBen[i] = "";
+
+                        } else {
+                            filaIdBen[i] = rsIdBen.getObject(i + 1);
+                        }
+                    }
+
+                    String idDomBen = String.valueOf(filaIdBen[0]);
+                    Conductor conIdBen = new Conductor(Integer.parseInt(idDomBen), "Beneficiarios");        
+                    colocarDatosColumna();                
+                    tblIdBeneficiarios.getItems().add(conIdBen);
                 }
                 
             } catch (SQLException e) {
@@ -3308,6 +3515,11 @@ public class ConductoresController implements Initializable {
         tbcFechaExpedicion.setCellValueFactory(new PropertyValueFactory<>("FechaExpedicion"));
         tbcIdDomicilio2.setCellValueFactory(new PropertyValueFactory<>("IdDomicilio"));
         tbcIdTelefono2.setCellValueFactory(new PropertyValueFactory<>("IdTelefono"));
+        tbcIdBeneficiarios.setCellValueFactory(new PropertyValueFactory<>("IdBeneficiarios"));
+        tbcBeneficiarios.setCellValueFactory(new PropertyValueFactory<>("Beneficiarios"));
+        tbcParentesco.setCellValueFactory(new PropertyValueFactory<>("Parentesco"));
+        tbcPorcentaje.setCellValueFactory(new PropertyValueFactory<>("Porcentaje"));
+        tbcIdBeneficiarios2.setCellValueFactory(new PropertyValueFactory<>("IdBeneficiarios"));
     }
 /*
     void ActualizaRefresca() {
@@ -3343,6 +3555,9 @@ public class ConductoresController implements Initializable {
     void LimpiarCampos() {
         for (TextField campos : txtCAMPOS) {
             campos.clear();
+        }
+        for (TextArea areas : txaCampos) {
+            areas.clear();
         }
         cbxEstado.setValue("");
         cbxCiudad.setValue("");
@@ -3405,6 +3620,11 @@ public class ConductoresController implements Initializable {
             String telefono = conductor.getTelefono();
             int idTelefono = conductor.getIdTelefono();
             
+            int idBeneficiarios = conductor.getIdBeneficiarios();
+            String beneficiarios = conductor.getBeneficiarios();
+            String parentesco = conductor.getParentesco();
+            String porcentaje = conductor.getPorcentaje();
+            
             txtId.setText(idConductor);
             txtNombres.setText(nombres);
             txtApellidoPaterno.setText(apellidoPaterno);
@@ -3444,6 +3664,11 @@ public class ConductoresController implements Initializable {
             
             txtIdTelefono.setText(String.valueOf(idTelefono));
             txtTelefono.setText(telefono);
+            
+            txtIdBeneficiarios.setText(String.valueOf(idBeneficiarios));
+            txaBeneficiarios.setText(beneficiarios);
+            txaParentesco.setText(parentesco);
+            txaPorcentaje.setText(porcentaje);
         }
     }
     
@@ -3471,6 +3696,7 @@ public class ConductoresController implements Initializable {
             btnEliminar.setDisable(true);
             btnEditar.setDisable(true);
             
+            identificarCamposVacios(0);
             LimpiarCampos();
             txtId.textProperty().addListener(eventoFiltro);
             for (TextField campo : txtCAMPOS) {
@@ -3486,6 +3712,9 @@ public class ConductoresController implements Initializable {
             rbtCasado.setDisable(true);
             rbtSoltero.setDisable(true);
             rbtUnionLibre.setDisable(true);
+            
+            txtId.requestFocus();
+            txtId.setFocusTraversable(true);            
 
         } else { // Sino, se vuelve un false y activamos todo a como estaba antes.
             btnAgregar.setDisable(false);
@@ -3506,7 +3735,7 @@ public class ConductoresController implements Initializable {
             rbtSoltero.setDisable(false);
             rbtUnionLibre.setDisable(false);
             
-            LimpiarCampos();
+            //LimpiarCampos();
             LimpiarTabla();
             llenarTablaBD();
         }
