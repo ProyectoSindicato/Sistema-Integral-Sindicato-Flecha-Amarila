@@ -79,7 +79,7 @@ public class VistaRolesController implements Initializable {
         this.employee = employee;
         this.conexionBD = conexion;
         /*¿Quiénes hacen esto? Delegados, Actas y Acuerdos.*/
-        if( this.employee.getType() != 0 && this.employee.getType() != 6){
+        if( this.employee.getType() != 0 && this.employee.getType() != 6 && this.employee.getType() != 1){
             btnAgregar.setDisable(true);
             btnEliminar.setDisable(true);
             btnModificar.setDisable(true);

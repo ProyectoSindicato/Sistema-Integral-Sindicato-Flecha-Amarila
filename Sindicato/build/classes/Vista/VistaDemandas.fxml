@@ -58,7 +58,7 @@
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
                 </GridPane>
-                <Button layoutX="14.0" layoutY="9.0" mnemonicParsing="false" prefHeight="67.9609375" prefWidth="86.0" styleClass="btn, imageButon, back" text="">
+                <Button fx:id="btnBack" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="67.9609375" prefWidth="86.0" styleClass="btn, imageButon, back" text="">
                   <stylesheets>
                     <URL value="@../images/ConductoresStyle.css" />
                   </stylesheets>
