@@ -28,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -36,6 +37,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 public class ConductoresController implements Initializable {
     
@@ -45,7 +47,9 @@ public class ConductoresController implements Initializable {
     ManejadorEventos eventoFiltro;
     private final ConexionAccess conexionBD;
     double[] dimension;
+    DatePicker[] dpCampos;
     TextField[] txtCAMPOS;
+    Label[] lblCamposTxt, lblCamposRest;
     private boolean filtroActivo;
     //ManejadorFiltroKey manejador;
     private Alert alert;
@@ -54,6 +58,16 @@ public class ConductoresController implements Initializable {
     
     @FXML
     private Button btnAgregar, btnEditar, btnEliminar, btnBuscar, btnLimpiar;
+    
+    @FXML
+    private Label lblId, lblApellidoPaterno, lblApellidoMaterno, lblNombres, 
+                  lblLugarNacimiento, lblTelefono, lblCalle, lblNumExt, lblColonia,
+                  lblCP, lblEstudios, lblNoIMSS, lblAfore, lblCURP,
+                  lblRFC, lblClaveElector, lblIdLicencia,lblNoCuenta, lblBase, lblServicio;
+    
+    @FXML
+    private Label lblFechaNacimiento, lblEstadoCivil, lblFechaIngreso, lblFechaSindicato, 
+                  lblEstado, lblCiudad, lblFechaExpiracion, lblFechaExpedicion;
     
     @FXML
     private TextField txtId, txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
@@ -109,12 +123,20 @@ public class ConductoresController implements Initializable {
         tggGrupoEstadoCivil = new ToggleGroup();
         rbtSoltero.setToggleGroup(tggGrupoEstadoCivil);
         rbtCasado.setToggleGroup(tggGrupoEstadoCivil);
-        rbtUnionLibre.setToggleGroup(tggGrupoEstadoCivil);
+        rbtUnionLibre.setToggleGroup(tggGrupoEstadoCivil);                
         
         txtCAMPOS = new TextField[]{txtId, txtApellidoPaterno, txtApellidoMaterno, txtNombres, 
                                     txtLugarNacimiento, txtTelefono, txtCalle, txtNumExt, txtColonia,
                                     txtCP, txtEstudios, txtNoIMSS, txtAfore, txtCURP,
                                     txtRFC, txtClaveElector, txtIdLicencia,txtNoCuenta, txtBase, txtServicio};
+        
+        lblCamposTxt = new Label[] {lblId, lblApellidoPaterno, lblApellidoMaterno, lblNombres, 
+                                    lblLugarNacimiento, lblTelefono, lblCalle, lblNumExt, lblColonia,
+                                    lblCP, lblEstudios, lblNoIMSS, lblAfore, lblCURP,
+                                    lblRFC, lblClaveElector, lblIdLicencia,lblNoCuenta, lblBase, lblServicio};
+        
+        lblCamposRest = new Label[] {lblFechaNacimiento, lblFechaIngreso, lblFechaSindicato, 
+                                     lblFechaExpiracion, lblFechaExpedicion};
         
         dpFechaNacimiento = new DatePicker();
         //dpFechaNacimiento.setValue(LocalDate.now());
@@ -125,6 +147,10 @@ public class ConductoresController implements Initializable {
         
         dpFechaExpiracion = new DatePicker();
         dpFechaExpedicion = new DatePicker();
+        
+        dpCampos = new DatePicker[]{dpFechaNacimiento, dpFechaIngreso, dpFechaSindicato, 
+                                    dpFechaExpiracion, dpFechaExpedicion};
+        
         //dpFechaIngreso.setValue(LocalDate.now());
         //dpFechaSindicato.setValue(LocalDate.now());
         gridPaneSindicato.add(dpFechaIngreso, 1, 1);     
@@ -2769,7 +2795,7 @@ public class ConductoresController implements Initializable {
         
         int idTelefono = idTel;
         String telefono = txtTelefono.getText();
-
+        
         if (estadoCivil != null && estado != null && ciudad != null && 
             !idConductor.equals("") && !nombres.equals("") && !apellidoPaterno.equals("") &&
             !apellidoMaterno.equals("") && fechaNacimiento != null && !lugarNacimiento.equals("") &&
@@ -2780,6 +2806,8 @@ public class ConductoresController implements Initializable {
             && !calle.equals("") && !numeroExt.equals("") && !cp.equals("")
             && !idLicencia.equals("") && fechaExpiracion != null && fechaExpedicion != null
             && !noCuenta.equals("") && !base.equals("") && !servicio.equals("")) {
+            
+            identificarCamposVacios(0);
 
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
             confirm.setContentText("¿Desea ingresar un conductor?");
@@ -2841,6 +2869,8 @@ public class ConductoresController implements Initializable {
                 }
             }
         } else { //Else de validación de campos vacíos.
+            identificarCamposVacios(0);            
+            identificarCamposVacios(1);            
             showAlert(Alert.AlertType.WARNING, "Warning Message", " Favor de llenar todos los campos.");
         }
     } //botón.
@@ -2894,7 +2924,7 @@ public class ConductoresController implements Initializable {
         
         String telefono = txtTelefono.getText();
 
-        if (modificar != null) {
+        if (modificar != null) {            
             if (estadoCivil != null && estado != null && ciudad != null && 
                 !idConductor.equals("") && !nombres.equals("") && !apellidoPaterno.equals("") &&
                 !apellidoMaterno.equals("") && fechaNacimiento != null && !lugarNacimiento.equals("") &&
@@ -2905,7 +2935,9 @@ public class ConductoresController implements Initializable {
                 && !calle.equals("") && !numeroExt.equals("") && !cp.equals("")
                 && !idLicencia.equals("") && fechaExpiracion != null && fechaExpedicion != null
                 && !noCuenta.equals("") && !base.equals("") && !servicio.equals("")) {
-
+                
+                identificarCamposVacios(0);
+                
                 Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
                 confirm.setContentText("¿Desea modificar un conductor?");
 
@@ -2966,10 +2998,48 @@ public class ConductoresController implements Initializable {
                         showAlert(Alert.AlertType.ERROR, "Error Message", " Error al modificar conductor.");
                     }
                 }
+            } else { //Else de validación de campos vacíos.
+                identificarCamposVacios(0);            
+                identificarCamposVacios(1);            
+                showAlert(Alert.AlertType.WARNING, "Warning Message", " Favor de llenar todos los campos.");
             }
         } else {
             showAlert(Alert.AlertType.WARNING, "Warning Message", "Favor de seleccionar un conductor.");
         }
+    }
+    
+    private void identificarCamposVacios(int valor) {
+        if(valor == 1){
+            for (int i = 0; i < txtCAMPOS.length; i++) {
+                if(txtCAMPOS[i].getText().equals("")) {
+                    lblCamposTxt[i].setTextFill(Color.RED);
+                    txtCAMPOS[i].getStyleClass().add("txtBorderRed");
+                }
+            }        
+            for (int i = 0; i < dpCampos.length; i++) {
+                if(dpCampos[i].getValue() == null) {
+                    lblCamposRest[i].setTextFill(Color.RED);
+                }
+            }        
+            if(cbxEstado.getValue() == null)
+                lblEstado.setTextFill(Color.RED);
+            if(cbxCiudad.getValue() == null)
+                lblCiudad.setTextFill(Color.RED);
+            if(tggGrupoEstadoCivil.getSelectedToggle() == null)
+                lblEstadoCivil.setTextFill(Color.RED);
+        } else if (valor == 0) {
+            for (int i = 0; i < txtCAMPOS.length; i++) {                
+                lblCamposTxt[i].setTextFill(Color.WHITE);
+                txtCAMPOS[i].getStyleClass().remove("txtBorderRed");
+            }        
+            for (int i = 0; i < dpCampos.length; i++) {                
+                lblCamposRest[i].setTextFill(Color.WHITE);
+            }        
+            lblEstado.setTextFill(Color.WHITE);            
+            lblCiudad.setTextFill(Color.WHITE);
+            lblEstadoCivil.setTextFill(Color.WHITE);
+        }
+        
     }
 
     @FXML
@@ -3010,6 +3080,7 @@ public class ConductoresController implements Initializable {
     
     @FXML
     private void tablaDomicilioAction(MouseEvent e) {
+        identificarCamposVacios(0);
         mostrarFilaEnCampos();
     }
 
