@@ -3083,18 +3083,18 @@ public class ConductoresController implements Initializable {
                 lblEstadoCivil.setTextFill(Color.RED);
         } else if (valor == 0) {
             for (int i = 0; i < txtCAMPOS.length; i++) {                
-                lblCamposTxt[i].setTextFill(Color.WHITE);
+                lblCamposTxt[i].setTextFill(Color.BLACK);
                 txtCAMPOS[i].getStyleClass().remove("txtBorderRed");
             }        
             for (int i = 0; i < dpCampos.length; i++) {                
-                lblCamposRest[i].setTextFill(Color.WHITE);
+                lblCamposRest[i].setTextFill(Color.BLACK);
             }
             for (int i = 0; i < txaCampos.length; i++) {                
-                lblCamposArea[i].setTextFill(Color.WHITE);
+                lblCamposArea[i].setTextFill(Color.BLACK);
             } 
-            lblEstado.setTextFill(Color.WHITE);            
-            lblCiudad.setTextFill(Color.WHITE);
-            lblEstadoCivil.setTextFill(Color.WHITE);
+            lblEstado.setTextFill(Color.BLACK);            
+            lblCiudad.setTextFill(Color.BLACK);
+            lblEstadoCivil.setTextFill(Color.BLACK);
         }
         
     }
@@ -3702,6 +3702,9 @@ public class ConductoresController implements Initializable {
             for (TextField campo : txtCAMPOS) {
                 campo.setDisable(true);
             }
+            for (TextArea area : txaCampos) {
+                area.setDisable(true);
+            }
             dpFechaExpedicion.setDisable(true);
             dpFechaExpiracion.setDisable(true);
             dpFechaIngreso.setDisable(true);
@@ -3717,29 +3720,38 @@ public class ConductoresController implements Initializable {
             txtId.setFocusTraversable(true);            
 
         } else { // Sino, se vuelve un false y activamos todo a como estaba antes.
-            btnAgregar.setDisable(false);
-            btnEditar.setDisable(false);
-            btnEliminar.setDisable(false);
-            txtId.textProperty().removeListener(eventoFiltro);
-            for (TextField campo : txtCAMPOS) {
-                 campo.setDisable(false);
-            }
-            dpFechaExpedicion.setDisable(false);
-            dpFechaExpiracion.setDisable(false);
-            dpFechaIngreso.setDisable(false);
-            dpFechaNacimiento.setDisable(false);
-            dpFechaSindicato.setDisable(false);
-            cbxCiudad.setDisable(false);
-            cbxEstado.setDisable(false);
-            rbtCasado.setDisable(false);
-            rbtSoltero.setDisable(false);
-            rbtUnionLibre.setDisable(false);
+            habilitarCampos();
             
             //LimpiarCampos();
             LimpiarTabla();
+            LimpiarCampos();
             llenarTablaBD();
+            //tblDatosConductor.getSelectionModel().select();
         }
         txtId.setDisable(false);
+    }
+    
+    void habilitarCampos() {
+        btnAgregar.setDisable(false);
+        btnEditar.setDisable(false);
+        btnEliminar.setDisable(false);
+        txtId.textProperty().removeListener(eventoFiltro);
+        for (TextField campo : txtCAMPOS) {
+             campo.setDisable(false);
+        }
+        for (TextArea area : txaCampos) {
+             area.setDisable(false);
+        }
+        dpFechaExpedicion.setDisable(false);
+        dpFechaExpiracion.setDisable(false);
+        dpFechaIngreso.setDisable(false);
+        dpFechaNacimiento.setDisable(false);
+        dpFechaSindicato.setDisable(false);
+        cbxCiudad.setDisable(false);
+        cbxEstado.setDisable(false);
+        rbtCasado.setDisable(false);
+        rbtSoltero.setDisable(false);
+        rbtUnionLibre.setDisable(false);
     }
 
     // Este filtro limpia toda la tabla y busca por medio del resultset toda la información que yo quiero ver.

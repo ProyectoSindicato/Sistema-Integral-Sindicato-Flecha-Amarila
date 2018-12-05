@@ -11,7 +11,7 @@
   <content>
     <SplitPane dividerPositions="0.5" focusTraversable="true" orientation="VERTICAL" prefHeight="694.0" prefWidth="1359.0">
       <items>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: GRAY">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: white">
           <children>
             <AnchorPane layoutX="107.0" layoutY="34.0" prefHeight="263.0" prefWidth="297.0" styleClass="gridSection">
               <children>
@@ -54,13 +54,17 @@
             </SplitPane>
             <AnchorPane layoutX="1143.0" layoutY="4.0" prefHeight="338.9999084472656" prefWidth="200.0" styleClass="panelButtons">
               <children>
-                <Button fx:id="btnAdd" layoutX="68.0" layoutY="26.0" mnemonicParsing="false" onAction="#addAccident" prefHeight="60.999900000002526" prefWidth="64.0" styleClass="btnAdd" text="" />
-                <Button fx:id="btnModify" layoutX="68.0" layoutY="106.0" mnemonicParsing="false" onAction="#modifyAccident" prefHeight="60.999900000002526" prefWidth="62.9998779296875" styleClass="btnModify" text="" />
-                <Button fx:id="btnErase" layoutX="68.0" layoutY="180.0" mnemonicParsing="false" onAction="#deleteAccident" prefHeight="60.0" prefWidth="63.0" styleClass="btnDelete" text="" />
+                <Button fx:id="btnAdd" layoutX="67.0" layoutY="14.0" mnemonicParsing="false" onAction="#addAccident" prefHeight="69.0" prefWidth="64.0" styleClass="btnAdd, imageButon" text="" />
+                <Button fx:id="btnModify" layoutX="68.0" layoutY="101.0" mnemonicParsing="false" onAction="#modifyAccident" prefHeight="69.0" prefWidth="63.0" styleClass="btnModify, imageButon" text="" />
+                <Button fx:id="btnErase" layoutX="68.0" layoutY="180.0" mnemonicParsing="false" onAction="#deleteAccident" prefHeight="69.0" prefWidth="63.0" styleClass="btnDelete, imageButon" text="" />
                 <Button fx:id="btnSearch" layoutX="68.0" layoutY="263.0" mnemonicParsing="false" onAction="#handlerFilter" prefHeight="60.0" prefWidth="63.0" styleClass="btnSearch" text="" />
               </children>
             </AnchorPane>
-            <Button fx:id="btnBack" layoutX="24.0" layoutY="41.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="61.000099999997474" prefWidth="65.0" styleClass="back" text="" />
+            <Button fx:id="btnBack" layoutX="24.0" layoutY="41.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="69.0" prefWidth="65.0" styleClass="back, btn, imageButon" text="">
+              <stylesheets>
+                <URL value="@../images/ConductoresStyle.css" />
+              </stylesheets>
+            </Button>
           </children>
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">

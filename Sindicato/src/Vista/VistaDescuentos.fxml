@@ -18,7 +18,7 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Pane layoutX="0.0" layoutY="0.0" prefHeight="649.0" prefWidth="1359.0" style="-fx-background-color: gray;&#10;">
+                <Pane layoutX="0.0" layoutY="0.0" prefHeight="649.0" prefWidth="1359.0" style="-fx-background-color: white">
                   <children>
                     <ImageView id="citibanamex-logo.png" fitHeight="87.0" fitWidth="252.0" layoutX="21.0" layoutY="6.0" preserveRatio="true">
                       <image>
@@ -37,7 +37,7 @@
                         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="128.0" text="Status" />
                       </columns>
                     </TableView>
-                    <Pane layoutX="69.0" layoutY="82.0" prefHeight="127.0" prefWidth="103.0" style="-fx-background-color: white;&#10;&#10;" />
+                    <Pane layoutX="69.0" layoutY="82.0" prefHeight="127.0" prefWidth="103.0" style="-fx-background-color: #eee" />
                     <Label layoutX="105.0" layoutY="230.0" text="Clave" />
                     <TextField layoutX="48.0" layoutY="259.0" prefWidth="146.0" styleClass="txt">
                       <stylesheets>
@@ -147,7 +147,7 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Pane layoutX="-1.0" layoutY="0.0" prefHeight="649.0" prefWidth="1359.0" style="-fx-background-color: gray;&#10;">
+                <Pane layoutX="-1.0" layoutY="0.0" prefHeight="649.0" prefWidth="1359.0" style="-fx-background-color: white">
                   <children>
                     <ImageView id="citibanamex-logo.png" fitHeight="81.22499792916435" fitWidth="342.0" layoutX="501.0" layoutY="57.0" preserveRatio="true">
                       <image>
@@ -161,7 +161,7 @@
                             <URL value="@../images/style.css" />
                           </stylesheets>
                         </Button>
-                        <Label prefHeight="68.0" prefWidth="267.0" text="Selecciona el Archivo en formato .xls para actualizar los datos de los últimos descuentos." textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label prefHeight="68.0" prefWidth="267.0" text="Selecciona el Archivo en formato .xls para actualizar los datos de los últimos descuentos." textAlignment="CENTER" textFill="BLACK" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
                           <font>
                             <Font size="16.0" />
                           </font>
@@ -189,7 +189,7 @@
                     <GridPane layoutX="109.0" layoutY="158.0" prefHeight="436.0" prefWidth="307.0" styleClass="gridSection">
                       <children>
                         <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="277.0" text="Elegir el archivo en mi Ordenador" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <Label prefHeight="32.0" prefWidth="275.0" text="Selecciona el Archivo en formato .xls para actualizar los datos de los últimos descuentos." textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label prefHeight="32.0" prefWidth="275.0" text="Selecciona el Archivo en formato .xls para actualizar los datos de los últimos descuentos." textAlignment="CENTER" textFill="BLACK" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -208,7 +208,7 @@
                     <GridPane layoutX="923.0" layoutY="158.0" prefHeight="436.0" prefWidth="307.0" styleClass="gridSection">
                       <children>
                         <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="277.0" text="Elegir el archivo en mi Ordenador" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <Label prefHeight="32.0" prefWidth="275.0" text="Selecciona el Archivo en formato .xls para actualizar los datos de los últimos descuentos." textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label prefHeight="32.0" prefWidth="275.0" text="Selecciona el Archivo en formato .xls para actualizar los datos de los últimos descuentos." textAlignment="CENTER" textFill="BLACK" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -238,4 +238,7 @@
       </tabs>
     </TabPane>
   </content>
+  <stylesheets>
+    <URL value="@../images/ConductoresStyle.css" />
+  </stylesheets>
 </ScrollPane>
