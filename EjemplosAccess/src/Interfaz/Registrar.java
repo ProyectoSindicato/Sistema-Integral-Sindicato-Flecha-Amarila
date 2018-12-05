@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,10 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class Registrar extends JFrame implements ActionListener{
-    private JLabel jLfoto, jLnombre, jLapellidoP, jLapellidoM;
-    private  JButton abrir, guardar;
-    private JTextField jTfoto, jTnombre, jTapellidoP, jTapellidoM;
-    private JPanel jPnombre,jPapellidoP,jPapellidoM,jPFoto;
+    private  JButton guardar;
     private ConexionBaseDatos conexion;
     private File file = null;
     
@@ -34,68 +32,46 @@ public class Registrar extends JFrame implements ActionListener{
         conexion = new ConexionBaseDatos();
         conexion.conectar();
         this.addWindowListener(new EventosVentana(conexion));
-        
-        jLnombre= new JLabel ("Nombre:");
-        jLapellidoP= new JLabel ("Apellido Paterno"); 
-        jLapellidoM= new JLabel ("Apellido Materno");
-        jLfoto = new JLabel ("Foto:");
-        
-        jTfoto = new JTextField (20);
-        jTfoto.setEditable(false);
-        jTnombre= new JTextField (20); 
-        jTapellidoP= new JTextField (20); 
-        jTapellidoM= new JTextField (20);
-        
-        abrir = new JButton("Abrir");
-        abrir.addActionListener(this);
-        
+
         guardar = new JButton("Registrar");
         guardar.addActionListener(this);
-        
-        jPnombre = new JPanel();
-        jPapellidoP = new JPanel();
-        jPapellidoM = new JPanel();
-        jPFoto = new JPanel();
-        
-        jPnombre.add(jLnombre);
-        jPnombre.add(jTnombre);
-        add(jPnombre);
-        
-        jPapellidoP.add(jLapellidoP);
-        jPapellidoP.add(jTapellidoP);
-        add(jPapellidoP);
-        
-        jPapellidoM.add(jLapellidoM);
-        jPapellidoM.add(jTapellidoM);
-        add(jPapellidoM);
-        
-        jPFoto.add(jLfoto);
-        jPFoto.add(jTfoto);
-        jPFoto.add(abrir);
-        add(jPFoto);
-        
         JPanel guardarPanel = new JPanel();
         guardarPanel.add(guardar);
         add(guardarPanel);
     }
-    
+
     public void registrar(){
         FileInputStream fis;
+        File foto;
+        ResultSet resultSelect;
+        PreparedStatement pstm2;
+        String pathImages = "F:\\Documentos\\Sistema-Integral-Sindicato-Flecha-Amarila\\Sindicato\\src\\FotosConductor\\";
         try {
-            PreparedStatement pstm =  conexion.getConexion().prepareStatement("Insert into Alumno"
-                    + "(Nombre,ApellidoPaterno,ApellidoMaterno,Foto) values(?,?,?,?)");
-            pstm.setString(1, jTnombre.getText());
-            pstm.setString(2, jTapellidoP.getText());
-            pstm.setString(3, jTapellidoM.getText());
-
-            fis = new FileInputStream(file);
-            pstm.setBinaryStream(4, fis,(int) file.length());
-            pstm.execute();
-            pstm.close();
+            PreparedStatement pstm =  conexion.getConexion().prepareStatement("Select Id from Conductor");
+            resultSelect = pstm.executeQuery();
+            
+            while(resultSelect.next()){
+                pathImages = "F:\\Documentos\\Sistema-Integral-Sindicato-Flecha-Amarila\\Sindicato\\src\\FotosConductor\\";
+                pathImages = pathImages + resultSelect.getString(1)+".JPG";
+                foto = new File(pathImages);
+                
+                try{
+                    if(foto.exists()){
+                        pstm2 =  conexion.getConexion().prepareStatement("Update Empleado"
+                                + " set Foto=?"
+                                + " where Id=?");
+                        fis = new FileInputStream(foto);
+                        pstm2.setBinaryStream(1, fis,(int) foto.length());
+                        pstm2.setString(2, resultSelect.getString(1));
+                        pstm2.executeUpdate();
+                        System.out.println("Meti: "+resultSelect.getString(1));
+                    }
+                }catch(Exception e){
+                    System.out.println(e);
+                }
+            }            
             System.out.println("Registro completo");
         } catch (SQLException ex) {
-            Logger.getLogger(Registrar.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FileNotFoundException ex) {
             Logger.getLogger(Registrar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -109,16 +85,15 @@ public class Registrar extends JFrame implements ActionListener{
     } 
     @Override
     public void actionPerformed(ActionEvent e) {
-       if(e.getSource() == abrir){
-           JFileChooser chooser = new JFileChooser();
+       if(e.getSource() == guardar){
+           registrar();
+           /*JFileChooser chooser = new JFileChooser();
             int respuesta = chooser.showOpenDialog(null);
             String archivo="";
             if(respuesta == JFileChooser.APPROVE_OPTION){
                 file = chooser.getSelectedFile();
-                jTfoto.setText(chooser.getCurrentDirectory().getPath());
-            }
-       }else if(e.getSource() == guardar){
-           registrar();
+                System.out.println(file);
+            }*/
        }
     }
 }

@@ -12,7 +12,7 @@ public class ConexionBaseDatos {
         Para realizar la conexion a base de datos utilizamos el driver "UCanAccess"
         se tiene que importar todos los archivos jar
     */ 
-    private String locacion = "C:\\Users\\Isaac_000\\Documents\\NetBeansProjects\\EjemplosAccess\\ejemplo.accdb";
+    private final String locacion = "F:\\Sindicato V2.accdb";
     private Connection conn = null;
     
     public void conectar (){
