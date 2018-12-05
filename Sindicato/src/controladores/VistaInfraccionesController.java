@@ -44,7 +44,7 @@ public class VistaInfraccionesController implements Initializable {
    @FXML private TextField txtInfraccion, txtAutobus, txtDirector, txtConductor;
    @FXML private TextArea txtMotivo;
    @FXML private GridPane datePickerPanel;
-   @FXML private DatePicker date;
+   @FXML private final DatePicker date;
    @FXML private Button btnAgregar, btnModificar, btnEliminar, btnBuscar, btnBack;
    @FXML private TableView<Infracciones> tablaInfraccion;
    @FXML private TableColumn<Infracciones,String> colID, colBus, colConductor, colFecha,colMotivo, colNombre;

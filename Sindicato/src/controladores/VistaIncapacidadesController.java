@@ -3,6 +3,7 @@ package controladores;
 import ConexionAccess.ConexionAccess;
 import Empleado.Empleado;
 import Modelo.Incapacidades;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -17,7 +18,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -30,6 +35,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class VistaIncapacidadesController implements Initializable {
     private PreparedStatement statement,statementEmpleado;
@@ -46,7 +52,7 @@ public class VistaIncapacidadesController implements Initializable {
     @FXML 
     private DatePicker date,date2;
     @FXML
-    private Button agregar,modificar,eliminar,buscar;
+    private Button agregar,modificar,eliminar,buscar, btnBack;
     @FXML
     private TextField claveConductorTextField;
     @FXML
@@ -400,4 +406,22 @@ public class VistaIncapacidadesController implements Initializable {
         datePicker();
         date.setValue(LocalDate.now());
     }
+    
+    @FXML
+    public void backDesk(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/Vista/FXMLDocument.fxml"));
+                        loader.load();
+                        FXMLDocumentController document = loader.getController();
+                        document.setParameters(employee,conexion);
+                        Parent p = loader.getRoot();
+                        Scene scene = new Scene(p);
+                        Stage s = (Stage)((Node)event.getSource()).getScene().getWindow();
+                        s.setScene(scene);
+                        s.setMaximized(true);
+                        s.setResizable(true);
+                        s.show();
+    }
+    
+    
 }
