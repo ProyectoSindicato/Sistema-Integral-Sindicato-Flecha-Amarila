@@ -246,14 +246,14 @@ public class VistaIncapacidadesController implements Initializable {
         if(!search){
             search = true;
             clearFields();
-            if(this.employee.getType() == 0 && this.employee.getType() == 4){
+            if(this.employee.getType() == 0 || this.employee.getType() == 4){
                 agregar.setDisable(true);
             }
             claveConductorTextField.textProperty().addListener(searchListener);
         }else{
             search = false;
             clearFields();
-            if(this.employee.getType() == 0 && this.employee.getType() == 4){
+            if(this.employee.getType() == 0 || this.employee.getType() == 4){
                 agregar.setDisable(false);
             }
             incapacidadesTabla.getItems().clear();
@@ -285,7 +285,7 @@ public class VistaIncapacidadesController implements Initializable {
     */
     public boolean isConductorAlready(){
         LocalDate dateValue = date.getValue();
-        boolean maxDate = false;
+        boolean maxDate = true;
         try {
             statement = conexion.getConexion().prepareStatement("Select FechaFin "
                     + "From Incapacidades "
@@ -296,7 +296,7 @@ public class VistaIncapacidadesController implements Initializable {
                 if(dateValue.isAfter(result.getDate(1).toLocalDate())){
                     maxDate = true;
                 }else{
-                    maxDate = false;
+                    return false;
                 }
             }
         } catch (SQLException ex) {
@@ -325,8 +325,8 @@ public class VistaIncapacidadesController implements Initializable {
                 incapacidades.setFechaInicio(result.getDate(4).toString());
                 incapacidades.setFechaFin(result.getDate(5).toString());
                 incapacidades.setMotivo(result.getString(6));
-                incapacidades.setIdEmpleado(employee.getIdEmpleado());
-                incapacidades.setNombreJefe(employeeName(employee.getIdEmpleado()));
+                incapacidades.setIdEmpleado(result.getString(3));
+                incapacidades.setNombreJefe(employeeName(result.getString(3)));
                 putData();
                 incapacidadesTabla.getItems().add(incapacidades);
             }
@@ -369,19 +369,6 @@ public class VistaIncapacidadesController implements Initializable {
         date.setValue(null);
         date2.setValue(null);
         motivoTextArea.clear();
-    }
-    public void disableFields(){
-        date.setDisable(true);
-        date2.setDisable(true);
-        motivoTextArea.setDisable(true);
-        agregar.setDisable(true);
-    }
-    public void enableFields(){
-        date.setDisable(false);
-        date2.setDisable(false);
-        motivoTextArea.setDisable(false);
-        agregar.setDisable(false);
-        modificar.setDisable(false);
     }
     public void setDataOnFields(){
         incapacidades = incapacidadesTabla.getSelectionModel().getSelectedItem();

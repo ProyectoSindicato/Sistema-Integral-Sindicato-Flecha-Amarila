@@ -109,8 +109,8 @@ public class VistaDemandasController implements Initializable{
                 demandas.setNombreConductor(employeeName(result.getString(2)));
                 demandas.setFecha(result.getDate(4).toString());
                 demandas.setMotivo(result.getString(5));
-                demandas.setIdEmpleado(employee.getIdEmpleado());
-                demandas.setNombreJefe(employeeName(employee.getIdEmpleado()));
+                demandas.setIdEmpleado(result.getString(3));
+                demandas.setNombreJefe(employeeName(result.getString(3)));
                 demandas.setObservaciones(result.getString(6));
                 putData();
                 demandaTabla.getItems().add(demandas);
