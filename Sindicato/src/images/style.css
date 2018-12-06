@@ -423,3 +423,22 @@
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
+
+.iconUpload {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url("upload.png");
+    -fx-background-position: center;
+    -fx-background-size: 80px;
+    -fx-background-repeat: no-repeat;
+}
+
+.iconUpload:hover {
+    -fx-background-image: url("upload.png");
+    /*-fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;*/
+}
+
+.iconUpload:pressed {
+    /*-fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;*/
+}

@@ -115,7 +115,8 @@ public class DescuentosController implements Initializable {
                     if (newValue.equals("Subiendo : 100%")) {
                         System.out.println("Completado");
                         estado.setText("Completado");
-                        System.out.println(modeloE.Importar(archivo) + "\n Formato ."+ archivo.getName().substring(archivo.getName().lastIndexOf(".")+1));
+                        modeloE.Importar(archivo);
+//                        System.out.println(modeloE.Importar(archivo) + "\n Formato ."+ archivo.getName().substring(archivo.getName().lastIndexOf(".")+1));
 //                        JOptionPane.showMessageDialog(null, 
 //                            modeloE.Importar(archivo) + "\n Formato ."+ archivo.getName().substring(archivo.getName().lastIndexOf(".")+1), 
 //                            "IMPORTAR EXCEL", JOptionPane.INFORMATION_MESSAGE);
@@ -172,7 +173,7 @@ public class DescuentosController implements Initializable {
             @Override
             protected Object call() throws Exception {
                 for (int i = 0; i < 101; i++) {
-                    Thread.sleep(200);
+                    Thread.sleep(20);
                     updateMessage("Subiendo : " + i  + "%");
                     updateProgress(i + 1, 100);
                 }
