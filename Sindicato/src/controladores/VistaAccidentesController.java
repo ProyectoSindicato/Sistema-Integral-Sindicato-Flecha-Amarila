@@ -454,6 +454,7 @@ public class VistaAccidentesController implements Initializable {
             btnModify.setDisable(true);
             
             txtDriver.textProperty().addListener(event);
+            txtDriver.setPromptText("Buscar por conductor...");
             txtDetails.setDisable(true);
             txtObs.setDisable(true);
             txtReason.setDisable(true);
