@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class LoginController implements Initializable {
@@ -146,7 +147,23 @@ public class LoginController implements Initializable {
         }
         return -1;
     }
-
+    @FXML
+    private void rescuePasswordEvent(MouseEvent e) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/Vista/VistaRescuePassword.fxml"));
+            loader.load();
+            Parent p = loader.getRoot();
+            Scene scene = new Scene(p);
+            Stage s = (Stage)((Node)e.getSource()).getScene().getWindow();
+            s.setScene(scene);
+            s.setTitle("Recuperar contraseña");
+            s.show();
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

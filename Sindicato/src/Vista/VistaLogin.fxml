@@ -31,7 +31,7 @@
         <URL value="@../images/style.css" />
       </stylesheets>
     </Button>
-    <Label fx:id="rescuePassword" layoutX="95.0" layoutY="428.0" style="" styleClass="rescuePassword" text="¿Olvidate tu contraseña?" textFill="WHITE" wrapText="false">
+    <Label fx:id="rescuePassword" layoutX="95.0" layoutY="428.0" onMousePressed="#rescuePasswordEvent" style="" styleClass="rescuePassword" text="¿Olvidaste tu contraseña?" textFill="WHITE" wrapText="false">
       <stylesheets>
         <URL value="@../images/rescuePassword.css" />
       </stylesheets>
