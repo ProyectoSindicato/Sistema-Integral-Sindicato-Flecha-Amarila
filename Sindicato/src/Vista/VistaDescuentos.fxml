@@ -156,7 +156,7 @@
                     </ImageView>
                     <GridPane layoutX="520.0" layoutY="158.0" prefHeight="436.0" prefWidth="307.0" styleClass="gridSection">
                       <children>
-                        <Button fx:id="btnimportar" mnemonicParsing="false" onAction="#importar" prefHeight="75.0" prefWidth="275.0" styleClass="iconCargar" text="" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                        <Button fx:id="btnimportar" mnemonicParsing="false" onAction="#importar" prefHeight="75.0" prefWidth="275.0" styleClass="iconUpload" text="" GridPane.columnIndex="0" GridPane.rowIndex="4">
                           <stylesheets>
                             <URL value="@../images/style.css" />
                           </stylesheets>
@@ -166,7 +166,7 @@
                             <Font size="16.0" />
                           </font>
                         </Label>
-                        <Label fx:id="estado" prefWidth="275.0" text="        " textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <Label fx:id="estado" prefWidth="275.0" text="        " textAlignment="CENTER" textFill="#006610" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2">
                           <font>
                             <Font name="Bell MT" size="28.0" />
                           </font>
@@ -188,8 +188,8 @@
                     </GridPane>
                     <GridPane layoutX="109.0" layoutY="158.0" prefHeight="436.0" prefWidth="307.0" styleClass="gridSection">
                       <children>
-                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="277.0" text="Elegir el archivo en mi Ordenador" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <Label prefHeight="32.0" prefWidth="275.0" text="Selecciona el Archivo en formato .xls para actualizar los datos de los últimos descuentos." textAlignment="CENTER" textFill="BLACK" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="277.0" text="Exportar" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <Label prefHeight="32.0" prefWidth="275.0" text="Exportar descuentos en formato .xls para consulta" textAlignment="CENTER" textFill="BLACK" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -207,7 +207,7 @@
                     </GridPane>
                     <GridPane layoutX="923.0" layoutY="158.0" prefHeight="436.0" prefWidth="307.0" styleClass="gridSection">
                       <children>
-                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="277.0" text="Elegir el archivo en mi Ordenador" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="277.0" text=".En proceso..." GridPane.columnIndex="0" GridPane.rowIndex="4" />
                         <Label prefHeight="32.0" prefWidth="275.0" text="Selecciona el Archivo en formato .xls para actualizar los datos de los últimos descuentos." textAlignment="CENTER" textFill="BLACK" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>
@@ -226,7 +226,7 @@
                     </GridPane>
                     <ProgressBar fx:id="barraProgreso2" layoutX="2.0" layoutY="1.0" prefWidth="1359.0" progress="0.0" style="" styleClass="bar">
                       <stylesheets>
-                        <URL value="@../images/StyleBar.css" />
+                        <URL value="@../images/ProgressBar.css" />
                       </stylesheets>
                     </ProgressBar>
                   </children>

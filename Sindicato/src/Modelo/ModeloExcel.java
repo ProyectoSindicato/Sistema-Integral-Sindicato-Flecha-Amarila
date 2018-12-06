@@ -4,8 +4,14 @@
  * and open the template in the editor.
  */
 package Modelo;
+import ConexionAccess.ConexionAccess;
 import java.io.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.control.Alert;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.EncryptedDocumentException;
@@ -19,6 +25,10 @@ import org.apache.poi.xssf.usermodel.*;
  * @author ricardo
  */
 public class ModeloExcel {
+    private Alert alert;
+    private PreparedStatement statement;
+    private Empleado employee;
+    private ConexionAccess conexion;
     Workbook wb;
     int index=0;
     
@@ -42,7 +52,7 @@ public class ModeloExcel {
                     indiceColumna++;
                     Cell celda = (Cell) columnaIterator.next();
                     if(indiceFila==0){
-                        modeloT.addColumn(celda.getStringCellValue());
+//                        modeloT.addColumn(celda.getStringCellValue());
                     }else{
                         if(celda!=null){
                             switch(celda.getCellType()){
@@ -60,13 +70,24 @@ public class ModeloExcel {
                                     break;
                             }
                             index = index+1;
-                            System.out.println("col"+indiceColumna+" valor: true - "+celda);
                         }                
-                        System.out.println("------->cantidad columnas: "+index);
                     }
                 }
-                if(indiceFila!=0)modeloT.addRow(listaColumna);
-                System.out.println("TOTAL DE COLUMNAS: "+listaColumna[indiceColumna]);
+                String id = String.valueOf(listaColumna[0]);
+                String cuenta = String.valueOf(listaColumna[4]);
+                String sql = "UPDATE Conductor SET NoCuenta="+id
+                + " WHERE Id="+cuenta;
+        conexion = new ConexionAccess();
+        conexion.conectar();
+        try {
+            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
+                ps.execute();
+                ps.close();
+                System.out.println("se modifico registro: "+id);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al modificar Conductor en la base de datos." + e.getMessage());
+        }
             }
             respuesta="Importación exitosa";
         } catch (IOException | InvalidFormatException | EncryptedDocumentException e) {
@@ -103,5 +124,12 @@ public class ModeloExcel {
             System.err.println(e.getMessage());
         }
         return respuesta;
+    }
+    
+    public void showAlert(Alert.AlertType error,String header, String body){
+        alert = new Alert(error);
+        alert.setTitle(header);
+        alert.setHeaderText(body);
+        alert.showAndWait();
     }
 }

@@ -16,8 +16,13 @@ public class ConexionAccess {
     
     /* ****NO SE LES OLVIDE CAMBIAR LA LOCALIZACION DE LA BASE DE DATOS ;)  */
     //
+<<<<<<< HEAD
     //private final String location = "F:\\Documentos\\Sistema-Integral-Sindicato-Flecha-Amarila\\Base de datos\\copia-de-seguridad\\Sindicato.accdb";
     private final String location = "C:\\Users\\Personal\\Documents\\ITL\\7to semestre\\Gestion de proyectos de SW\\Proyecto Final\\Sistema-Integral-Sindicato-Flecha-Amarila\\Base de datos\\Sindicato V2.accdb";
+=======
+    private final String location = "F:\\Documentos\\Sistema-Integral-Sindicato-Flecha-Amarila\\Base de datos\\copia-de-seguridad\\Sindicato v2.accdb";
+   // private final String location = "C:\\Users\\Personal\\Documents\\ITL\\7to semestre\\Gestion de proyectos de SW\\Proyecto Final\\Sistema-Integral-Sindicato-Flecha-Amarila\\Base de datos\\Sindicato V2.accdb";
+>>>>>>> 45d1bc200f877191258b172823de89040642c64e
    // private final String location = "F:\\Documentos\\Sistema-Integral-Sindicato-Flecha-Amarila\\Base de datos\\copia-de-seguridad\\Sindicato.accdb";
    //private final String location = "C:\\Users\\Aideé Alvarez\\Documents\\SindicatoV2.accdb";
     
