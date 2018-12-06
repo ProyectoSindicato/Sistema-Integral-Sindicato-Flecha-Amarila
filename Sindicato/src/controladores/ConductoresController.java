@@ -17,10 +17,13 @@ import javafx.scene.control.ToggleGroup;
 import Modelo.Conductor;
 import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -55,6 +58,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class ConductoresController implements Initializable {
     File file;
@@ -75,6 +80,7 @@ public class ConductoresController implements Initializable {
     private Alert alert;
     int IDDomicilio, IDTelefono, IDBeneficiarios;
     int idDom, idTel, idBen;
+    //JLabel label;
     
     @FXML
     private Button btnAgregar, btnEditar, btnEliminar, btnBuscar, btnLimpiar, btnBack;
@@ -134,7 +140,8 @@ public class ConductoresController implements Initializable {
             tbcColonia, tbcCalle, tbcNumExt, tbcCp, tbcFechaNacimiento, tbcLugarNacimiento,
             tbcEstadoCivil, tbcTelefono, tbcFechaIngreso, tbcFechaSidicato, tbcEstudios,
             tbcNoIMSS, tbcAfore, tbcCURP, tbcRFC, tbcClaveElector, tbcIdDomicilio2, tbcIdTelefono2, 
-            tbcIdBeneficiarios, tbcBeneficiarios, tbcParentesco, tbcPorcentaje, tbcIdBeneficiarios2;
+            tbcIdBeneficiarios, tbcBeneficiarios, tbcParentesco, tbcPorcentaje, tbcIdBeneficiarios2,
+            tbcFoto;
     
     public ConductoresController() {
         conexionBD = new ConexionAccess();
@@ -234,7 +241,7 @@ public class ConductoresController implements Initializable {
         foto.setOpacity(0.65);        
         llenarTablaBD();
         eventoFiltro = new ManejadorEventos(); //Activamos el evento.   
-        tblIdDomicilio.setVisible(false);
+        //tblIdDomicilio.setVisible(false);
         tblIdTelefono.setVisible(false);
         txtIdTelefono.setVisible(false);
                 
@@ -2811,11 +2818,7 @@ public class ConductoresController implements Initializable {
     }    
     
     @FXML
-    public void elegirFoto(ActionEvent e) {
-        /*FileChooser fileChooser = new FileChooser();
-        archivo = fileChooser.showOpenDialog(null);
-        if (archivo.getName().endsWith("jpg") || archivo.getName().endsWith("png") || archivo.getName().endsWith("JPG")) {
-            System.out.println("Imagen ruta path: " + archivo.getPath().replace("\"", "\\"));]*/
+    public void elegirFoto(ActionEvent e) {        
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter
@@ -2837,21 +2840,11 @@ public class ConductoresController implements Initializable {
         try {
             bufferedImage = ImageIO.read(file);
             Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-            foto.setImage(image);
+            foto.setImage(image); //imageview para mostrar la foto en la pantalla
             imageStream = new FileInputStream(file);
         } catch (IOException ex) {
             Logger.getLogger(ConductoresController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        //File ImageFile = new File(archivo.getPath());
-        //foto.setImage(new Image(archivo.getPath().replace("\"", "\\")));
-        /*try {
-            FileInputStream image = new FileInputStream(ImageFile);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ConductoresController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        //showAlert(Alert.AlertType.ERROR, "Error Message", " Error al subir la foto. \nFormato incompatible.");
-        
     }
     
      @FXML
@@ -2909,7 +2902,7 @@ public class ConductoresController implements Initializable {
         String parentesco = txaParentesco.getText();
         String porcentaje = txaPorcentaje.getText();
         
-        File foto = file;
+        File fotoC = file;
         FileInputStream fotoStream = imageStream;
         
         if (estadoCivil != null && estado != null && ciudad != null && 
@@ -2976,7 +2969,10 @@ public class ConductoresController implements Initializable {
                     bean.setParentesco(parentesco);
                     bean.setPorcentaje(porcentaje);
                     
-                    if (bean.insertarDomicilio() && bean.insertarEmpleado() && bean.insertarTelefono()
+                    bean.setFile(fotoC);
+                    bean.setImg(fotoStream);
+                    
+                    if (bean.insertarDomicilio() && bean.insertarEmpleado(fotoC, fotoStream) && bean.insertarTelefono()
                             && bean.insertarLicencia() && bean.insertarConductor(idConductor, idLicencia)
                             && bean.insertarBeneficiarios()) {
                         obtenerSizeTabla();
@@ -3234,19 +3230,10 @@ public class ConductoresController implements Initializable {
 
     public void llenarTablaBD() {
         ResultSet rs, rsId, rsIdTel, rsIdBen;
-        /*String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
-                + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
-                + "Empleado.RFC,Empleado.ClaveElector,"
-                + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
-                + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
-                + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono, Beneficiarios.Beneficiarios, Beneficiarios.Parentesco, Beneficiarios.Porcentaje "
-                + "FROM (((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
-                + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.Id = Conductor.IdLicencia) "
-                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado)"
-                + "INNER JOIN Beneficiarios ON Beneficiarios.[id] = Conductor.[idConductor];";*/
+        
         String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
                 + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
-                + "Empleado.RFC,Empleado.ClaveElector,"
+                + "Empleado.RFC,Empleado.ClaveElector, Empleado.Foto, "
                 + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
                 + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
                 + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono, Beneficiarios.Id AS Beneficiarios_id, Beneficiarios.Beneficiarios, Beneficiarios.Parentesco, Beneficiarios.Porcentaje "
@@ -3301,35 +3288,35 @@ public class ConductoresController implements Initializable {
                 String curp = String.valueOf(fila[13]);
                 String rfc = String.valueOf(fila[14]);
                 String claveElector = String.valueOf(fila[15]);
-                //String foto = String.valueOf(fila[16]);
+                Blob fotoC = rs.getBlob(17); //[16]
+                                
+                String idDomicilio = String.valueOf(fila[17]);                
+                String estado = String.valueOf(fila[18]);
+                String ciudad = (String) fila[19];
+                String colonia = String.valueOf(fila[20]);
+                String calle = String.valueOf(fila[21]);
+                String num = String.valueOf(fila[22]);
+                String cp = String.valueOf(fila[23]);
                 
-                String idDomicilio = String.valueOf(fila[16]);                
-                String estado = String.valueOf(fila[17]);
-                String ciudad = (String) fila[18];
-                String colonia = String.valueOf(fila[19]);
-                String calle = String.valueOf(fila[20]);
-                String num = String.valueOf(fila[21]);
-                String cp = String.valueOf(fila[22]);
+                String idLicencia = String.valueOf(fila[24]);
+                String fechaExpiracion = String.valueOf(rs.getDate(26)); //[25]
+                String fechaExpedicion = String.valueOf(rs.getDate(27)); //[26]
                 
-                String idLicencia = String.valueOf(fila[23]);
-                String fechaExpiracion = String.valueOf(rs.getDate(25)); //[24]
-                String fechaExpedicion = String.valueOf(rs.getDate(26)); //[25]
+                String base = String.valueOf(fila[27]);
+                String servicio = String.valueOf(fila[28]);
+                String noCuenta = String.valueOf(fila[29]);
                 
-                String base = String.valueOf(fila[26]);
-                String servicio = String.valueOf(fila[27]);
-                String noCuenta = String.valueOf(fila[28]);
+                String telefonoID = String.valueOf(fila[30]);
+                String telefono = String.valueOf(fila[31]);
                 
-                String telefonoID = String.valueOf(fila[29]);
-                String telefono = String.valueOf(fila[30]);
-                
-                String idBeneficiarios = String.valueOf(fila[31]);
-                String beneficiarios = String.valueOf(fila[32]);
-                String parentesco = String.valueOf(fila[33]);
-                String porcentaje = String.valueOf(fila[34]);
+                String idBeneficiarios = String.valueOf(fila[32]);
+                String beneficiarios = String.valueOf(fila[33]);
+                String parentesco = String.valueOf(fila[34]);
+                String porcentaje = String.valueOf(fila[35]);
 
                 Conductor dom = new Conductor(idConductor, nombres, apellidoPaterno, 
                         apellidoMaterno, fechaNacimiento, lugarNacimiento,Integer.parseInt(telefonoID),telefono,estadoCivil,
-                        fechaIngreso, fechaSindicato, estudios, noIMSS, afore, curp, rfc, claveElector,
+                        fechaIngreso, fechaSindicato, estudios, noIMSS, afore, curp, rfc, claveElector, fotoC,
                          Integer.parseInt(idDomicilio),
                         estado, ciudad, colonia, calle, num, cp,
                         base, servicio, noCuenta, idLicencia, fechaExpiracion, fechaExpedicion,
@@ -3404,19 +3391,10 @@ public class ConductoresController implements Initializable {
                 rsId = result;
                 rsIdTel = result;
                 rsIdBen = result;
-            } else { //En caso contrario, solamente volvemos a ejecutar la sentencia normal de traer todo a la tabla.                
-                /*String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
-                + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
-                + "Empleado.RFC,Empleado.ClaveElector,"
-                + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
-                + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
-                + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono "
-                + "FROM ((Domicilio INNER JOIN Empleado ON Domicilio.[Id] = Empleado.[IdDomicilio]) "
-                + "INNER JOIN (Licencia INNER JOIN Conductor ON Licencia.Id = Conductor.IdLicencia) "
-                + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado;";*/
+            } else {
                 String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
                 + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
-                + "Empleado.RFC,Empleado.ClaveElector,"
+                + "Empleado.RFC,Empleado.ClaveElector, Empleado.Foto, "
                 + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
                 + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
                 + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono, Beneficiarios.Id AS Beneficiarios_id, Beneficiarios.Beneficiarios, Beneficiarios.Parentesco, Beneficiarios.Porcentaje "
@@ -3470,35 +3448,35 @@ public class ConductoresController implements Initializable {
                     String curp = String.valueOf(fila[13]);
                     String rfc = String.valueOf(fila[14]);
                     String claveElector = String.valueOf(fila[15]);
-                    //String foto = String.valueOf(fila[16]);
+                    Blob fotoC = rs.getBlob(17); //[16]
+                                
+                    String idDomicilio = String.valueOf(fila[17]);                
+                    String estado = String.valueOf(fila[18]);
+                    String ciudad = (String) fila[19];
+                    String colonia = String.valueOf(fila[20]);
+                    String calle = String.valueOf(fila[21]);
+                    String num = String.valueOf(fila[22]);
+                    String cp = String.valueOf(fila[23]);
 
-                    String idDomicilio = String.valueOf(fila[16]);                
-                    String estado = String.valueOf(fila[17]);
-                    String ciudad = (String) fila[18];
-                    String colonia = String.valueOf(fila[19]);
-                    String calle = String.valueOf(fila[20]);
-                    String num = String.valueOf(fila[21]);
-                    String cp = String.valueOf(fila[22]);
+                    String idLicencia = String.valueOf(fila[24]);
+                    String fechaExpiracion = String.valueOf(rs.getDate(26)); //[25]
+                    String fechaExpedicion = String.valueOf(rs.getDate(27)); //[26]
 
-                    String idLicencia = String.valueOf(fila[23]);
-                    String fechaExpiracion = String.valueOf(rs.getDate(25)); //[24]
-                    String fechaExpedicion = String.valueOf(rs.getDate(26)); //[25]
+                    String base = String.valueOf(fila[27]);
+                    String servicio = String.valueOf(fila[28]);
+                    String noCuenta = String.valueOf(fila[29]);
 
-                    String base = String.valueOf(fila[26]);
-                    String servicio = String.valueOf(fila[27]);
-                    String noCuenta = String.valueOf(fila[28]);
+                    String telefonoID = String.valueOf(fila[30]);
+                    String telefono = String.valueOf(fila[31]);
 
-                    String telefonoID = String.valueOf(fila[29]);
-                    String telefono = String.valueOf(fila[30]);
-                    
-                    String idBeneficiarios = String.valueOf(fila[31]);
-                    String beneficiarios = String.valueOf(fila[32]);
-                    String parentesco = String.valueOf(fila[33]);
-                    String porcentaje = String.valueOf(fila[34]);
+                    String idBeneficiarios = String.valueOf(fila[32]);
+                    String beneficiarios = String.valueOf(fila[33]);
+                    String parentesco = String.valueOf(fila[34]);
+                    String porcentaje = String.valueOf(fila[35]);
 
                     Conductor dom = new Conductor(idConductor, nombres, apellidoPaterno, 
                             apellidoMaterno, fechaNacimiento, lugarNacimiento,Integer.parseInt(telefonoID),telefono,estadoCivil,
-                            fechaIngreso, fechaSindicato, estudios, noIMSS, afore, curp, rfc, claveElector,
+                            fechaIngreso, fechaSindicato, estudios, noIMSS, afore, curp, rfc, claveElector, fotoC,
                              Integer.parseInt(idDomicilio),
                             estado, ciudad, colonia, calle, num, cp,
                             base, servicio, noCuenta, idLicencia, fechaExpiracion, fechaExpedicion,
@@ -3508,7 +3486,6 @@ public class ConductoresController implements Initializable {
                     tblDatosConductor.getItems().add(dom);
                 }
                 
-
                 while(rsId.next()) {
                     Object[] filaId = new Object[colsId];
                     for (int i = 0; i < colsId; i++) {
@@ -3608,6 +3585,7 @@ public class ConductoresController implements Initializable {
         tbcParentesco.setCellValueFactory(new PropertyValueFactory<>("Parentesco"));
         tbcPorcentaje.setCellValueFactory(new PropertyValueFactory<>("Porcentaje"));
         tbcIdBeneficiarios2.setCellValueFactory(new PropertyValueFactory<>("IdBeneficiarios"));
+        tbcFoto.setCellValueFactory(new PropertyValueFactory<>("Foto"));
     }
 /*
     void ActualizaRefresca() {
@@ -3623,6 +3601,7 @@ public class ConductoresController implements Initializable {
         actualizarTablaBD(r);
         obtenerSizeTabla();
         obtenerSizeTablaTel();
+        obtenerSizeTablaBen();
         LimpiarCampos();
 
     }
@@ -3657,12 +3636,12 @@ public class ConductoresController implements Initializable {
         
         dpFechaExpiracion.setValue(null);
         dpFechaExpedicion.setValue(null);
+        foto.setImage(new Image("images/default-photo.png"));
     }
 
     void LimpiarTabla() {
         for (int i = 0; i < tblDatosConductor.getItems().size(); i++) {
             tblDatosConductor.getItems().clear();
-            tblIdDomicilio.getItems().clear();
         }
     }
 
@@ -3688,7 +3667,7 @@ public class ConductoresController implements Initializable {
             String curp = conductor.getCurp();
             String rfc = conductor.getRfc();
             String claveElector = conductor.getClaveElector();
-            String foto = conductor.getFoto();            
+            Blob fotoC = conductor.getFoto();            
             
             String estado = conductor.getEstado();
             String ciudad = conductor.getCiudad();
@@ -3712,6 +3691,8 @@ public class ConductoresController implements Initializable {
             String beneficiarios = conductor.getBeneficiarios();
             String parentesco = conductor.getParentesco();
             String porcentaje = conductor.getPorcentaje();
+            
+            querySelected(conductor);
             
             txtId.setText(idConductor);
             txtNombres.setText(nombres);
@@ -3758,6 +3739,39 @@ public class ConductoresController implements Initializable {
             txaParentesco.setText(parentesco);
             txaPorcentaje.setText(porcentaje);
         }
+    }
+    
+    public void querySelected(Conductor conductor) {
+        ImageIcon icono=null;
+        try {
+            String selectedQuery = "select Foto from Empleado where id = ?";
+            PreparedStatement pstm = conexionBD.getConexion().prepareStatement(selectedQuery);
+            //Obtener id
+            //int indice = Integer.parseInt(txtId.getText());
+            String indice = conductor.getIdConductor();
+            // y se lo proporciono al statement
+            pstm.setInt(1, Integer.parseInt(indice));
+            // Se ejecuta el query
+            ResultSet res = pstm.executeQuery();
+            int valida = 0;
+            
+            while(res.next()) {
+                valida = valida + 1;
+                Blob blob = res.getBlob(1);
+                System.out.println("Blob get(1):"+res.getBlob(1));
+                // Se establece que se tomará un rango de bytes
+                byte[] data = blob.getBytes(1, (int)blob.length());
+                BufferedImage img = null;
+                img = ImageIO.read(new ByteArrayInputStream(data));
+                Image imag = SwingFXUtils.toFXImage(img, null);
+                System.out.println("FOTO: " + imag);
+                foto.setImage(imag);
+            }
+            
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(ConductoresController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     static public String firstLetterCaps ( String data ) {

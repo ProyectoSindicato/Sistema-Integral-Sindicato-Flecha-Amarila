@@ -1,6 +1,9 @@
 package Modelo;
     
 import ConexionAccess.ConexionAccess;
+import java.io.File;
+import java.io.FileInputStream;
+import java.sql.Blob;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +27,8 @@ public class Conductor {
     private String curp;
     private String rfc;
     private String claveElector;
-    private String foto;
+    private Blob foto;
+    //private BinaryStream foto;
     
     private int    idDomicilio;  
     private String estado;
@@ -46,6 +50,9 @@ public class Conductor {
     private String beneficiarios;
     private String parentesco;
     private String porcentaje;
+    
+    private File file;
+    private FileInputStream img;
     
     ConexionAccess conexion;
 
@@ -89,7 +96,7 @@ public class Conductor {
             String apellidoMaterno, String fechaNacimiento, String lugarNacimiento, 
             int IdTelefono, String telefono, String estadoCivil, String fechaIngreso, String fechaSindicato, 
             String estudios, String noIMSS, String afore, String curp, String rfc, 
-            String claveElector, /*String foto,*/ int idDomicilio, String estado, String ciudad, 
+            String claveElector, Blob foto, int idDomicilio, String estado, String ciudad, 
             String colonia, String calle, String numExt, String cp, String base, 
             String servicio, String noCuenta, String idLicencia, String fechaExpiracion, String fechaExpedicion, 
             int idBeneficiarios, String beneficiarios, String parentesco,String porcentaje) {
@@ -110,7 +117,7 @@ public class Conductor {
         this.curp = curp;
         this.rfc = rfc;
         this.claveElector = claveElector;
-        //this.foto = foto;
+        this.foto = foto;
         this.idDomicilio = idDomicilio;
         this.estado = estado;
         this.ciudad = ciudad;
@@ -266,11 +273,11 @@ public class Conductor {
         this.claveElector = claveElector;
     }
 
-    public String getFoto() {
+    public Blob getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(Blob foto) {
         this.foto = foto;
     }
 
@@ -409,6 +416,22 @@ public class Conductor {
     public void setPorcentaje(String porcentaje) {
         this.porcentaje = porcentaje;
     }    
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public FileInputStream getImg() {
+        return img;
+    }
+
+    public void setImg(FileInputStream img) {
+        this.img = img;
+    }
     
     public ConexionAccess getConexion() {
         return conexion;
@@ -443,11 +466,13 @@ public class Conductor {
         }
     }
     
-    public boolean insertarEmpleado() {
+    public boolean insertarEmpleado(File imageFile, FileInputStream image) {
         //idDomicilio = IDDom;
         //this.idDomicilio = idDomicilioForanea;
         //String sqlIdDomicilio = "SELECT TOP 1 Id from Domicilio ORDER BY Id DESC;";
         //idDomicilio = IDDomicilio;
+        file = imageFile;
+        img = image;
         
         String sql = "INSERT INTO Empleado(Id,Nombres,ApellidoPaterno,ApellidoMaterno,FechaNacimiento,LugarNacimiento,"
                 + "EstadoCivil,IdDomicilio,FechaIngreso,FechaSindicato,Estudios,NumeroIMSS,Afore,Curp,RFC,ClaveElector,Foto)"
@@ -473,7 +498,7 @@ public class Conductor {
                 ps.setString(14, curp);
                 ps.setString(15, rfc);
                 ps.setString(16, claveElector);
-                ps.setString(17, foto);
+                ps.setBinaryStream(17, image, (int) imageFile.length());
                 //ps.setBinaryStream(17, image, (int) imageFile.lenght());
                 
                 ps.execute();
@@ -601,10 +626,10 @@ public class Conductor {
         }
     }
     
-    public boolean modificarEmpleado(String id) {
+    public boolean modificarEmpleado(String id/*, File imageFile, FileInputStream image*/) {
         String sql = "UPDATE Empleado SET Id = ?,Nombres =?, ApellidoPaterno= ?, ApellidoMaterno=?, FechaNacimiento=?, "
                 + "LugarNacimiento=?, EstadoCivil=?, FechaIngreso=?, FechaSindicato=?, Estudios=?, NumeroIMSS=?, "
-                + "Afore=?, Curp=?, RFC=?, ClaveElector=?, Foto = ?"
+                + "Afore=?, Curp=?, RFC=?, ClaveElector=? "
                 + "WHERE Id="+id;
         conexion = new ConexionAccess();
         conexion.conectar();
@@ -625,7 +650,7 @@ public class Conductor {
                 ps.setString(13, curp);
                 ps.setString(14, rfc);
                 ps.setString(15, claveElector);
-                ps.setString(16, foto);
+               // ps.setBinaryStream(16, image, (int) imageFile.length());
                 ps.execute();
                 ps.close();
             }

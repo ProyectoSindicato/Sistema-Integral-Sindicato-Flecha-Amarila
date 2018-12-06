@@ -566,7 +566,7 @@
                                     <URL value="@../images/ConductoresStyle.css" />
                                   </stylesheets>
                                 </TextField>
-                                <Label id="lblEstado" font="$x3" prefHeight="28.0" prefWidth="125.0" text="Id Conductor" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                <Label id="lblEstado" font="$x3" prefHeight="28.0" prefWidth="125.0" text="Id Conductor" textFill="BLACK" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2">
                                   <stylesheets>
                                     <URL value="@../images/ConductoresStyle.css" />
                                   </stylesheets>
@@ -590,7 +590,7 @@
                                 <TextArea fx:id="txaParentesco" maxHeight="-Infinity" prefHeight="35.0390625" prefWidth="463.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                 <TextArea fx:id="txaPorcentaje" maxHeight="-Infinity" prefHeight="35.0" prefWidth="463.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                 <Label alignment="CENTER" font="$x6" prefWidth="352.0" text="Beneficiarios" textFill="BLACK" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-                                <TextField id="txtColonia" fx:id="txtIdConductorBen" editable="true" maxWidth="-Infinity" prefWidth="64.0" styleClass="txt" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <TextField id="txtColonia" fx:id="txtIdConductorBen" editable="true" maxWidth="-Infinity" prefWidth="64.0" styleClass="txt" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                   <stylesheets>
                                     <URL value="@../images/ConductoresStyle.css" />
                                   </stylesheets>
@@ -680,6 +680,7 @@
                 <TableColumn prefWidth="100.0" text="Beneficiarios" fx:id="tbcBeneficiarios" />
                 <TableColumn prefWidth="100.0" text="Parentesco" fx:id="tbcParentesco" />
                 <TableColumn prefWidth="100.0" text="Porcentaje" fx:id="tbcPorcentaje" />
+                <TableColumn prefWidth="10.0" text="Foto" visible="false" fx:id="tbcFoto" />
               </columns>
               <stylesheets>
                 <URL value="@../images/ConductoresStyle.css" />
