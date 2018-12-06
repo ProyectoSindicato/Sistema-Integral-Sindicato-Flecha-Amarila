@@ -27,7 +27,7 @@ public class Principal extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaLogin.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Vista/VistaConductores.fxml"));
         
         Scene scene = new Scene(root);
         

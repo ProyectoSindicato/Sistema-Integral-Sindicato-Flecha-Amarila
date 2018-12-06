@@ -1,13 +1,21 @@
 package Modelo;
     
 import ConexionAccess.ConexionAccess;
+import com.healthmarketscience.jackcess.CursorBuilder;
+import com.healthmarketscience.jackcess.Database;
+import com.healthmarketscience.jackcess.DatabaseBuilder;
+import com.healthmarketscience.jackcess.Row;
+import com.healthmarketscience.jackcess.Table;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Conductor {
     private String idConductor;    
@@ -626,39 +634,59 @@ public class Conductor {
         }
     }
     
-    public boolean modificarEmpleado(String id/*, File imageFile, FileInputStream image*/) {
-        String sql = "UPDATE Empleado SET Id = ?,Nombres =?, ApellidoPaterno= ?, ApellidoMaterno=?, FechaNacimiento=?, "
-                + "LugarNacimiento=?, EstadoCivil=?, FechaIngreso=?, FechaSindicato=?, Estudios=?, NumeroIMSS=?, "
-                + "Afore=?, Curp=?, RFC=?, ClaveElector=? "
-                + "WHERE Id="+id;
-        conexion = new ConexionAccess();
-        conexion.conectar();
+    public boolean modificarEmpleado(String id, int idDomi)  {
         try {
-            try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
-                ps.setString(1, idConductor);
-                ps.setString(2, nombres);
-                ps.setString(3, apellidoPaterno);
-                ps.setString(4, apellidoMaterno);               
-                ps.setDate  (5, Date.valueOf(fechaNacimiento));
-                ps.setString(6, lugarNacimiento);
-                ps.setString(7, estadoCivil);
-                ps.setDate  (8, Date.valueOf(fechaIngreso));
-                ps.setDate  (9, Date.valueOf(fechaSindicato));
-                ps.setString(10, estudios);
-                ps.setString(11, noIMSS);
-                ps.setString(12, afore);
-                ps.setString(13, curp);
-                ps.setString(14, rfc);
-                ps.setString(15, claveElector);
-               // ps.setBinaryStream(16, image, (int) imageFile.length());
-                ps.execute();
-                ps.close();
+            Database db = DatabaseBuilder.open(new File(conexion.getLocation()));
+            
+            Table t = db.getTable("Empleado");
+            
+            Row r = CursorBuilder.findRowByPrimaryKey(t, id);
+            
+            if(r!=null) {
+                r.put("Id", id);
+                t.updateRow(r);
+                r.put("Nombres", nombres);
+                t.updateRow(r);
+                r.put("ApellidoPaterno", apellidoPaterno);
+                t.updateRow(r);
+                r.put("ApellidoMaterno", apellidoMaterno);
+                t.updateRow(r);
+                r.put("FechaNacimiento", Date.valueOf(fechaNacimiento));
+                t.updateRow(r);
+                r.put("LugarNacimiento", lugarNacimiento);
+                t.updateRow(r);
+                r.put("EstadoCivil", estadoCivil);
+                t.updateRow(r);
+                r.put("IdDomicilio", idDomi);
+                t.updateRow(r);
+                r.put("FechaIngreso",  Date.valueOf(fechaIngreso));
+                t.updateRow(r);
+                r.put("FechaSindicato",  Date.valueOf(fechaSindicato));
+                t.updateRow(r);
+                r.put("Estudios", estudios);
+                t.updateRow(r);
+                r.put("NumeroIMSS", noIMSS);
+                t.updateRow(r);
+                r.put("Afore", afore);
+                t.updateRow(r);
+                r.put("Curp", curp);
+                t.updateRow(r);
+                r.put("RFC", rfc);
+                t.updateRow(r);
+                r.put("ClaveElector", claveElector);
+                t.updateRow(r);
+                //r.put("Foto", foto);
+                //t.updateRow(r);
+                db.close();
+                
             }
+                        
             return true;
-        } catch (SQLException e) {
-            System.out.println("Error al modificar Empleado en la base de datos." + e.getMessage());
+        } catch (IOException ex) {   
+            Logger.getLogger(Conductor.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+        
     }
     
     public boolean modificarLicencia(String id) {
@@ -757,7 +785,30 @@ public class Conductor {
         }
     }
     
-    public boolean eliminarEmpleado(String id) {
+    public boolean eliminarEmpleado(String id)  {
+        try {
+            Database db = DatabaseBuilder.open(new File(conexion.getLocation()));
+            
+            Table t = db.getTable("Empleado");
+            
+            Row r = CursorBuilder.findRowByPrimaryKey(t, id);
+            
+            if(r!=null) {
+                t.deleteRow(r);
+                //r.put("Foto", foto);
+                //t.updateRow(r);
+                db.close();
+                
+            }
+                        
+            return true;
+        } catch (IOException ex) {   
+            Logger.getLogger(Conductor.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        
+    }
+    /*public boolean eliminarEmpleado(String id) {
         String sql = "DELETE FROM Empleado WHERE Id="+id;
         conexion = new ConexionAccess();
         conexion.conectar();
@@ -772,7 +823,7 @@ public class Conductor {
             System.out.println("Error al eliminar de la base de datos Empleado. " + e.getMessage());
             return false;
         }
-    }
+    }*/
     
     public boolean eliminarTelefono(int id) {
         String sql = "DELETE FROM Telefono WHERE Id="+id;
@@ -859,7 +910,7 @@ public class Conductor {
                 + "ON Empleado.id  = Conductor.id) INNER JOIN Telefono ON Empleado.id = Telefono.idEmpleado WHERE Empleado.Id LIKE \""+id+"*\" ";*/
             String sql = "SELECT Empleado.Id AS Empleado_Id,Empleado.Nombres,Empleado.ApellidoPaterno,Empleado.ApellidoMaterno,Empleado.FechaNacimiento,Empleado.LugarNacimiento,"
                 + "Empleado.EstadoCivil,Empleado.IdDomicilio,Empleado.FechaIngreso,Empleado.FechaSindicato,Empleado.Estudios,Empleado.NumeroIMSS,Empleado.Afore,Empleado.Curp,"
-                + "Empleado.RFC,Empleado.ClaveElector,"
+                + "Empleado.RFC,Empleado.ClaveElector, Empleado.foto, "
                 + "Domicilio.Id AS Domicilio_Id, Domicilio.Estado, Domicilio.Ciudad, Domicilio.Colonia, Domicilio.Calle, Domicilio.NumeroExt, Domicilio.CodigoPostal,"
                 + "Licencia.Id AS Licencia_Id, Licencia.FechaExpiracion,Licencia.FechaExpedicion, Conductor.base, Conductor.Servicio, Conductor.NoCuenta,"
                 + "Telefono.Id AS Telefono_id, Telefono.NumeroTelefono, Beneficiarios.Id AS Beneficiarios_id, Beneficiarios.Beneficiarios, Beneficiarios.Parentesco, Beneficiarios.Porcentaje "

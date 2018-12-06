@@ -680,7 +680,7 @@
                 <TableColumn prefWidth="100.0" text="Beneficiarios" fx:id="tbcBeneficiarios" />
                 <TableColumn prefWidth="100.0" text="Parentesco" fx:id="tbcParentesco" />
                 <TableColumn prefWidth="100.0" text="Porcentaje" fx:id="tbcPorcentaje" />
-                <TableColumn prefWidth="10.0" text="Foto" visible="false" fx:id="tbcFoto" />
+                <TableColumn prefWidth="100.0" text="Foto" visible="true" fx:id="tbcFoto" />
               </columns>
               <stylesheets>
                 <URL value="@../images/ConductoresStyle.css" />

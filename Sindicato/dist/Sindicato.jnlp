@@ -8,11 +8,12 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Sindicato.jar" size="7563451" download="eager" />
+    <jar href="Sindicato.jar" size="7571868" download="eager" />
     <jar href="lib\commons-lang-2.6.jar" size="284220" download="eager" />
     <jar href="lib\commons-logging-1.1.3.jar" size="62050" download="eager" />
     <jar href="lib\hsqldb.jar" size="1467326" download="eager" />
     <jar href="lib\jackcess-2.1.11.jar" size="882908" download="eager" />
+    <jar href="lib\javax.mail.jar" size="659033" download="eager" />
     <jar href="lib\poi-3.12-20150511.jar" size="2136557" download="eager" />
     <jar href="lib\poi-ooxml-3.12-20150511.jar" size="1222491" download="eager" />
     <jar href="lib\poi-ooxml-schemas-3.12-20150511.jar" size="5617718" download="eager" />

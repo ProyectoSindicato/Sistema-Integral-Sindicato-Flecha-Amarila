@@ -3114,23 +3114,34 @@ public class ConductoresController implements Initializable {
                         m.setBeneficiarios(beneficiarios);
                         m.setParentesco(parentesco);
                         m.setPorcentaje(porcentaje);
+                        boolean p1 = m.modificarBeneficiarios(idBeneficiarios);
+                        boolean p2 = m.modificarConductor(idConductor);
+                        boolean p3 =  m.modificarTelefono(idTelefono);
+                        boolean prueba = m.modificarEmpleado(idConductor, idDomicilio);
+                        boolean p4 = m.modificarDomicilio(idDomicilio);
+                        boolean p5= m.modificarLicencia(idLicencia);                                              
                         
-                        if (m.modificarBeneficiarios(idBeneficiarios)
-                            && m.modificarConductor(idConductor) 
-                            && m.modificarTelefono(idTelefono)
-                            && m.modificarEmpleado(idConductor)                              
-                            && m.modificarDomicilio(idDomicilio)
-                            && m.modificarLicencia(idLicencia)) {
+                        
+                        if (p1
+                            &&  p2
+                            && p3
+                            && prueba                              
+                            && p4
+                            && p5) {
                             insertarYRefrescar();
                             showAlert(Alert.AlertType.INFORMATION, "Information Message", " El conductor se ha modificado correctamente.");
 
                         } else {
+                            System.out.println("error");
                             showAlert(Alert.AlertType.ERROR, "Error Message", " Error al modificar conductor.");
                         }
+                        
                     } catch (Exception ex) {
+                        System.out.println("Catch 2"+ex);
                         showAlert(Alert.AlertType.ERROR, "Error Message", " Error al modificar conductor.");
                     }
                 }
+                
             } else { //Else de validación de campos vacíos.
                 identificarCamposVacios(0);            
                 identificarCamposVacios(1);            
@@ -3758,13 +3769,13 @@ public class ConductoresController implements Initializable {
             while(res.next()) {
                 valida = valida + 1;
                 Blob blob = res.getBlob(1);
-                System.out.println("Blob get(1):"+res.getBlob(1));
+                //System.out.println("Blob get(1):"+res.getBlob(1));
                 // Se establece que se tomará un rango de bytes
                 byte[] data = blob.getBytes(1, (int)blob.length());
                 BufferedImage img = null;
                 img = ImageIO.read(new ByteArrayInputStream(data));
                 Image imag = SwingFXUtils.toFXImage(img, null);
-                System.out.println("FOTO: " + imag);
+                //System.out.println("FOTO: " + imag);
                 foto.setImage(imag);
             }
             
