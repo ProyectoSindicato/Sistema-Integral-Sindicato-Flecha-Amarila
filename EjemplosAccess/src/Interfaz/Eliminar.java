@@ -87,10 +87,10 @@ public class Eliminar extends JFrame implements ActionListener{
                 Se construye un objeto "database" para hacer referencia a nuestra base de datos
                 en su constructor se ingresa el directorio donde esta alojada.
             */
-            db = DatabaseBuilder.open(new File("C:\\Users\\Isaac_000\\Documents"
-                    + "\\NetBeansProjects\\EjemplosAccess\\ejemplo.accdb"));
+            db = DatabaseBuilder.open(new File("F:\\Documentos\\Sistema-Integral-Sindicato-Flecha-Amarila\\Base de datos"
+                    + "\\Sindicato V2.accdb"));
             // Se construye un objeto "Table" para apuntar a la tabla que deseamos manipular.
-            Table t = db.getTable("Alumno");
+            Table t = db.getTable("Empleado");
             
             /*
                 Se construye un objeto "Row" para realizar la busqueda de los datos que nos interesan
@@ -98,14 +98,15 @@ public class Eliminar extends JFrame implements ActionListener{
                 primaria corresponda al id que incertamos con ayuda del "CursorBuilder" (utilizado para apuntar
                 a datos).
             */
-            Row r = CursorBuilder.findRowByPrimaryKey(t,Integer.parseInt(jTid.getText()));
+            Row r = CursorBuilder.findRowByPrimaryKey(t,"2");
             // Comprobamos si logro encontrar el registro
             if(r!=null){
                 /*
                     Ahora decidimos que hacer con el, se puede borrar o actualizar
                     con "deleteRow()" o "updateRow()" respectivamente
                 */
-               t.deleteRow(r);
+               r.put("CorreoElectronico", "almadelrocio.ao@gmail.com");
+               t.updateRow(r);
                 // Al terminar cerramos el uso de la base de datos
                 db.close();
                 mensaje.setText("Registro eliminado");
@@ -141,7 +142,7 @@ public class Eliminar extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
       if(e.getSource() == eliminar){
           // Ejecuta el metodo que desees
-          //queryDelete();
+          queryDelete();
          //delete2();
       }
     }

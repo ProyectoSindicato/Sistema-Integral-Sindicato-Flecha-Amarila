@@ -4,16 +4,21 @@ import ConexionAccess.ConexionAccess;
 import Empleado.Empleado;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -149,7 +154,7 @@ public class FXMLDocumentController implements Initializable {
     void handleIncapacidades(ActionEvent event) throws IOException {
         conexion.conectar();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/Vista/VistaIncapacidades.fxml"));
+        loader.setLocation(getClass().getResource("/Vista/Incapacidades.fxml"));
         loader.load();
         VistaIncapacidadesController document = loader.getController();
         document.setParameters(employee, conexion);
@@ -289,4 +294,25 @@ public class FXMLDocumentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }
 
+    @FXML
+    public void backLogin(ActionEvent event) throws IOException {
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setContentText("¿Desea cerrar sesión?");
+        Optional<ButtonType> result = confirm.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/Vista/VistaLogin.fxml"));
+            loader.load();
+            Parent p = loader.getRoot();
+            Scene scene = new Scene(p);
+            Stage s = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            s.setScene(scene);
+            s.show();
+            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+            s.setX((primScreenBounds.getWidth() - s.getWidth()) / 2);
+            s.setY((primScreenBounds.getHeight() - s.getHeight()) / 2);
+        }
+    }
 }

@@ -356,6 +356,7 @@ public class VistaRolesController implements Initializable {
              btnEliminar.setDisable(false);
              txtCorrida.textProperty().removeListener(evento);
              ResultSet r = null;
+             limpiarTablaRoles();
              actualizarRolesBD(r);
          }
      }
@@ -642,6 +643,7 @@ public class VistaRolesController implements Initializable {
              txtRolAsignado.setDisable(false);
              txtConductor.textProperty().removeListener(eventoAsign);
              ResultSet r = null;
+             limpiarTablaRolesAsignacion();
              insertarRolesAsignadosBD(r);
          }
      }

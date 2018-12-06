@@ -346,6 +346,7 @@ public class VistaReportesController implements Initializable {
                     String desc = String.valueOf(fila[4]);
                     String lugar = String.valueOf(fila[5]);
                     String nombre = nombreEmpleado(String.valueOf(fila[6]));
+                    System.out.println(nombre);
                     Reportes rep = new Reportes(Integer.parseInt(id), idCond, tipo, lugar, fecha, desc, nombre);
                     colocarDatosColumna();
                     tablaReporte.getItems().add(rep);
@@ -356,6 +357,7 @@ public class VistaReportesController implements Initializable {
 
         } catch (Exception e) {
             showAlert(AlertType.ERROR, "Error Message - Database", " Error al llenar la tabla.");
+           // e.printStackTrace();
         }
     }
 

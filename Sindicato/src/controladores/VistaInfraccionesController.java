@@ -420,7 +420,6 @@ public class VistaInfraccionesController implements Initializable {
             txtAutobus.setDisable(true);
             txtMotivo.setDisable(true);
             date.setDisable(true);
-
         } else { // Sino, se vuelve un false y activamos todo a como estaba antes.
             btnAgregar.setDisable(false);
             btnEliminar.setDisable(false);
@@ -430,6 +429,7 @@ public class VistaInfraccionesController implements Initializable {
             txtConductor.textProperty().removeListener(eventoFiltro);
             date.setDisable(false);
             ResultSet r =null;
+            limpiarTabla();
             actualizarTablaBD(r);
         }
     }

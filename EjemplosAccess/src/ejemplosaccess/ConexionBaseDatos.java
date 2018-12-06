@@ -12,7 +12,8 @@ public class ConexionBaseDatos {
         Para realizar la conexion a base de datos utilizamos el driver "UCanAccess"
         se tiene que importar todos los archivos jar
     */ 
-    private final String locacion = "F:\\Sindicato V2.accdb";
+    private final String locacion = "F:\\Documentos\\Sistema-Integral-Sindicato-Flecha-Amarila\\Base de datos\\Sindicato V2.accdb";
+    //private final String locacion = "F:\\Sindicato V2.accdb";
     private Connection conn = null;
     
     public void conectar (){

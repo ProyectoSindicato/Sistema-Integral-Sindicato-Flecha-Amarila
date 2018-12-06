@@ -27,6 +27,8 @@ public class Interfaz extends JFrame implements ActionListener{
             */
             Registrar registrar = new Registrar();
             registrar.setLayout(new GridLayout(5,1));
+            /*Eliminar eliminar = new Eliminar();
+            eliminar.setLayout(new GridLayout(5,1));*/
         }
     } 
 }

@@ -49,45 +49,13 @@ public class Registrar extends JFrame implements ActionListener{
         int conImagen = 0;
         int sinImagen = 0;
         try {
-            PreparedStatement pstm =  conexion.getConexion().prepareStatement("Select Id from Conductor");
+            PreparedStatement pstm =  conexion.getConexion().prepareStatement(
+                    "select * from Empleado where CorreoElectronico!=''"
+            );
             resultSelect = pstm.executeQuery();
-            
             while(resultSelect.next()){
-                pathImages = "F:\\Fotos\\";
-                pathImages = pathImages + resultSelect.getString(1)+".JPG";
-                foto = new File(pathImages);
-                
-                try{
-                    if(foto.exists()){
-                        pstm2 =  conexion.getConexion().prepareStatement("Update Empleado"
-                                + " set Foto=?"
-                                + " where Id=?");
-                        fis = new FileInputStream(foto);
-                        pstm2.setBinaryStream(1, fis,(int) foto.length());
-                        pstm2.setString(2, resultSelect.getString(1));
-                        pstm2.executeUpdate();
-                        System.out.println("Meti: "+resultSelect.getString(1));
-                        fis.close();
-                        foto.delete();
-                        conImagen = conImagen +1;
-                    }else{
-                        System.out.println("No pude meter: "+resultSelect.getString(1));
-                      pathImages = "F:\\Fotos\\10.JPG";
-                      foto = new File(pathImages);
-                      pstm2 =  conexion.getConexion().prepareStatement("Update Empleado"
-                                + " set Foto=?"
-                                + " where Id=?");
-                        fis = new FileInputStream(foto);
-                        pstm2.setBinaryStream(1, fis,(int) foto.length());
-                        pstm2.setString(2, resultSelect.getString(1));
-                        pstm2.executeUpdate();
-                        sinImagen = sinImagen +1 ;
-                    }
-                }catch(Exception e){
-                    System.out.println(e);
-                }
-            }            
-            System.out.println("Registro completo, con imagen: "+conImagen+"  sin imagen :" +sinImagen);
+                System.out.println(resultSelect.getString(1));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Registrar.class.getName()).log(Level.SEVERE, null, ex);
         }
