@@ -220,8 +220,8 @@ public class ConductoresController implements Initializable {
         cbxCiudad.setDisable(true);
         btnLimpiar.setVisible(false);
 
-       // foto.setImage(new Image("FotosConductor/default-photo.png"));
-       // foto.setOpacity(0.65);        
+        foto.setImage(new Image("images/default-photo.png"));
+        foto.setOpacity(0.65);        
         llenarTablaBD();
         eventoFiltro = new ManejadorEventos(); //Activamos el evento.   
         tblIdDomicilio.setVisible(false);
