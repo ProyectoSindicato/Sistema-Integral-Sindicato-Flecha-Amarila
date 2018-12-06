@@ -31,6 +31,11 @@
         <URL value="@../images/style.css" />
       </stylesheets>
     </Button>
+    <Label fx:id="rescuePassword" layoutX="95.0" layoutY="428.0" onMousePressed="#rescuePasswordEvent" style="" styleClass="rescuePassword" text="¿Olvidaste tu contraseña?" textFill="WHITE" wrapText="false">
+      <stylesheets>
+        <URL value="@../images/rescuePassword.css" />
+      </stylesheets>
+    </Label>
     <Pane fx:id="paneImg" prefHeight="89.0" prefWidth="106.0" styleClass="iconLogo_login" AnchorPane.bottomAnchor="282.0" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="107.0" AnchorPane.topAnchor="79.0">
       <stylesheets>
         <URL value="@../images/style.css" />

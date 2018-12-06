@@ -32,20 +32,8 @@ public class Principal extends Application {
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
-        stage.show();
-       // stage.setMaximized(true);
-        /*ConexionAccess conexion = new ConexionAccess();
-        conexion.conectar();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/Vista/Login.fxml"));
-        loader.load();
-        LoginController document = loader.getController();
-        Parent p = loader.getRoot();
-        Scene s = new Scene(p);
-        stage.setScene(s);
         stage.setTitle("Login");
-        stage.setResizable(true);
-        stage.show();*/
+        stage.show();
     }
 
     /**

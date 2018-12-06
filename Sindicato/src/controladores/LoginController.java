@@ -89,6 +89,7 @@ public class LoginController implements Initializable {
                         s.setScene(scene);
                         s.setMaximized(true);
                         s.setResizable(true);
+                        s.setTitle("Menu");
                         s.show();
                     } else {
                           showAlert(Alert.AlertType.WARNING, "Warning Message", " Usuario o contraseña incorrecto.");
