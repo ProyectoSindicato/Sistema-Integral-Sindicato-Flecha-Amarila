@@ -168,7 +168,7 @@ public class Infracciones {
         conexion = new ConexionAccess();
         conexion.conectar();
         try {
-            String sql = "SELECT Id, IdAutobus, IdConductor, Fecha, Motivo FROM Infracciones WHERE IdConductor= ? ";
+            String sql = "SELECT Id, IdAutobus, IdConductor, Fecha, Motivo, IdDirector FROM Infracciones WHERE IdConductor= ? ";
             PreparedStatement ps = conexion.getConexion().prepareStatement(sql);
             ps.setString(1, IdConductor);
             res = ps.executeQuery();
