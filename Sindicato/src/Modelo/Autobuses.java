@@ -78,10 +78,9 @@ public class Autobuses {
         conexion.conectar();
         try{
             try(PreparedStatement ps = conexion.getConexion().prepareStatement(sql)){
-            ps.setInt(1,id);
-            ps.setString(2,Marca);
-            ps.setString(3,Modelo);
-            ps.setInt(4, id);
+            ps.setString(1,Marca);
+            ps.setString(2,Modelo);
+            ps.setInt(3, id);
             ps.executeUpdate();
             ps.close();
             }
