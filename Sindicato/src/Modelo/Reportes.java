@@ -188,7 +188,7 @@ public class Reportes {
         conexion = new ConexionAccess();
         conexion.conectar();
         try { //Este SQL contiene todo lo que necesito para traerme la lista de lo que quiero (Checar en el controller, parte: actualizarBD).
-            String sql = "SELECT Id, IdConductor, Tipo, Fecha, Descripcion, Lugar FROM Reportes WHERE idConductor = ?";
+            String sql = "SELECT Id, IdConductor, Tipo, Fecha, Descripcion, Lugar, IdEmpleado FROM Reportes WHERE IdConductor = ?";
             PreparedStatement ps = conexion.getConexion().prepareStatement(sql);
             ps.setString(1, id);
             resultado = ps.executeQuery();

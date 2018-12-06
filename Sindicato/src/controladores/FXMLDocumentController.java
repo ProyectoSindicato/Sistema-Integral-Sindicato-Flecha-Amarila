@@ -313,7 +313,6 @@ public class FXMLDocumentController implements Initializable {
             Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
             s.setX((primScreenBounds.getWidth() - s.getWidth()) / 2);
             s.setY((primScreenBounds.getHeight() - s.getHeight()) / 2);
-            
         }
     }
 }
