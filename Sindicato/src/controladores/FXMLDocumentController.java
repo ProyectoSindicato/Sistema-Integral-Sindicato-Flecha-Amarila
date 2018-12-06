@@ -154,7 +154,7 @@ public class FXMLDocumentController implements Initializable {
     void handleIncapacidades(ActionEvent event) throws IOException {
         conexion.conectar();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/Vista/VistaIncapacidades.fxml"));
+        loader.setLocation(getClass().getResource("/Vista/Incapacidades.fxml"));
         loader.load();
         VistaIncapacidadesController document = loader.getController();
         document.setParameters(employee, conexion);
