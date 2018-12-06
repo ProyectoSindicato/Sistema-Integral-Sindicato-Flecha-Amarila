@@ -131,7 +131,7 @@
         </Pane>
         <Pane layoutX="904.0" layoutY="332.0" prefHeight="144.0" prefWidth="157.0" styleClass="iconGNR">
           <children>
-            <Button fx:id="btnPermisos" layoutX="1.0" layoutY="0.0" mnemonicParsing="false" onAction="#handlePermisos" prefHeight="144.0" prefWidth="155.0" styleClass="null, iconPermisos" text="" textFill="BLACK">
+            <Button fx:id="btnPermisos" layoutX="0.0" layoutY="0.0" mnemonicParsing="false" onAction="#handlePermisos" prefHeight="144.0" prefWidth="155.0" styleClass="null, iconPermisos" text="" textFill="BLACK">
               <stylesheets>
                 <URL value="@../images/style.css" />
               </stylesheets>
@@ -181,7 +181,7 @@
         </Pane>
         <Pane layoutX="902.0" layoutY="508.0" prefHeight="144.0" prefWidth="157.0" styleClass="iconGNR">
           <children>
-            <Button fx:id="btnMantenimiento" layoutX="2.0" layoutY="0.0" mnemonicParsing="false" onAction="#handleMantenimiento" prefHeight="144.0" prefWidth="155.0" styleClass="null, iconMantenimiento" text="" textFill="BLACK">
+            <Button fx:id="btnMantenimiento" layoutX="2.0" layoutY="-8.0" mnemonicParsing="false" onAction="#handleMantenimiento" prefHeight="144.0" prefWidth="155.0" styleClass="null, iconMantenimiento" text="" textFill="BLACK">
               <stylesheets>
                 <URL value="@../images/style.css" />
               </stylesheets>
