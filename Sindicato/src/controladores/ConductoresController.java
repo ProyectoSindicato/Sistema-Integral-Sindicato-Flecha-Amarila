@@ -6,6 +6,7 @@
 package controladores;
 
 import ConexionAccess.ConexionAccess;
+import Empleado.Empleado;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import Modelo.Conductor;
 import java.awt.HeadlessException;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -23,6 +25,10 @@ import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -39,6 +45,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class ConductoresController implements Initializable {
     
@@ -47,7 +54,7 @@ public class ConductoresController implements Initializable {
     ResultSetMetaData metadataIdTel = null;
     ResultSetMetaData metadataIdBen = null;
     ManejadorEventos eventoFiltro;
-    private final ConexionAccess conexionBD;
+    private ConexionAccess conexionBD;
     double[] dimension;
     DatePicker[] dpCampos;
     TextField[] txtCAMPOS;
@@ -60,7 +67,7 @@ public class ConductoresController implements Initializable {
     int idDom, idTel, idBen;
     
     @FXML
-    private Button btnAgregar, btnEditar, btnEliminar, btnBuscar, btnLimpiar;
+    private Button btnAgregar, btnEditar, btnEliminar, btnBuscar, btnLimpiar, btnBack;
     
     @FXML
     private Label lblId, lblApellidoPaterno, lblApellidoMaterno, lblNombres, 
@@ -122,6 +129,30 @@ public class ConductoresController implements Initializable {
     public ConductoresController() {
         conexionBD = new ConexionAccess();
     }
+    
+    private Empleado employee;
+    
+    public void setParameters(Empleado employee, ConexionAccess conexion) {
+        this.employee = employee;
+        this.conexionBD = conexion;
+    }
+    
+    @FXML
+    public void backDesk(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/Vista/FXMLDocument.fxml"));
+                        loader.load();
+                        FXMLDocumentController document = loader.getController();
+                        document.setParameters(employee,conexionBD);
+                        Parent p = loader.getRoot();
+                        Scene scene = new Scene(p);
+                        Stage s = (Stage)((Node)event.getSource()).getScene().getWindow();
+                        s.setScene(scene);
+                        s.setMaximized(true);
+                        s.setResizable(true);
+                        s.show();
+    }
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -189,8 +220,8 @@ public class ConductoresController implements Initializable {
         cbxCiudad.setDisable(true);
         btnLimpiar.setVisible(false);
 
-        foto.setImage(new Image("FotosConductor/default-photo.png"));
-        foto.setOpacity(0.65);        
+       // foto.setImage(new Image("FotosConductor/default-photo.png"));
+       // foto.setOpacity(0.65);        
         llenarTablaBD();
         eventoFiltro = new ManejadorEventos(); //Activamos el evento.   
         tblIdDomicilio.setVisible(false);
@@ -247,7 +278,7 @@ public class ConductoresController implements Initializable {
         int sizeBen = tblIdBeneficiarios.getItems().size() - 1;
         Object value3 = tblIdBeneficiarios.getColumns().get(0).getCellObservableValue(sizeBen).getValue();
         idBen = (int)value3 + 1;
-        System.out.println("Valor último IdBeneficiairos (siguiente valor): "+idBen);
+        System.out.println("Valor último IdBeneficiarios (siguiente valor): "+idBen);
         IDBeneficiarios = idBen;
         txtIdBeneficiarios.setText(String.valueOf(idBen));
         txtIdBeneficiarios.setDisable(true);

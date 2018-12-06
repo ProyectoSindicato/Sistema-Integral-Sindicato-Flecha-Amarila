@@ -85,7 +85,7 @@ public class VistaAccidentesController implements Initializable {
         this.employee = employee;
         this.conexionBD = conexion;
         /* Dir. Seguridad y Prevención social - 4.*/
-        if(this.employee.getType() != 4){
+        if(this.employee.getType() != 4 && this.employee.getType() != 1){
          btnAdd.setDisable(true);
          btnModify.setDisable(true);
          btnErase.setDisable(true);

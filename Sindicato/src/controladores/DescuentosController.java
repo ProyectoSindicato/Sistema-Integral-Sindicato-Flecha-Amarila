@@ -1,5 +1,7 @@
 package controladores;
 
+import ConexionAccess.ConexionAccess;
+import Empleado.Empleado;
 import java.awt.Color;
 import java.io.File;
 import java.net.URL;
@@ -37,7 +39,7 @@ public class DescuentosController implements Initializable {
     static int contadorbarra;
     JFileChooser selecArchivo = new JFileChooser();
     ModeloExcel modeloE = new ModeloExcel();
-
+    ConexionAccess conexionBD;
     @FXML
     private Button btnagregar, btnmodificar, btneliminar, btnbuscar, btnimportar;
 
@@ -49,6 +51,17 @@ public class DescuentosController implements Initializable {
     
     Task copyWorker;
 
+    private Empleado employee;
+
+    public void setParameters(Empleado employee, ConexionAccess conexion) {
+        this.employee = employee;
+        this.conexionBD = conexion;
+    }
+    
+    public DescuentosController(){
+        conexionBD = new ConexionAccess();
+    }
+    
     //Para boton "agregar"
     @FXML
     private void agregar(ActionEvent event) {

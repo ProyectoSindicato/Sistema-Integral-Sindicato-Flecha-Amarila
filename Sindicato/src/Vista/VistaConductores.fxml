@@ -629,7 +629,7 @@
                 </TabPane>
                 <Pane layoutX="0.0" layoutY="174.0" prefHeight="347.0" prefWidth="102.0" styleClass="panelButtons">
                   <children>
-                    <Button layoutX="8.0" layoutY="14.0" mnemonicParsing="false" prefHeight="67.9609375" prefWidth="86.0" styleClass="btn, back, imageButon" text="">
+                    <Button fx:id="btnBack" layoutX="8.0" layoutY="14.0" mnemonicParsing="false" onAction="#backDesk" prefHeight="67.9609375" prefWidth="86.0" styleClass="btn, back, imageButon" text="">
                       <stylesheets>
                         <URL value="@../images/ConductoresStyle.css" />
                       </stylesheets>
