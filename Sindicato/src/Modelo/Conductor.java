@@ -474,6 +474,7 @@ public class Conductor {
                 ps.setString(15, rfc);
                 ps.setString(16, claveElector);
                 ps.setString(17, foto);
+                //ps.setBinaryStream(17, image, (int) imageFile.lenght());
                 
                 ps.execute();
                 ps.close();

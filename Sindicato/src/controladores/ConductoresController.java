@@ -16,14 +16,21 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import Modelo.Conductor;
 import java.awt.HeadlessException;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -45,10 +52,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 
 public class ConductoresController implements Initializable {
-    
+    File file;
+    FileInputStream imageStream;
     ResultSetMetaData metadata = null;
     ResultSetMetaData metadataId = null;
     ResultSetMetaData metadataIdTel = null;
@@ -2800,6 +2810,50 @@ public class ConductoresController implements Initializable {
         //this.btnLimpiar.setVisible(true);
     }    
     
+    @FXML
+    public void elegirFoto(ActionEvent e) {
+        /*FileChooser fileChooser = new FileChooser();
+        archivo = fileChooser.showOpenDialog(null);
+        if (archivo.getName().endsWith("jpg") || archivo.getName().endsWith("png") || archivo.getName().endsWith("JPG")) {
+            System.out.println("Imagen ruta path: " + archivo.getPath().replace("\"", "\\"));]*/
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilterJPG = 
+                new FileChooser.ExtensionFilter("JPG files (*.JPG)", "*.JPG");
+        FileChooser.ExtensionFilter extFilterjpg = 
+                new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+        FileChooser.ExtensionFilter extFilterPNG = 
+                new FileChooser.ExtensionFilter("PNG files (*.PNG)", "*.PNG");
+        FileChooser.ExtensionFilter extFilterpng = 
+                new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+        fileChooser.getExtensionFilters()
+                .addAll(extFilterJPG, extFilterjpg, extFilterPNG, extFilterpng);
+
+        //Show open file dialog
+        file = fileChooser.showOpenDialog(null);
+
+        BufferedImage bufferedImage;
+        try {
+            bufferedImage = ImageIO.read(file);
+            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+            foto.setImage(image);
+            imageStream = new FileInputStream(file);
+        } catch (IOException ex) {
+            Logger.getLogger(ConductoresController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //File ImageFile = new File(archivo.getPath());
+        //foto.setImage(new Image(archivo.getPath().replace("\"", "\\")));
+        /*try {
+            FileInputStream image = new FileInputStream(ImageFile);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ConductoresController.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        //showAlert(Alert.AlertType.ERROR, "Error Message", " Error al subir la foto. \nFormato incompatible.");
+        
+    }
+    
      @FXML
     public void agregarConductor(ActionEvent e) {
         String idConductor = txtId.getText();
@@ -2854,6 +2908,9 @@ public class ConductoresController implements Initializable {
         String beneficiarios = txaBeneficiarios.getText();
         String parentesco = txaParentesco.getText();
         String porcentaje = txaPorcentaje.getText();
+        
+        File foto = file;
+        FileInputStream fotoStream = imageStream;
         
         if (estadoCivil != null && estado != null && ciudad != null && 
             !idConductor.equals("") && !nombres.equals("") && !apellidoPaterno.equals("") &&

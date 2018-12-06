@@ -537,7 +537,7 @@
                                 <URL value="@../images/ConductoresStyle.css" />
                               </stylesheets>
                             </GridPane>
-                            <Button layoutX="273.0" layoutY="270.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="103.0" text="Añadir imagen" />
+                            <Button layoutX="273.0" layoutY="270.0" mnemonicParsing="false" onAction="#elegirFoto" prefHeight="28.0" prefWidth="103.0" text="Elegir imagen" />
                             <Pane layoutX="201.0" layoutY="14.0" prefHeight="243.9998779296875" prefWidth="246.0" style="-fx-background-color: #eeeeee" styleClass="gridSection">
                               <children>
                                 <ImageView fx:id="foto" fitHeight="229.0" fitWidth="232.99996948242188" layoutX="6.0" layoutY="7.0" pickOnBounds="true" preserveRatio="false" />
