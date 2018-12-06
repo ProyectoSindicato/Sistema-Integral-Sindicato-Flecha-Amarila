@@ -226,7 +226,7 @@
                     </GridPane>
                     <ProgressBar fx:id="barraProgreso2" layoutX="2.0" layoutY="1.0" prefWidth="1359.0" progress="0.0" style="" styleClass="bar">
                       <stylesheets>
-                        <URL value="@../images/StyleBar.css" />
+                        <URL value="@../images/ProgressBar.css" />
                       </stylesheets>
                     </ProgressBar>
                   </children>
